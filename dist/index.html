@@ -953,6 +953,13 @@
             return jumlahDitarik;
         }
 
+        function buatStatePrivatAwalOnline() {
+            const pemain = buatPemain('Pemain');
+            kocokDeck(pemain.deck);
+            tarikKartu(pemain, 5);
+            return { deck: pemain.deck, hand: pemain.hand, lastDrawnTurnCount: 1 };
+        }
+
         function buatDeck() {             let d = JSON.parse(JSON.stringify(masterDeckList)); 
             d.forEach(c => { 
                 c.hasAttacked = 0; 
@@ -1160,10 +1167,7 @@
                 if (stored.exists()) {
                     onlineGame.privateState = stored.val();
                 } else {
-                    const deck = kocokDeck(buatDeck());
-                    const hand = [];
-                    for (let i = 0; i < 5; i++) hand.push(deck.pop());
-                    onlineGame.privateState = { deck, hand, lastDrawnTurnCount: 1 };
+                    onlineGame.privateState = buatStatePrivatAwalOnline();
                     await privateRef.set(onlineGame.privateState);
                 }
                 onlineGame.privateInitialized = true;
@@ -1280,10 +1284,12 @@
                 const name = document.getElementById('input-p1').value.trim() || 'Pemain 2';
                 await roomRef.child('guestUid').set(onlineGame.uid);
                 await roomRef.child('guestName').set(name);
+                const privateState = buatStatePrivatAwalOnline();
+                await roomRef.child(`private/${onlineGame.uid}`).set(privateState);
                 Object.assign(onlineGame, {
                     roomRef, roomCode: code, playerNum: 2, hostUid: details[0].val(),
-                    guestUid: onlineGame.uid, status: 'waiting', privateState: null,
-                    privateInitialized: false, privateSetupPromise: null,
+                    guestUid: onlineGame.uid, status: 'waiting', privateState,
+                    privateInitialized: true, privateSetupPromise: null,
                     arenaShown: false, gameOverAnnounced: false, errorShown: false, lastDrawnTurnCount: null
                 });
                 setOnlineStatus(`Bergabung ke room ${code}. Menunggu host memulai pertandingan.`);
@@ -1300,6 +1306,12 @@
                 }
                 const nama1 = document.getElementById('input-p1').value.trim() || 'Pemain 1';
                 const nama2 = (await onlineGame.roomRef.child('guestName').once('value')).val() || 'Pemain 2';
+                const guestPrivateSnapshot = await onlineGame.roomRef.child(`private/${onlineGame.guestUid}`).once('value');
+                const guestPrivate = guestPrivateSnapshot.val();
+                if (!guestPrivateSnapshot.exists() || !Array.isArray(guestPrivate.deck) ||
+                    !Array.isArray(guestPrivate.hand) || guestPrivate.deck.length !== 20 || guestPrivate.hand.length !== 5) {
+                    throw new Error('Deck awal Pemain 2 belum siap. Minta Pemain 2 bergabung ulang, lalu coba lagi.');
+                }
                 gameMode = 'online';
                 siapkanPertandingan(nama1, nama2);
                 onlineGame.privateState = { deck: state.p1.deck, hand: state.p1.hand, lastDrawnTurnCount: 1 };
