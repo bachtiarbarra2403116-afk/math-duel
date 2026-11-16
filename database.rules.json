@@ -18,6 +18,11 @@
           ".read": "auth != null",
           ".write": "auth != null && auth.uid === data.parent().child('guestUid').val()"
         },
+        "guestReady": {
+          ".read": "auth != null && (auth.uid === data.parent().child('hostUid').val() || auth.uid === data.parent().child('guestUid').val())",
+          ".write": "auth != null && !data.exists() && auth.uid === data.parent().child('guestUid').val() && newData.val() === true",
+          ".validate": "newData.val() === true"
+        },
         "status": {
           ".read": "auth != null",
           ".write": "auth != null && (auth.uid === data.parent().child('hostUid').val() || auth.uid === data.parent().child('guestUid').val())",

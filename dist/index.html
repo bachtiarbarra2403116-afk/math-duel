@@ -1185,9 +1185,12 @@
             const guestRef = onlineGame.roomRef.child('guestUid');
             simpanListenerOnline(guestRef, snapshot => {
                 onlineGame.guestUid = snapshot.val();
-                if (onlineGame.playerNum === 1 && onlineGame.guestUid) {
+            });
+            const readyRef = onlineGame.roomRef.child('guestReady');
+            simpanListenerOnline(readyRef, snapshot => {
+                if (onlineGame.playerNum === 1 && snapshot.val() === true) {
                     document.getElementById('start-online-btn').style.display = onlineGame.status === 'waiting' ? 'inline-block' : 'none';
-                    setOnlineStatus(`Room ${onlineGame.roomCode} siap. Pemain kedua sudah bergabung.`);
+                    setOnlineStatus(`Room ${onlineGame.roomCode} siap. Deck Pemain 2 sudah siap.`);
                 }
             });
             const statusRef = onlineGame.roomRef.child('status');
@@ -1286,6 +1289,7 @@
                 await roomRef.child('guestName').set(name);
                 const privateState = buatStatePrivatAwalOnline();
                 await roomRef.child(`private/${onlineGame.uid}`).set(privateState);
+                await roomRef.child('guestReady').set(true);
                 Object.assign(onlineGame, {
                     roomRef, roomCode: code, playerNum: 2, hostUid: details[0].val(),
                     guestUid: onlineGame.uid, status: 'waiting', privateState,
@@ -1306,10 +1310,8 @@
                 }
                 const nama1 = document.getElementById('input-p1').value.trim() || 'Pemain 1';
                 const nama2 = (await onlineGame.roomRef.child('guestName').once('value')).val() || 'Pemain 2';
-                const guestPrivateSnapshot = await onlineGame.roomRef.child(`private/${onlineGame.guestUid}`).once('value');
-                const guestPrivate = guestPrivateSnapshot.val();
-                if (!guestPrivateSnapshot.exists() || !Array.isArray(guestPrivate.deck) ||
-                    !Array.isArray(guestPrivate.hand) || guestPrivate.deck.length !== 20 || guestPrivate.hand.length !== 5) {
+                const guestReadySnapshot = await onlineGame.roomRef.child('guestReady').once('value');
+                if (guestReadySnapshot.val() !== true) {
                     throw new Error('Deck awal Pemain 2 belum siap. Minta Pemain 2 bergabung ulang, lalu coba lagi.');
                 }
                 gameMode = 'online';
