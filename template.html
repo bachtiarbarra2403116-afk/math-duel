@@ -1296,8 +1296,10 @@
                 onlineGame.lastDrawnTurnCount = 1;
                 state.p2.deck = [];
                 state.p2.hand = [];
+                const initialPublicState = bentukStatePublik();
                 await onlineGame.roomRef.child(`private/${onlineGame.uid}`).set(onlineGame.privateState);
-                await onlineGame.roomRef.child('state').set(bentukStatePublik());
+                await onlineGame.roomRef.child('state').set(initialPublicState);
+                onlineGame.latestState = initialPublicState;
                 await onlineGame.roomRef.child('status').set('started');
                 tampilkanArena();
                 onlineGame.arenaShown = true;
@@ -1319,6 +1321,7 @@
                 .then(async () => {
                     const publicState = bentukStatePublik();
                     if (stateOnlineSama(publicState, onlineGame.latestState)) return;
+                    if (onlineGame.latestState?.turnUid !== onlineGame.uid) return;
                     await stateRef.set(publicState);
                     onlineGame.latestState = publicState;
                 })
