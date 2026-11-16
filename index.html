@@ -1063,6 +1063,17 @@
             onlineGame.listeners.push({ ref, handler });
         }
 
+        function stateOnlineSama(a, b) {
+            const stabilkan = value => {
+                if (Array.isArray(value)) return value.map(stabilkan);
+                if (value && typeof value === 'object') {
+                    return Object.fromEntries(Object.keys(value).sort().map(key => [key, stabilkan(value[key])]));
+                }
+                return value;
+            };
+            return JSON.stringify(stabilkan(a)) === JSON.stringify(stabilkan(b));
+        }
+
         function bentukStatePublik() {
             const publik = JSON.parse(JSON.stringify(state));
             [publik.p1, publik.p2].forEach(pemain => {
@@ -1305,7 +1316,12 @@
             const stateRef = onlineGame.roomRef.child('state');
             onlineGame.syncQueue = onlineGame.syncQueue
                 .then(() => privateRef.set(onlineGame.privateState))
-                .then(() => stateRef.set(bentukStatePublik()))
+                .then(async () => {
+                    const publicState = bentukStatePublik();
+                    if (stateOnlineSama(publicState, onlineGame.latestState)) return;
+                    await stateRef.set(publicState);
+                    onlineGame.latestState = publicState;
+                })
                 .catch(error => {
                     tanganiKesalahanOnline(error);
                 });
