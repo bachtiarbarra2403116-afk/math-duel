@@ -1092,8 +1092,15 @@
             if (!publik || onlineGame.applyingRemote) return;
             const gameWasOver = state.isGameOver;
             onlineGame.latestState = publik;
-            if (onlineGame.lastDrawnTurnCount === null) onlineGame.lastDrawnTurnCount = publik.turnCount;
             const own = onlineGame.privateState || { deck: [], hand: [] };
+            if (onlineGame.lastDrawnTurnCount === null) {
+                onlineGame.lastDrawnTurnCount = Number.isInteger(own.lastDrawnTurnCount)
+                    ? own.lastDrawnTurnCount
+                    : 1;
+            }
+            if (onlineGame.privateState) {
+                onlineGame.privateState.lastDrawnTurnCount = onlineGame.lastDrawnTurnCount;
+            }
             const berikut = JSON.parse(JSON.stringify(publik));
             [berikut.p1, berikut.p2].forEach(pemain => {
                 pemain.field = Array.isArray(pemain.field) ? pemain.field : [];
@@ -1118,7 +1125,8 @@
             onlineGame.applyingRemote = true;
             updateUI();
             onlineGame.applyingRemote = false;
-            if (state.turn === onlineGame.playerNum && state.turnCount > onlineGame.lastDrawnTurnCount && onlineGame.status === 'started') {
+            if (state.turn === onlineGame.playerNum && state.turnCount > onlineGame.lastDrawnTurnCount &&
+                onlineGame.status === 'started' && (gameMode !== 'online' || onlineGame.privateInitialized)) {
                 onlineGame.lastDrawnTurnCount = state.turnCount;
                 if (tarikKartu(state[`p${onlineGame.playerNum}`], 1) === 0) {
                     state.deckLossPlayer = state.turn;
@@ -1142,7 +1150,6 @@
             if (onlineGame.playerNum !== 2 || onlineGame.status !== 'started') return Promise.resolve();
             if (onlineGame.privateSetupPromise) return onlineGame.privateSetupPromise;
             if (onlineGame.privateInitialized) return Promise.resolve();
-            onlineGame.privateInitialized = true;
             onlineGame.privateSetupPromise = (async () => {
                 if (!onlineGame.latestState) {
                     const publicSnapshot = await onlineGame.roomRef.child('state').once('value');
@@ -1156,9 +1163,10 @@
                     const deck = kocokDeck(buatDeck());
                     const hand = [];
                     for (let i = 0; i < 5; i++) hand.push(deck.pop());
-                    onlineGame.privateState = { deck, hand };
+                    onlineGame.privateState = { deck, hand, lastDrawnTurnCount: 1 };
                     await privateRef.set(onlineGame.privateState);
                 }
+                onlineGame.privateInitialized = true;
                 if (onlineGame.latestState) terapkanStateOnline(onlineGame.latestState);
             })().catch(error => {
                 onlineGame.privateInitialized = false;
@@ -1198,8 +1206,11 @@
             simpanListenerOnline(stateRef, snapshot => {
                 if (!snapshot.exists()) return;
                 onlineGame.latestState = snapshot.val();
-                if (onlineGame.playerNum === 2 && onlineGame.status === 'started' && !onlineGame.privateInitialized) {
-                    siapkanPemainOnline().catch(tanganiKesalahanOnline);
+                if (onlineGame.playerNum === 2 && onlineGame.status === 'started' &&
+                    (!onlineGame.privateInitialized || onlineGame.privateSetupPromise)) {
+                    siapkanPemainOnline().then(() => {
+                        if (onlineGame.latestState) terapkanStateOnline(onlineGame.latestState);
+                    }).catch(tanganiKesalahanOnline);
                 } else {
                     terapkanStateOnline(onlineGame.latestState);
                 }
@@ -1291,7 +1302,7 @@
                 const nama2 = (await onlineGame.roomRef.child('guestName').once('value')).val() || 'Pemain 2';
                 gameMode = 'online';
                 siapkanPertandingan(nama1, nama2);
-                onlineGame.privateState = { deck: state.p1.deck, hand: state.p1.hand };
+                onlineGame.privateState = { deck: state.p1.deck, hand: state.p1.hand, lastDrawnTurnCount: 1 };
                 onlineGame.privateInitialized = true;
                 onlineGame.lastDrawnTurnCount = 1;
                 state.p2.deck = [];
@@ -1313,7 +1324,11 @@
             if (gameMode !== 'online' || !onlineGame.roomRef || !onlineGame.uid ||
                 onlineGame.status !== 'started' || onlineGame.applyingRemote) return;
             const own = state[`p${onlineGame.playerNum}`];
-            onlineGame.privateState = { deck: own.deck, hand: own.hand };
+            onlineGame.privateState = {
+                deck: own.deck,
+                hand: own.hand,
+                lastDrawnTurnCount: onlineGame.lastDrawnTurnCount ?? 1
+            };
             const privateRef = onlineGame.roomRef.child(`private/${onlineGame.uid}`);
             const stateRef = onlineGame.roomRef.child('state');
             onlineGame.syncQueue = onlineGame.syncQueue
