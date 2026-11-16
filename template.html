@@ -1183,21 +1183,22 @@
         function siapkanPemainOnline() {
             if (onlineGame.playerNum !== 2 || onlineGame.status !== 'started') return Promise.resolve();
             if (onlineGame.privateSetupPromise) return onlineGame.privateSetupPromise;
-            if (onlineGame.privateInitialized) return Promise.resolve();
             onlineGame.privateSetupPromise = (async () => {
                 if (!onlineGame.latestState) {
                     const publicSnapshot = await onlineGame.roomRef.child('state').once('value');
                     onlineGame.latestState = publicSnapshot.val();
                 }
-                const privateRef = onlineGame.roomRef.child(`private/${onlineGame.uid}`);
-                const stored = await privateRef.once('value');
-                if (stored.exists()) {
-                    onlineGame.privateState = stored.val();
-                } else {
-                    onlineGame.privateState = buatStatePrivatAwalOnline();
-                    await privateRef.set(onlineGame.privateState);
+                if (!onlineGame.privateInitialized) {
+                    const privateRef = onlineGame.roomRef.child(`private/${onlineGame.uid}`);
+                    const stored = await privateRef.once('value');
+                    if (stored.exists()) {
+                        onlineGame.privateState = stored.val();
+                    } else {
+                        onlineGame.privateState = buatStatePrivatAwalOnline();
+                        await privateRef.set(onlineGame.privateState);
+                    }
+                    onlineGame.privateInitialized = true;
                 }
-                onlineGame.privateInitialized = true;
                 if (onlineGame.latestState) terapkanStateOnline(onlineGame.latestState);
             })().catch(error => {
                 onlineGame.privateInitialized = false;
@@ -1284,7 +1285,8 @@
                     roomRef, roomCode: code, playerNum: 1, hostUid: onlineGame.uid,
                     guestUid: null, status: 'waiting', privateState: null,
                     privateInitialized: false, privateSetupPromise: null,
-                    arenaShown: false, gameOverAnnounced: false, errorShown: false, lastDrawnTurnCount: null
+                    latestState: null, arenaShown: false, gameOverAnnounced: false,
+                    errorShown: false, lastDrawnTurnCount: null
                 });
                 document.getElementById('room-code-input').value = code;
                 setOnlineStatus(`Room ${code} dibuat. Bagikan kode ini kepada lawan.`);
@@ -1321,7 +1323,8 @@
                     roomRef, roomCode: code, playerNum: 2, hostUid: details[0].val(),
                     guestUid: onlineGame.uid, status: 'waiting', privateState,
                     privateInitialized: true, privateSetupPromise: null,
-                    arenaShown: false, gameOverAnnounced: false, errorShown: false, lastDrawnTurnCount: null
+                    latestState: null, arenaShown: false, gameOverAnnounced: false,
+                    errorShown: false, lastDrawnTurnCount: null
                 });
                 setOnlineStatus(`Bergabung ke room ${code}. Menunggu host memulai pertandingan.`);
                 dengarkanRoomOnline();
@@ -1363,7 +1366,8 @@
 
         function kirimStateOnline() {
             if (gameMode !== 'online' || !onlineGame.roomRef || !onlineGame.uid ||
-                onlineGame.status !== 'started' || onlineGame.applyingRemote) return;
+                onlineGame.status !== 'started' || onlineGame.applyingRemote ||
+                !onlineGame.latestState || !onlineGame.privateInitialized) return;
             const own = state[`p${onlineGame.playerNum}`];
             onlineGame.privateState = {
                 deck: own.deck,
