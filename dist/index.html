@@ -801,7 +801,8 @@
             applyingRemote: false, syncQueue: Promise.resolve(), errorShown: false,
             listeners: [], lastDrawnTurnCount: null, privateInitialized: false,
             privateSetupPromise: null, hostUid: null, guestUid: null,
-            latestState: null, arenaShown: false, gameOverAnnounced: false
+            latestState: null, arenaShown: false, gameOverAnnounced: false,
+            localActionInProgress: false
         };
 
         const UI = {
@@ -1096,7 +1097,7 @@
         }
 
         function terapkanStateOnline(publik) {
-            if (!publik || onlineGame.applyingRemote) return;
+            if (!publik || onlineGame.applyingRemote || onlineGame.localActionInProgress) return;
             const gameWasOver = state.isGameOver;
             onlineGame.latestState = publik;
             const own = onlineGame.privateState || { deck: [], hand: [] };
@@ -1243,6 +1244,7 @@
             const stateRef = onlineGame.roomRef.child('state');
             simpanListenerOnline(stateRef, snapshot => {
                 if (!snapshot.exists()) return;
+                if (onlineGame.localActionInProgress) return;
                 onlineGame.latestState = snapshot.val();
                 if (onlineGame.playerNum === 2 && onlineGame.status === 'started' &&
                     (!onlineGame.privateInitialized || onlineGame.privateSetupPromise)) {
@@ -1370,7 +1372,8 @@
         function kirimStateOnline() {
             if (gameMode !== 'online' || !onlineGame.roomRef || !onlineGame.uid ||
                 onlineGame.status !== 'started' || onlineGame.applyingRemote ||
-                !onlineGame.latestState || !onlineGame.privateInitialized) return;
+                onlineGame.localActionInProgress || !onlineGame.latestState ||
+                !onlineGame.privateInitialized) return;
             const own = state[`p${onlineGame.playerNum}`];
             onlineGame.privateState = {
                 deck: own.deck,
@@ -1380,8 +1383,12 @@
             const privateRef = onlineGame.roomRef.child(`private/${onlineGame.uid}`);
             const stateRef = onlineGame.roomRef.child('state');
             onlineGame.syncQueue = onlineGame.syncQueue
-                .then(() => privateRef.set(onlineGame.privateState))
+                .then(() => {
+                    if (onlineGame.localActionInProgress) return;
+                    return privateRef.set(onlineGame.privateState);
+                })
                 .then(async () => {
+                    if (onlineGame.localActionInProgress) return;
                     const publicState = bentukStatePublik();
                     if (stateOnlineSama(publicState, onlineGame.latestState)) return;
                     if (onlineGame.latestState?.turnUid !== onlineGame.uid) return;
@@ -1495,6 +1502,8 @@
                 if (activePlayer.field.filter(c => c.tipe === "Domain").length >= 1) { await UI.alert("Anda sudah memiliki Domain aktif di lapangan!", "Peringatan Slot"); return; }
             }
 
+            onlineGame.localActionInProgress = gameMode === 'online';
+            try {
             const { soalTeks, jawabanKunci } = MathraCardQuestions.buatSoalAktivasi(card);
 
            let isCorrect = false;
@@ -1568,7 +1577,10 @@
                 log(`${card.nama} diletakkan di slot ${card.tipe}.`);
             }
             if (!state.isGameOver) await cekKemenangan();
-            updateUI();
+            } finally {
+                onlineGame.localActionInProgress = false;
+                updateUI();
+            }
         }
 
         function nilaiKartuBot(card, pemain, lawan) {
