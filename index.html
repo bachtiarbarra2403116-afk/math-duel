@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mathra-Cages Spectator</title>
+    <link rel="icon" type="image/png" href="Image/icon.png">
+    <link rel="apple-touch-icon" href="Image/apple-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;700;800&family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --u: 0.75px; 
+            --bg-dark: #14110f; --bg-light: #362a20;
+            --cyan-glow: #d4af37; --gold-border: #b8860b;
+            --panel-bg: rgba(30, 24, 18, 0.88); --text-main: #f4ecd8;
+            --f-title: 'Cinzel', Georgia, serif;
+            --f-ui: 'Alegreya Sans', 'Segoe UI', Tahoma, sans-serif;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: var(--f-ui); font-size: 16px; color: var(--text-main); margin: 0; padding: 10px; min-height: 100vh; overflow-x: hidden;
+            background: radial-gradient(ellipse at 50% 35%, transparent 40%, rgba(0,0,0,.65)),
+                        repeating-linear-gradient(92deg, rgba(255,255,255,.02) 0 2px, transparent 2px 9px),
+                        linear-gradient(#3a2c21, #17120e);
+            background-attachment: fixed;
+            display: flex; flex-direction: column; justify-content: center;
+            transition: background 0.4s, color 0.4s;
+        }
+        :focus-visible { outline: 3px solid #ffd76a; outline-offset: 2px; }
+        .ic { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -.2em; margin-right: 6px; }
+
+        /* ---------- HALAMAN PEMBUKA ---------- */
+        .landing-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 88vh; text-align: center; }
+        .fan { display: flex; justify-content: center; margin-bottom: 30px; --u: 1.2px; }
+        .fan .card { width: calc(96 * var(--u)); height: calc(134 * var(--u)); margin: 0 -14px; transform-origin: 50% 120%; animation: deal .9s cubic-bezier(.2,.9,.3,1.2) both; }
+        .fan .card:nth-child(1) { transform: rotate(-11deg) translateY(10px); animation-delay: .1s; }
+        .fan .card:nth-child(2) { transform: translateY(-8px); z-index: 2; animation-delay: .25s; }
+        .fan .card:nth-child(3) { transform: rotate(11deg) translateY(10px); animation-delay: .4s; }
+        @keyframes deal { from { opacity: 0; translate: 0 -60px; rotate: 0deg; } to { opacity: 1; translate: 0 0; } }
+        .game-title {
+            font-family: var(--f-title); font-weight: 800; font-size: clamp(2em, 7vw, 3.5em); letter-spacing: .08em; margin: 0;
+            background: linear-gradient(#fff1bd, #d4af37 55%, #8b6508); -webkit-background-clip: text; background-clip: text; color: transparent;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,.7)); transition: all 0.4s;
+        }
+        .game-subtitle { font-family: var(--f-title); font-weight: 600; font-size: clamp(0.9em, 3vw, 1.2em); color: #c9a24a; margin: 4px 0 0; letter-spacing: .12em; transition: 0.4s; }
+        .game-desc { color: #dcd0bc; max-width: 500px; line-height: 1.4; font-size: 1em; margin: 12px 0 18px; transition: 0.4s; }
+        
+        .name-inputs { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 450px; }
+        .name-inputs input { flex: 1; min-width: 140px; padding: 10px; border-radius: 8px; border: 2px solid var(--gold-border); background: rgba(20, 15, 10, 0.8); color: #ffd76a; font-family: var(--f-title); font-size: 1em; text-align: center; outline: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); transition: 0.3s; }
+        .name-inputs input:focus { box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 0 10px rgba(212,175,55,0.6); border-color: #f0d58a; }
+
+        .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px; margin: 0 0 24px; padding: 0; list-style: none; font-size: .9em; color: #cfc3aa; transition: 0.4s; }
+        .legend li { display: flex; align-items: center; gap: 6px; }
+        .legend i { width: 12px; height: 16px; border-radius: 3px; border: 1px solid #f0d58a; }
+        .start-btn {
+            padding: 8px 26px; font-family: var(--f-title); font-size: clamp(0.9em, 2.5vw, 1.1em); font-weight: 800; letter-spacing: .06em;
+            background: linear-gradient(#7a5a2c, #3d2a14); color: #fff1c8; border: 2px solid #e2bd52; border-radius: 8px; cursor: pointer;
+            box-shadow: inset 0 1px 0 rgba(255,235,170,.5), 0 4px 12px rgba(0,0,0,.5), 0 0 15px rgba(212,175,55,.25); transition: .25s;
+        }
+        .start-btn:hover { transform: translateY(-3px); box-shadow: inset 0 1px 0 rgba(255,235,170,.5), 0 8px 18px rgba(0,0,0,.6), 0 0 25px rgba(212,175,55,.5); }
+
+        .glass-panel { background: var(--panel-bg); border: 1px solid rgba(212,175,55,.35); backdrop-filter: blur(8px); border-radius: 10px; box-shadow: 0 6px 16px rgba(0,0,0,.6); transition: 0.4s; }
+        .header { text-align: center; padding: 6px; margin-bottom: 10px; max-width: 100%; }
+        .header h1 { margin: 0; font-family: var(--f-title); font-size: clamp(1em, 4vw, 1.3em); letter-spacing: .08em; color: #f0d58a; text-shadow: 0 2px 4px #000; transition: 0.4s; }
+        
+        /* ---------- LAYOUT 3 KOLOM (DESKTOP) ---------- */
+        .game-wrapper {
+            display: flex; justify-content: center; align-items: stretch; gap: 15px; 
+            max-width: 1350px; margin: 0 auto; width: 100%;
+        }
+        .center-panel {
+            flex: 0 1 800px; min-width: 0; display: flex; flex-direction: column;
+        }
+        .side-panel {
+            flex: 0 0 240px; display: flex; flex-direction: column; padding: 15px;
+            background: var(--panel-bg); border: 1px solid rgba(212,175,55,.35);
+            backdrop-filter: blur(8px); border-radius: 10px; box-shadow: 0 6px 16px rgba(0,0,0,.6);
+            max-height: 85vh; transition: 0.4s;
+        }
+        .side-panel h3 {
+            margin: 0 0 12px 0; padding-bottom: 8px; color: #f0d58a;
+            font-family: var(--f-title); text-align: center; font-size: 1.05em;
+            border-bottom: 1px solid rgba(212,175,55,.35); flex-shrink: 0; transition: 0.4s;
+        }
+        .side-log-content {
+            flex-grow: 1; overflow-y: auto; font-family: 'Courier New', monospace;
+            font-size: 0.85em; color: #e3dac9; line-height: 1.4; padding-right: 5px; transition: 0.4s;
+        }
+        
+        .side-score-content { flex-grow: 0; font-size: 0.95em; line-height: 1.6; margin-bottom: 15px; }
+        .side-deck-content { flex-grow: 1; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.85em; color: #dcd0bc; line-height: 1.5; padding-right: 5px; transition: 0.4s; }
+
+        .status-bar { display: flex; justify-content: center; gap: 10px; padding: 6px; margin-bottom: 8px; flex-wrap: wrap; width: 100%; }
+        .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 14px; border-radius: 999px; background: rgba(0,0,0,.4); border: 1px solid rgba(212,175,55,.45); color: #dcd0bc; font-size: 0.9em; transition: 0.4s; }
+        .chip b { font-family: var(--f-title); color: #ffd76a; font-size: 1.05em; transition: 0.4s; }
+
+        /* ---------- PLAYMAT ---------- */
+        .board { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; margin-bottom: 10px; border-radius: 10px; border: 2px solid var(--gold-border); box-shadow: 0 8px 24px rgba(0,0,0,.7), inset 0 0 0 3px #1b120b; width: 100%; transition: 0.4s; }
+        .mat {
+            min-width: 720px; padding: 10px 14px;
+            background: repeating-linear-gradient(60deg, rgba(212,175,55,.04) 0 1px, transparent 1px 34px),
+                        repeating-linear-gradient(-60deg, rgba(212,175,55,.04) 0 1px, transparent 1px 34px),
+                        radial-gradient(ellipse at center, #21412f, #0d1b13 85%); transition: 0.4s;
+        }
+        .player-area { position: relative; margin-top: 8px; padding: 12px 0 4px; border-radius: 8px; border: 2px dashed rgba(212,175,55,.2); transition: .3s; }
+        
+        /* PEMBARUAN: Penempatan Nameplate */
+        .nameplate { position: absolute; z-index: 3; display: flex; align-items: center; gap: 6px; padding: 2px 12px; border-radius: 999px; background: #1a120b; border: 1px solid var(--gold-border); font-family: var(--f-title); font-weight: 600; font-size: .75em; letter-spacing: .06em; color: #e8dcc4; transition: 0.4s; }
+        
+        /* Menggeser ke tengah antara baris 1 dan baris 2 */
+        #nameplate-p1 { left: 12px; right: auto; top: 50%; transform: translateY(-50%); bottom: auto; } 
+        #nameplate-p2 { right: 12px; left: auto; flex-direction: row-reverse; top: 50%; transform: translateY(-50%); bottom: auto; }
+
+        .nameplate::before { content: ""; width: 7px; height: 7px; rotate: 45deg; background: #6b5a3a; transition: 0.4s; }
+        .active-turn .nameplate::before { background: #ffd76a; box-shadow: 0 0 6px #ffd76a; }
+        .active-turn .nameplate::after { content: "giliran aktif"; font-family: var(--f-ui); font-weight: 700; letter-spacing: 0; color: #9be3b8; transition: 0.4s;}
+        
+        @keyframes auraPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(212,175,55,.3), inset 0 0 15px rgba(212,175,55,.1); border-color: rgba(212,175,55,.6); }
+            50% { box-shadow: 0 0 25px rgba(212,175,55,.9), inset 0 0 20px rgba(212,175,55,.3); border-color: rgba(255,215,106,1); }
+        }
+        .active-turn { animation: auraPulse 2s infinite; border-style: solid; background: rgba(255,215,106,.06); border-width: 2px !important; }
+        
+        .magic-divider { position: relative; height: 2px; margin: 10px 0 4px; background: linear-gradient(90deg, transparent, #d4af37, transparent); box-shadow: 0 0 8px rgba(212,175,55,.6); transition: 0.4s;}
+        .magic-divider::after { content: ""; position: absolute; left: 50%; top: -5px; width: 10px; height: 10px; rotate: 45deg; margin-left: -5px; background: #d4af37; box-shadow: 0 0 10px #d4af37; transition: 0.4s;}
+
+        .playmat-grid { display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(2, calc(138 * var(--u))); gap: 6px; max-width: 760px; margin: 0 auto; }
+        .slot { position: relative; min-width: 0; border-radius: calc(8 * var(--u)); display: flex; justify-content: center; align-items: center; text-align: center; font-size: .85em; transition: .3s; }
+        .slot-white, .slot-green, .slot-yellow { padding: 3px; }
+        .slot-white, .slot-green, .slot-yellow, .slot-brown, .slot-black, .slot-red { box-shadow: inset 0 2px 6px rgba(0,0,0,.55); }
+        .slot-white { background: rgba(240,235,220,.07); border: 2px solid rgba(240,225,190,.22); }
+        .slot-green { background: linear-gradient(rgba(35,95,58,.6), rgba(12,44,26,.75)); border: 2px solid #2f7048; }
+        .slot-yellow { background: radial-gradient(rgba(200,150,35,.55), rgba(90,58,8,.75)); border: 2px solid #b0851f; }
+        .slot-white::before, .slot-green::before, .slot-yellow::before { position: absolute; top: calc(4 * var(--u)); left: 0; right: 0; font-size: calc(9 * var(--u)); font-weight: 700; color: rgba(255,240,200,.38); pointer-events: none; transition: 0.4s; }
+        .slot-white::before { content: "Bidak"; } .slot-green::before { content: "Spell"; } .slot-yellow::before { content: "Domain"; }
+        .slot-brown { background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14'><path d='M7 0L14 7L7 14L0 7Z' fill='none' stroke='rgb(212,175,55)' stroke-opacity='.3'/></svg>"), linear-gradient(145deg, #5f321d, #2a130a); border: 2px solid var(--gold-border); transition: 0.4s; }
+        .slot-black { background: linear-gradient(#2c2c2f, #0f0f10); border: 2px solid #4b4b50; transition: 0.4s; }
+        .slot-black:hover { box-shadow: 0 0 12px rgba(212,175,55,.5), inset 0 2px 6px rgba(0,0,0,.55); transform: scale(1.03); }
+        .slot-red { background: rgba(70,15,15,.5); border: 2px solid #6b2424; transition: 0.4s; }
+        .slot-brown span, .slot-black span, .slot-red span { display: block; font-family: var(--f-title); font-size: calc(19 * var(--u)); line-height: 1.15; transition: 0.4s;}
+        .slot-brown span::first-line, .slot-black span::first-line, .slot-red span::first-line { font-size: calc(10.5 * var(--u)); letter-spacing: .06em; opacity: .85; }
+        .slot-brown span { background: rgba(20,10,5,.85); border: 1px solid var(--gold-border); border-radius: 6px; padding: calc(5 * var(--u)) calc(9 * var(--u)); }
+        .slot-red span { width: min(88%, calc(86 * var(--u))); aspect-ratio: 1; padding-top: calc(26 * var(--u)); border-radius: 50%; border: 2px solid #f0c84a; text-shadow: 0 1px 2px #000;
+            background: radial-gradient(circle at 35% 28%, #ff9f8f, #c02f2f 45%, #4d0e0e); box-shadow: inset 0 -4px 8px rgba(0,0,0,.45), 0 0 12px rgba(255,70,70,.5); }
+
+        /* ---------- KARTU ---------- */
+        .card {
+            --c1: #f6edd7; --c2: #d8c69d; --a1: #55402a; --a2: #1b120b; --tag: #6e4c2e;
+            --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linejoin='round'><path d='M32 8L54 20L32 32L10 20Z' fill='rgb(232,198,106)' fill-opacity='.3'/><path d='M32 8L54 20V44L32 56L10 44V20Z'/><path d='M32 32L10 20M32 32L54 20M32 32V56'/></svg>") center/64% no-repeat;
+            position: relative; display: flex; flex-direction: column; width: 100%; height: 100%; padding: 0; overflow: hidden; text-align: center; color: #2c2015;
+            background: linear-gradient(160deg, var(--c1), var(--c2)); border: calc(3 * var(--u)) solid var(--gold-border); border-radius: calc(7 * var(--u));
+            box-shadow: inset 0 0 0 1px rgba(255,236,170,.9), 0 4px 8px rgba(0,0,0,.55); transition: transform .2s, box-shadow .2s, border-color 0.4s, background 0.4s;
+        }
+        .slot-green .card, .card.k-spell {
+            --c1: #e6f0dd; --c2: #b5cfae; --a1: #1f7050; --a2: #07231a; --tag: #1f5a3e; border-color: #86b896;
+            --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(155,227,184)' stroke-width='1.6'><circle cx='32' cy='32' r='22' stroke-dasharray='3 4'/><path d='M32 6C34 24 40 30 58 32C40 34 34 40 32 58C30 40 24 34 6 32C24 30 30 24 32 6Z' fill='rgb(155,227,184)' fill-opacity='.28'/></svg>") center/64% no-repeat;
+        }
+        .slot-yellow .card, .card.k-domain {
+            --c1: #fbe9ae; --c2: #dcae4c; --a1: #94620e; --a2: #2a1804; --tag: #7a4e08; border-color: #f2ca4c;
+            --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(255,215,106)' stroke-width='1.6' stroke-linecap='round'><circle cx='32' cy='32' r='22' stroke-opacity='.6'/><ellipse cx='32' cy='32' rx='22' ry='8' stroke-opacity='.6'/><path d='M32 32V6M32 32L54 44M32 32L10 44'/></svg>") center/64% no-repeat;
+        }
+        .card h4 { order: 1; margin: 0; padding: calc(3 * var(--u)); min-height: calc(28 * var(--u)); display: flex; align-items: center; justify-content: center; font-size: calc(11 * var(--u)); line-height: 1.1; font-weight: 800; color: #f4ecd8; background: linear-gradient(#4b3624, #2a1c11); border-bottom: 1px solid var(--gold-border); transition: 0.4s; }
+        .card::before { content: ""; order: 2; flex: 1; margin: calc(3 * var(--u)); border: 1px solid rgba(184,134,11,.85); border-radius: calc(3 * var(--u)); background: var(--art), radial-gradient(circle at 50% 40%, var(--a1), var(--a2)); transition: 0.4s; }
+        
+        .card p { order: 3; position: relative; z-index: 1; margin: calc(-11 * var(--u)) auto 0; padding: calc(3 * var(--u)) calc(9 * var(--u)); font-family: var(--f-title); font-weight: 800; font-size: calc(10.5 * var(--u)); line-height: 1.25; color: #ffd76a; background: #1a120b; border: 1px solid var(--gold-border); border-radius: 8px; transition: 0.4s; }
+        
+        .card small { order: 4; padding: calc(2 * var(--u)) 0 calc(3 * var(--u)); font-size: calc(9.5 * var(--u)); font-weight: 800; letter-spacing: .05em; color: var(--tag); transition: 0.4s; }
+        .card::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.5) 50%, transparent 65%); transform: translateX(-130%); }
+        .card[onclick] { cursor: pointer; }
+        .card[onclick]:hover { transform: translateY(-3px); z-index: 10; box-shadow: inset 0 0 0 1px rgba(255,236,170,.9), 0 8px 14px rgba(0,0,0,.6), 0 0 12px rgba(212,175,55,.7); }
+        .card[onclick]:hover::after { transform: translateX(130%); transition: transform .6s; }
+        .card.selected { border-color: #ff5a4a; transform: scale(1.06); z-index: 5; box-shadow: 0 0 20px rgba(255,68,68,.85), 0 0 0 2px rgba(255,90,74,.5); }
+        .card.bot-attacking { animation: botAttackPulse .55s ease-in-out infinite alternate; z-index: 8; }
+        .card.bot-target { outline: 3px solid #ff5a4a; outline-offset: 3px; animation: auraPulse .8s infinite; z-index: 7; }
+        @keyframes botAttackPulse { from { transform: translateY(0) scale(1); box-shadow: 0 0 8px rgba(255,215,106,.55); } to { transform: translateY(-9px) scale(1.08); box-shadow: 0 0 24px rgba(255,90,74,.95); } }
+        .card.used { opacity: .6; filter: grayscale(60%) sepia(30%); border-color: #665c49; }
+        .card[onclick="serangLangsung()"] { animation: auraPulse 1.2s infinite; }
+        .card[onclick="serangLangsung()"]::before, .card[onclick="serangLangsung()"]::after { display: none; }
+        .card[onclick="serangLangsung()"] h4 { flex: 1; background: none; border: 0; font-size: calc(13 * var(--u)); }
+        .fan .card { pointer-events: none; }
+
+        /* ---------- TOMBOL (DI TENGAH) ---------- */
+        .controls { 
+            display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; 
+            padding: 8px 10px; margin: 8px auto; transition: all .4s; width: 100%; max-width: 760px;
+            position: relative; z-index: 10;
+        }
+        .ctl-sep { width: 1px; align-self: stretch; background: rgba(212,175,55,.35); margin: 0 4px; transition: 0.4s; }
+        button { flex: 1 1 auto; padding: 8px 12px; font-family: var(--f-ui); font-size: 0.95em; font-weight: 700; color: #f4ecd8; cursor: pointer; border-radius: 8px; border: 1px solid var(--gold-border); box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 4px 6px rgba(0,0,0,.35); transition: .3s; }
+        button:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        .step { display: inline-block; min-width: 1.6em; margin-right: 4px; padding: 0 5px; border-radius: 999px; background: rgba(0,0,0,.4); border: 1px solid rgba(255,215,106,.5); font-size: .8em; color: #ffd76a; text-align: center; transition: 0.4s; }
+        button[onclick="bukaTangan()"] { background: linear-gradient(#37613a, #1a2e1c); }
+        button[onclick="faseSerang()"] { background: linear-gradient(#8a2e2e, #421515); }
+        button[onclick="akhiriGiliran()"] { background: linear-gradient(#a06a32, #59391a); }
+        button[onclick="unduhLaporanSkor()"] { background: linear-gradient(#2f7273, #153333); }
+
+        .logs { color: #e3dac9; padding: 12px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.4; text-shadow: 0 1px 2px #000; transition: 0.4s; }
+
+        /* ---------- MODAL ---------- */
+        .modal-overlay { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 9999; background: rgba(10,8,5,.85); backdrop-filter: blur(5px); opacity: 0; pointer-events: none; transition: opacity .3s; }
+        .modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .modal-content { display: flex; flex-direction: column; width: 90%; max-width: 400px; max-height: 85vh; padding: 20px; text-align: center; border-radius: 10px; border: 2px solid var(--gold-border); background: linear-gradient(145deg, #2f241b, #1a140f); box-shadow: inset 0 0 0 4px #1a140f, inset 0 0 0 5px rgba(212,175,55,.5), 0 12px 30px rgba(0,0,0,.85); transform: scale(.85); transition: transform .3s, background 0.4s, border-color 0.4s; }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-content h3 { flex-shrink: 0; margin: 0 0 10px; padding-bottom: 8px; font-family: var(--f-title); font-size: 1.15em; letter-spacing: .05em; color: #f0d58a; border-bottom: 1px solid rgba(212,175,55,.35); transition: 0.4s; }
+        .modal-content p { margin: 0 0 16px; font-size: 1em; line-height: 1.4; transition: 0.4s;}
+        .modal-input { flex-shrink: 0; width: 85%; margin: 0 auto 16px; padding: 10px; font: 800 1.1em var(--f-ui); text-align: center; color: #2c2015; background: #fdfbf7; border: 2px solid var(--gold-border); border-radius: 6px; outline: none; transition: 0.4s;}
+        .modal-input:focus { box-shadow: 0 0 0 3px rgba(255,215,106,.6); }
+        .modal-buttons { display: flex; justify-content: center; gap: 12px; flex-shrink: 0; }
+        .btn-ok, .btn-cancel { flex: 0 0 auto; padding: 8px 22px; font-size: 1em; }
+        .btn-ok { background: linear-gradient(#37613a, #1f3a22); border-color: #6fbf73; }
+        .btn-cancel { background: linear-gradient(#8a2e2e, #4a1616); border-color: #e06a5f; }
+        .hand-card-list { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(140px, 1fr); gap: 8px; overflow-x: auto; overflow-y: hidden; padding: 4px; }
+        .hand-card-name { min-width: 0; height: 100%; padding: 8px; white-space: normal; background: rgba(0,0,0,.35); text-align: left; }
+        .hand-card-detail { height: 128px; overflow-y: auto; padding: 4px 8px; text-align: left; line-height: 1.4; }
+        .hand-card-detail h4 { margin: 0 0 6px; color: #ffd76a; }
+        .hand-card-detail p { margin: 0 0 8px; }
+        .hand-card-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
+        .hand-card-actions button { flex: 0 0 auto; }
+        #hand-modal [hidden] { display: none !important; }
+        #hand-modal { align-items: flex-end; padding: 12px; background: transparent; backdrop-filter: none; pointer-events: none; }
+        #hand-modal.show { pointer-events: none; }
+        #hand-modal .modal-content { width: min(94%, 860px); height: 220px; max-height: 220px; margin-bottom: 8px; padding: 10px;
+            overflow: hidden; background: rgba(30, 24, 18, .96); pointer-events: none; transform: translateY(12px); }
+        #hand-modal.show .modal-content { pointer-events: auto; transform: translateY(0); }
+        #hand-modal .modal-content h3 { margin-bottom: 4px; }
+        #hand-modal .modal-buttons { margin-top: 4px !important; }
+        #hand-modal .hand-card-list, #hand-modal .hand-card-detail { height: 128px; flex: 0 0 128px; }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,.3); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: #8a6b32; border-radius: 3px; border: 1px solid #3d2b1d; }
+
+        @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media screen and (min-width: 769px) {
+            .hidden-desktop { display: none !important; }
+        }
+        @media screen and (max-width: 1024px) {
+            .hidden-mobile { display: none !important; }
+            .game-wrapper { flex-direction: column; align-items: center; }
+            .center-panel { max-width: 100%; }
+        }
+        @media screen and (max-width: 768px) {
+            :root { --u: 0.65px; } 
+            body { padding: 8px 8px 70px; justify-content: flex-start; }
+            .header { display: none; }
+            .fan { --u: 1px; margin-bottom: 20px; }
+            .mat { min-width: 600px; padding: 8px; }
+            .playmat-grid { gap: 4px; }
+            .controls { position: fixed; bottom: 0; left: 0; width: 100%; margin: 0; padding: 6px; z-index: 1000; flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; border-radius: 0; background: rgba(20,15,10,.98) !important; border: none; border-top: 2px solid var(--gold-border); box-shadow: 0 -4px 12px rgba(0,0,0,.8) !important; scrollbar-width: none; }
+            .controls::-webkit-scrollbar { display: none; }
+            .controls button { flex: 0 0 auto; font-size: .9em; padding: 6px 10px; white-space: nowrap; }
+            .modal-content { width: 95%; padding: 12px; max-height: 95vh; overflow-y: auto; }
+            .modal-content h3 { font-size: 1em; padding-bottom: 4px; }
+            .modal-input { padding: 6px; font-size: 0.95em; margin-bottom: 8px; width: 95%; }
+            #hand-modal { padding: 8px 8px 76px; }
+            #hand-modal .modal-content { width: 100%; height: 178px; max-height: 178px; margin-bottom: 0; padding: 8px; }
+            #hand-modal .hand-card-list, #hand-modal .hand-card-detail { height: 94px; flex-basis: 94px; }
+            #hand-modal .hand-card-list { grid-auto-columns: minmax(120px, 1fr); gap: 8px; }
+        }
+        @media screen and (max-height: 600px) and (orientation: landscape) {
+            :root { --u: 0.55px; }
+            .status-bar { margin-bottom: 4px; padding: 4px; }
+        }
+
+        /* =========================================
+           MODE TERANG (LIGHT MODE) - EYE CARE (SOFT WARM)
+           ========================================= */
+        body.light-mode {
+            --panel-bg: rgba(252, 248, 242, 0.93);
+            --text-main: #3e3227;
+            --gold-border: #b89862;
+            background: radial-gradient(ellipse at 50% 35%, transparent 40%, rgba(255,255,255,.7)),
+                        repeating-linear-gradient(92deg, rgba(160,130,90,.03) 0 2px, transparent 2px 9px),
+                        linear-gradient(#f4eee5, #e3dac9);
+            color: var(--text-main);
+        }
+        
+        body.light-mode .game-title {
+            background: linear-gradient(#8f6735, #5a3c1c 60%, #3e2610);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,.15));
+        }
+        
+        body.light-mode .game-subtitle, body.light-mode .side-panel h3, 
+        body.light-mode .header h1, body.light-mode .modal-content h3 {
+            color: #634729; text-shadow: none; border-color: rgba(184,152,98,.4);
+        }
+        
+        body.light-mode .game-desc, body.light-mode .side-deck-content, 
+        body.light-mode .legend, body.light-mode .side-log-content {
+            color: #4a3c2f;
+        }
+        
+        body.light-mode .name-inputs input {
+            background: #ffffff; color: #4a3c2f; border-color: #d1c0a5; box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+        }
+        body.light-mode .name-inputs input:focus {
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03), 0 0 8px rgba(184,152,98,0.3); border-color: #b89862;
+        }
+        
+        body.light-mode .start-btn {
+            background: linear-gradient(#b89862, #8c6a3c); color: #ffffff; border-color: #634729; box-shadow: 0 4px 10px rgba(100,75,45,.2);
+        }
+        body.light-mode .start-btn:hover { box-shadow: 0 6px 14px rgba(100,75,45,.3); transform: translateY(-3px); }
+        
+        body.light-mode .glass-panel, body.light-mode .side-panel, body.light-mode .controls {
+            background: rgba(255, 255, 255, 0.95) !important; border-color: rgba(184,152,98,.3); box-shadow: 0 4px 12px rgba(60,50,40,.08) !important;
+        }
+        
+        body.light-mode .chip { background: #f4eee5; border-color: #d1c0a5; color: #4a3c2f; }
+        body.light-mode .chip b { color: #8c6a3c; }
+        
+        body.light-mode .board { border-color: #b89862; box-shadow: 0 8px 24px rgba(80,60,40,.1), inset 0 0 0 3px #fcf9f5; }
+        body.light-mode .mat {
+            background: repeating-linear-gradient(60deg, rgba(160,130,90,.04) 0 1px, transparent 1px 34px),
+                        repeating-linear-gradient(-60deg, rgba(160,130,90,.04) 0 1px, transparent 1px 34px),
+                        radial-gradient(ellipse at center, #fbf7f0, #eae1d1 85%);
+        }
+        
+        body.light-mode .nameplate { background: #ffffff; border-color: #b89862; color: #4a3c2f; }
+        body.light-mode .nameplate::before { background: #b89862; }
+        body.light-mode .active-turn .nameplate::before { box-shadow: 0 0 6px #c4a164; background: #c4a164; }
+        body.light-mode .active-turn .nameplate::after { color: #6a8c6a; }
+        
+        @keyframes auraPulseLight {
+            0%, 100% { box-shadow: 0 0 10px rgba(184,152,98,.2), inset 0 0 15px rgba(184,152,98,.1); border-color: rgba(184,152,98,.4); }
+            50% { box-shadow: 0 0 20px rgba(184,152,98,.6), inset 0 0 20px rgba(184,152,98,.2); border-color: rgba(184,152,98,.8); }
+        }
+        body.light-mode .active-turn { 
+            animation: auraPulseLight 2s infinite; 
+            background: rgba(184,152,98,.05); 
+            border-color: rgba(184,152,98,.6) !important; 
+        }
+        
+        body.light-mode .magic-divider { background: linear-gradient(90deg, transparent, #b89862, transparent); box-shadow: 0 0 6px rgba(184,152,98,.3); }
+        body.light-mode .magic-divider::after { background: #b89862; box-shadow: 0 0 8px #b89862; }
+        
+        body.light-mode .slot-white { background: rgba(255,255,255,.7); border-color: #d1c0a5; }
+        body.light-mode .slot-green { background: rgba(220,230,220,.7); border-color: #8fa88f; }
+        body.light-mode .slot-yellow { background: rgba(245,235,215,.7); border-color: #ccb68f; }
+        body.light-mode .slot-brown { background: rgba(225,210,195,.7); border-color: #b89862; }
+        body.light-mode .slot-black { background: rgba(215,215,215,.7); border-color: #9c9c9c; }
+        body.light-mode .slot-red { background: rgba(235,210,210,.7); border-color: #c48787; }
+        
+        body.light-mode .slot-white::before, body.light-mode .slot-green::before, body.light-mode .slot-yellow::before { color: rgba(100,80,60,.3); }
+        body.light-mode .slot-brown span, body.light-mode .slot-black span, body.light-mode .slot-red span { color: #5a4a3a; }
+        body.light-mode .slot-brown span { background: #fdfbf7; border-color: #c4a164; }
+        
+        body.light-mode .card {
+            --c1: #ffffff; --c2: #f2eee8; --a1: #d1c0a5; --a2: #8c7352; --tag: #4a3c2f;
+            border-color: #a88a5c; box-shadow: 0 4px 6px rgba(0,0,0,.08); color: #2d241c;
+        }
+        body.light-mode .slot-green .card, body.light-mode .card.k-spell { --c1: #f7faf7; --c2: #dbe4db; --a1: #8fa88f; --a2: #4f6b4f; border-color: #7b9c7b; }
+        body.light-mode .slot-yellow .card, body.light-mode .card.k-domain { --c1: #fcfbf5; --c2: #efe5d0; --a1: #c4ab7a; --a2: #877046; border-color: #b59d6a; }
+        body.light-mode .card h4 { background: linear-gradient(#e3d7c5, #d1c0a5); color: #3e3227; border-color: #b89862; }
+        body.light-mode .card p { background: #fdfbf7; color: #5a4329; border-color: #b89862; }
+        
+        body.light-mode .controls button { background: linear-gradient(#ffffff, #f2eee8) !important; border-color: #b89862; color: #4a3c2f !important; }
+        body.light-mode .controls button:hover { filter: brightness(0.95); }
+        body.light-mode button[onclick="faseSerang()"] { background: linear-gradient(#e6c5c5, #d19a9a) !important; color: #6b2424 !important;}
+        body.light-mode button[onclick="akhiriGiliran()"] { background: linear-gradient(#ebdaca, #c4a68b) !important; color: #5c3a21 !important; }
+        
+        body.light-mode .modal-content { background: linear-gradient(145deg, #ffffff, #f7f3ea); border-color: #b89862; box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 5px rgba(184,152,98,.4), 0 10px 25px rgba(60,50,40,.2); color: #4a3c2f; }
+        body.light-mode .modal-input { background: #ffffff; color: #4a3c2f; border-color: #b89862; }
+        body.light-mode .logs { background: #fdfbf7 !important; border-color: #d1c0a5 !important; color: #3e3227 !important; text-shadow: none; }
+        
+        /* CSS Override cerdas */
+        body.light-mode [style*="color:#dcd0bc"], body.light-mode [style*="color: #dcd0bc"] { color: #4a3c2f !important; }
+        body.light-mode [style*="color:#d4af37"], body.light-mode [style*="color: #d4af37"] { color: #8f6735 !important; }
+        body.light-mode [style*="color:#e3dac9"], body.light-mode [style*="color: #e3dac9"] { color: #3e3227 !important; }
+        body.light-mode [style*="color:#4caf50"] { color: #4f874f !important; } 
+        body.light-mode [style*="background:#2b4a2d"] { background: #7b9c7b !important; color:#fff !important;}
+        body.light-mode [style*="color:gray"] { color: #6b5a4b !important; }
+        
+        /* Tombol Tema Melayang */
+        #theme-toggle {
+            position: fixed; top: 15px; right: 15px; z-index: 10000;
+            background: rgba(20,15,10,0.8); border: 2px solid var(--gold-border);
+            border-radius: 50%; width: 45px; height: 45px; cursor: pointer;
+            font-size: 1.3em; display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.6); transition: 0.3s;
+        }
+        body.light-mode #theme-toggle {
+            background: #ffffff; border-color: #b89862; box-shadow: 0 4px 10px rgba(100,75,45,.15);
+        }
+    
+        /* =========================================
+           EKSTENSI UI v3: efek visual, HP bar, banner, dock audio
+           ========================================= */
+        #fx-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        button:active { transform: translateY(0) scale(.97); }
+        .fan { position: relative; }
+        .fan::before { content: ""; position: absolute; left: 50%; top: 50%; width: 400px; height: 400px; margin: -200px 0 0 -200px; border-radius: 50%; background: radial-gradient(circle, rgba(212,175,55,.3), transparent 65%); z-index: -1; animation: breathe 5s ease-in-out infinite; }
+        @keyframes breathe { 50% { transform: scale(1.18); opacity: .65; } }
+        .game-title { animation: titleIn 1.5s .5s both cubic-bezier(.2,.8,.2,1); }
+        @keyframes titleIn { from { letter-spacing: .38em; opacity: 0; } }
+        .start-btn { animation: auraPulse 2.4s infinite; }
+
+        .float-num { position: absolute; top: -4px; left: 40%; font: 800 1.3em var(--f-title); pointer-events: none; text-shadow: 0 2px 4px #000; animation: floatUp 1.2s ease-out forwards; }
+        .float-num.dmg { color: #ff7a6a; } .float-num.heal { color: #8fe0a8; }
+        @keyframes floatUp { to { transform: translateY(-34px); opacity: 0; } }
+        .board.shake { animation: shake .45s; }
+        @keyframes shake { 20% { transform: translate(-5px, 2px); } 40% { transform: translate(5px, -2px); } 60% { transform: translate(-3px, 1px); } 80% { transform: translate(3px, 0); } }
+        .card.summon { animation: summon .6s cubic-bezier(.2,.9,.3,1.3); }
+        @keyframes summon { from { opacity: 0; transform: translateY(-46px) scale(1.3); filter: brightness(2.2); } }
+
+        #turn-banner { position: fixed; left: 0; right: 0; top: 38%; z-index: 9000; text-align: center; pointer-events: none; opacity: 0; }
+        #turn-banner span { display: inline-block; padding: 10px 56px; font: 800 clamp(1.1em, 4vw, 1.8em) var(--f-title); letter-spacing: .1em; color: #fff1c8; text-shadow: 0 2px 6px #000; border-block: 2px solid var(--gold-border); background: linear-gradient(90deg, transparent, rgba(20,14,8,.93) 20%, rgba(20,14,8,.93) 80%, transparent); }
+        #turn-banner.go { animation: banner 1.7s ease both; }
+        @keyframes banner { 0% { opacity: 0; transform: scaleX(.2); } 18% { opacity: 1; transform: none; } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(-6px); } }
+
+        #audio-dock { position: fixed; top: 15px; left: 15px; z-index: 10000; display: flex; align-items: center; gap: 4px; padding: 4px 10px 4px 4px; border-radius: 999px; background: rgba(20,15,10,.8); border: 2px solid var(--gold-border); box-shadow: 0 4px 6px rgba(0,0,0,.6); }
+        #audio-dock.wait { animation: auraPulse 2s infinite; }
+        #audio-dock button { flex: 0 0 auto; width: 35px; height: 35px; padding: 0; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; box-shadow: none; color: #ffd76a; }
+        #audio-dock button .ic { margin: 0; width: 20px; height: 20px; }
+        #audio-dock button[aria-pressed="false"] { opacity: .5; }
+        #audio-dock .slash { display: none; } #audio-dock button[aria-pressed="false"] .slash { display: inline; }
+        #audio-dock input { width: 70px; accent-color: #d4af37; cursor: pointer; }
+
+        body.light-mode #audio-dock { background: #fff; border-color: #b89862; } body.light-mode #audio-dock button { color: #6b4e24; }
+        body.light-mode #turn-banner span { color: #4a3c2f; text-shadow: none; background: linear-gradient(90deg, transparent, rgba(255,252,246,.96) 20%, rgba(255,252,246,.96) 80%, transparent); }
+
+        /* =========================================================
+           MODE TERANG v2 - VIVID PLAY (warna jenuh, kontras tinggi)
+           Menimpa aturan light-mode sebelumnya. Papan dibuat hijau
+           felt cerah agar slot & kartu "pop", panel tetap krem hangat.
+           ========================================================= */
+        body.light-mode {
+            --panel-bg: rgba(255, 250, 238, 0.97);
+            --text-main: #2e2218;
+            --gold-border: #b8860b;
+            background: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,.55), transparent 60%),
+                        repeating-linear-gradient(92deg, rgba(184,134,11,.05) 0 2px, transparent 2px 9px),
+                        linear-gradient(#fcf1d6, #efd9a6);
+            color: var(--text-main);
+        }
+        body.light-mode :focus-visible { outline-color: #c2610a; }
+
+        /* Judul & teks umum */
+        body.light-mode .game-title { background: linear-gradient(#d9961f, #9a5a0a 60%, #6b3a05); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 2px 2px rgba(90,50,5,.25)); }
+        body.light-mode .game-subtitle { color: #8a5208; }
+        body.light-mode .game-desc, body.light-mode .legend { color: #3b2a16; }
+        body.light-mode .header h1, body.light-mode .side-panel h3, body.light-mode .modal-content h3 { color: #7a4a0e; text-shadow: none; border-color: rgba(184,134,11,.5); }
+        body.light-mode .legend i { border-color: #8a6a2a; }
+        body.light-mode .name-inputs input { background: #fffdf6; color: #3b2a16; border-color: #c9a24a; }
+        body.light-mode .name-inputs input:focus { border-color: #b8620a; box-shadow: 0 0 0 3px rgba(224,160,40,.4); }
+        body.light-mode .start-btn { background: linear-gradient(#f0b73f, #c27a14); color: #fff; border-color: #8a5208; text-shadow: 0 1px 2px rgba(80,40,0,.5); box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 4px 10px rgba(140,90,10,.35); }
+        body.light-mode .start-btn:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 8px 16px rgba(140,90,10,.45); }
+
+        /* Panel */
+        body.light-mode .glass-panel, body.light-mode .side-panel, body.light-mode .controls {
+            background: rgba(255, 250, 238, 0.98) !important; border: 1px solid #d4a53a; box-shadow: 0 4px 14px rgba(120,80,10,.18) !important;
+        }
+        body.light-mode .side-log-content, body.light-mode .side-deck-content, body.light-mode .side-score-content { color: #2e2218; }
+        body.light-mode .logs { background: #fffdf6 !important; color: #2e2218 !important; border-color: #d4a53a !important; text-shadow: none; }
+        body.light-mode .ctl-sep { background: rgba(184,134,11,.5); }
+        body.light-mode .chip { background: #ffefc2; border-color: #d4a53a; color: #3b2a16; }
+        body.light-mode .chip b { color: #9a5200; }
+
+        body.light-mode .float-num { text-shadow: 0 1px 3px rgba(255,255,255,.9); }
+        body.light-mode .float-num.dmg { color: #d62f2f; } body.light-mode .float-num.heal { color: #1a8a4a; }
+
+        /* Papan: felt hijau cerah */
+        body.light-mode .board { border-color: #b8860b; box-shadow: 0 8px 22px rgba(90,60,10,.28), inset 0 0 0 3px #f6dd9a; }
+        body.light-mode .mat {
+            background: repeating-linear-gradient(60deg, rgba(255,235,160,.10) 0 1px, transparent 1px 34px),
+                        repeating-linear-gradient(-60deg, rgba(255,235,160,.10) 0 1px, transparent 1px 34px),
+                        radial-gradient(ellipse at center, #47ad78, #1f7549 88%);
+        }
+        body.light-mode .player-area { border-color: rgba(255,240,190,.55); }
+        body.light-mode .active-turn { animation: auraPulse 2s infinite; background: rgba(255,225,120,.16); border-color: #ffd76a !important; }
+        body.light-mode .magic-divider { background: linear-gradient(90deg, transparent, #ffe08a, transparent); box-shadow: 0 0 8px rgba(255,224,138,.8); }
+        body.light-mode .magic-divider::after { background: #ffe08a; box-shadow: 0 0 10px #ffe08a; }
+        body.light-mode .nameplate { background: #fff3cf; border-color: #b8860b; color: #3b2a16; box-shadow: 0 2px 5px rgba(0,0,0,.25); }
+        body.light-mode .nameplate::before { background: #b8860b; }
+        body.light-mode .active-turn .nameplate::before { background: #f0a000; box-shadow: 0 0 6px #f0a000; }
+        body.light-mode .active-turn .nameplate::after { color: #137a3c; }
+
+        /* Slot */
+        body.light-mode .slot-white, body.light-mode .slot-green, body.light-mode .slot-yellow,
+        body.light-mode .slot-brown, body.light-mode .slot-black, body.light-mode .slot-red { box-shadow: inset 0 2px 5px rgba(70,40,5,.28); }
+        body.light-mode .slot-white  { background: linear-gradient(#fffaf0, #f6e7bf); border-color: #d9b45a; }
+        body.light-mode .slot-green  { background: linear-gradient(#c4efd0, #7fcf9c); border-color: #2a8f54; }
+        body.light-mode .slot-yellow { background: linear-gradient(#ffeaa3, #f3c04a); border-color: #c58a10; }
+        body.light-mode .slot-brown  { background: linear-gradient(145deg, #d99a64, #9a5a30); border-color: #6e3f1f; }
+        body.light-mode .slot-black  { background: linear-gradient(#7b8494, #454c5a); border-color: #2f3540; }
+        body.light-mode .slot-red    { background: linear-gradient(#ffb9ae, #ea7a6c); border-color: #b02a2a; }
+        body.light-mode .slot-white::before  { color: rgba(110,70,20,.85); font-weight: 800; }
+        body.light-mode .slot-green::before  { color: #145a35; font-weight: 800; }
+        body.light-mode .slot-yellow::before { color: #6b4200; font-weight: 800; }
+        body.light-mode .slot-brown span { background: #fff1d6; border-color: #8a5330; color: #4a2a12 !important; }
+        body.light-mode .slot-black span, body.light-mode .slot-red span { color: #fff !important; text-shadow: 0 1px 3px rgba(0,0,0,.6); }
+        body.light-mode .slot-red span { background: radial-gradient(circle at 35% 28%, #ff9f8f, #d02f2f 45%, #6a0e0e); box-shadow: inset 0 -4px 8px rgba(0,0,0,.4), 0 0 12px rgba(255,70,70,.45); }
+        body.light-mode .slot-black:hover { box-shadow: 0 0 12px rgba(240,160,0,.8), inset 0 2px 5px rgba(0,0,0,.3); }
+        /* angka placeholder slot kosong (inline putih transparan) */
+        body.light-mode [style*="rgba(255,255,255,0.15)"] { color: rgba(90,55,10,.38) !important; }
+
+        /* Kartu */
+        body.light-mode .card {
+            --c1: #fffaf0; --c2: #f1d89a; --a1: #d49a3a; --a2: #6b3f0f; --tag: #6e3a0a;
+            border-color: #b8860b; color: #2e2218; box-shadow: inset 0 0 0 1px rgba(255,255,255,.9), 0 4px 8px rgba(90,55,10,.4);
+        }
+        body.light-mode .slot-green .card, body.light-mode .card.k-spell { --c1: #eefaf1; --c2: #9fdcb4; --a1: #3fb27a; --a2: #0d4a2e; --tag: #14653c; border-color: #2a8f54; }
+        body.light-mode .slot-yellow .card, body.light-mode .card.k-domain { --c1: #fff4c6; --c2: #f0bd45; --a1: #e0a020; --a2: #7a4604; --tag: #7a4200; border-color: #c58a10; }
+        body.light-mode .card h4 { background: linear-gradient(#7a4f2a, #43280f); color: #fff4d6; border-color: #b8860b; }
+        body.light-mode .slot-green .card h4, body.light-mode .card.k-spell h4 { background: linear-gradient(#2f8a5c, #14502f); }
+        body.light-mode .slot-yellow .card h4, body.light-mode .card.k-domain h4 { background: linear-gradient(#b87a14, #6e4306); }
+        body.light-mode .card p { background: #3b2412; color: #ffd76a; border-color: #b8860b; }
+        body.light-mode .card.selected { border-color: #e02f20; box-shadow: 0 0 18px rgba(224,47,32,.8), 0 0 0 2px rgba(224,47,32,.5); }
+        body.light-mode .card.used { opacity: .7; filter: grayscale(45%) sepia(20%); }
+        body.light-mode .card[onclick]:hover { box-shadow: inset 0 0 0 1px #fff, 0 8px 14px rgba(90,55,10,.45), 0 0 12px rgba(240,160,0,.8); }
+
+        /* Tombol aksi: berwarna jenuh */
+        body.light-mode .controls button { color: #fff !important; text-shadow: 0 1px 2px rgba(0,0,0,.4); border-color: rgba(0,0,0,.25); box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 3px 6px rgba(90,55,10,.3); }
+        body.light-mode .controls button:hover { filter: brightness(1.08); }
+        body.light-mode .controls button[onclick="bukaTangan()"]         { background: linear-gradient(#62c46d, #328a40) !important; }
+        body.light-mode .controls button[onclick="faseSerang()"]        { background: linear-gradient(#ef6a5e, #bb2f2f) !important; }
+        body.light-mode .controls button[onclick="akhiriGiliran()"]     { background: linear-gradient(#f5ae48, #c97a14) !important; }
+        body.light-mode .controls button[onclick="unduhLaporanSkor()"]  { background: linear-gradient(#3fb4b4, #1f7f80) !important; }
+        body.light-mode .step { background: rgba(0,0,0,.25); border-color: rgba(255,255,255,.7); color: #fff; }
+        body.light-mode [style*="rgba(20,15,10,0.8)"] { background: linear-gradient(#8a5a32, #5a3a1c) !important; color: #fff4d6; }
+
+        /* Modal */
+        body.light-mode .modal-overlay { background: rgba(60,40,15,.55); }
+        body.light-mode .modal-content { background: linear-gradient(145deg, #fffdf6, #f8e8c4); border-color: #b8860b; color: #2e2218; box-shadow: inset 0 0 0 4px #fffdf6, inset 0 0 0 5px rgba(184,134,11,.55), 0 12px 28px rgba(90,55,10,.35); }
+        body.light-mode .modal-input { background: #fff; color: #2e2218; border-color: #c9a24a; }
+        body.light-mode .btn-ok { background: linear-gradient(#62c46d, #328a40); color: #fff; border-color: #1f6a2c; }
+        body.light-mode .btn-cancel { background: linear-gradient(#ef6a5e, #bb2f2f); color: #fff; border-color: #8a1f1f; }
+
+        /* Warna inline dari JS (skor, deck, log) */
+        body.light-mode [style*="color:#dcd0bc"], body.light-mode [style*="color: #dcd0bc"] { color: #3b2a16 !important; }
+        body.light-mode [style*="color:#e3dac9"], body.light-mode [style*="color: #e3dac9"] { color: #2e2218 !important; }
+        body.light-mode [style*="color:#d4af37"], body.light-mode [style*="color: #d4af37"] { color: #9a5200 !important; }
+        body.light-mode [style*="color:#4caf50"] { color: #178a3c !important; }
+        body.light-mode [style*="color:#f44336"] { color: #d02525 !important; }
+        body.light-mode [style*="color:gray"] { color: #6b5a4b !important; }
+        body.light-mode [style*="background:#2b4a2d"] { background: #2f8f55 !important; color: #fff !important; }
+        body.light-mode [style*="padding:2px 5px; margin:2px"] { background: #f7e1a3 !important; border-color: #c9962a !important; color: #4a2f12; font-weight: 700; }
+
+        /* Dock audio, tombol tema, banner */
+        body.light-mode #theme-toggle, body.light-mode #audio-dock { background: #fff3cf; border-color: #b8860b; box-shadow: 0 3px 8px rgba(90,55,10,.3); }
+        body.light-mode #audio-dock button { color: #7a4a0e; }
+        body.light-mode #audio-dock input { accent-color: #c27a14; }
+        body.light-mode #turn-banner span { color: #5a3a0a; text-shadow: none; border-color: #b8860b; background: linear-gradient(90deg, transparent, rgba(255,243,207,.98) 20%, rgba(255,243,207,.98) 80%, transparent); }
+        body.light-mode ::-webkit-scrollbar-track { background: rgba(120,80,10,.12); }
+        body.light-mode ::-webkit-scrollbar-thumb { background: #c9962a; border-color: #8a5a10; }
+
+        @media screen and (max-width: 768px) {
+            body.light-mode .controls { background: rgba(255,246,222,.99) !important; border-top: 2px solid #b8860b; box-shadow: 0 -4px 12px rgba(90,55,10,.25) !important; }
+        }
+
+        /* =========================================
+           STICKY: HP bar, Log, Live Score ikut saat scroll
+           ========================================= */
+        .sticky-hud { position: sticky; top: 10px; z-index: 30; }
+        .sticky-hud .status-bar { margin-bottom: 8px; }
+        .game-wrapper { align-items: flex-start; }
+        .side-panel { position: sticky; top: 70px; align-self: flex-start; height: calc(100vh - 80px); max-height: calc(100vh - 80px); min-height: 0; } /* top 70px: lolos dari dock audio & tombol tema yang fixed */
+        .side-log-content, .side-deck-content { min-height: 0; }
+        .center-panel { align-self: stretch; }
+        .sticky-hud .glass-panel { backdrop-filter: blur(10px); }
+        body:not(.light-mode) .sticky-hud .glass-panel { background: rgba(30,24,18,.96); }
+        /* Layout 1 kolom: beri ruang di bawah dock audio & tombol tema yang fixed */
+        @media screen and (max-width: 1024px) {
+            .sticky-hud { top: 66px; }
+        }
+        @media screen and (max-width: 768px) {
+            .sticky-hud { top: 62px; }
+            .sticky-hud .status-bar { padding: 3px; margin-bottom: 4px; }
+        }
+
+        /* =========================================
+           HP RING: bar HP kini melingkar di bidak merah tiap pemain
+           ========================================= */
+        .slot-red { overflow: visible; }
+        .hp-orb { position: relative; width: min(96%, calc(104 * var(--u))); aspect-ratio: 1; }
+        .hp-orb svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+        .hp-ring-track { fill: none; stroke: rgba(0,0,0,.55); stroke-width: 8; }
+        .hp-ring-fg { fill: none; stroke: #5fd68a; stroke-width: 8; stroke-linecap: round; stroke-dasharray: 100; transition: stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1), stroke .4s; filter: drop-shadow(0 0 3px rgba(95,214,138,.7)); }
+        .hp-ring-fg.mid { stroke: #ffc83a; filter: drop-shadow(0 0 3px rgba(255,200,58,.7)); }
+        .hp-ring-fg.low { stroke: #ff5a4a; filter: drop-shadow(0 0 4px rgba(255,90,74,.9)); animation: hpLow 1s infinite; }
+        @keyframes hpLow { 50% { opacity: .45; } }
+        .slot-red .hp-orb span { position: absolute; inset: 14%; width: auto; aspect-ratio: auto; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; }
+        .slot-red .hp-orb span small { font-size: calc(10 * var(--u)); letter-spacing: .1em; opacity: .85; }
+        .slot-red .hp-orb span b { font-size: calc(17 * var(--u)); margin-top: calc(2 * var(--u)); }
+        .slot-red.on .hp-orb span { box-shadow: inset 0 -4px 8px rgba(0,0,0,.45), 0 0 16px rgba(255,215,106,.9); }
+        .slot-red .float-num { top: -4px; left: 50%; margin-left: -.8em; z-index: 5; }
+    
+        /* ---------- ILUSTRASI KARTU (per kode kartu) ---------- */
+        .card[data-kode="B01"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M6 32H58M32 8V56' stroke-opacity='.45'/><path d='M6 32C12 10 22 10 32 32S52 54 58 32' stroke-width='2.2'/><path d='M20 21V32M44 43V32' stroke-dasharray='2 3' stroke-opacity='.7'/><circle cx='20' cy='21' r='2' fill='rgb(232,198,106)'/><circle cx='44' cy='43' r='2' fill='rgb(232,198,106)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B02"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='32' cy='32' r='22' stroke-dasharray='3 4' stroke-opacity='.55'/><path d='M54 32L47.6 47.6L32 54L16.4 47.6L10 32L16.4 16.4L32 10L47.6 16.4Z'/><path d='M32 32L54 32L47.6 16.4Z' fill='rgb(232,198,106)' fill-opacity='.3'/><path d='M40 32A8 8 0 0 0 37.7 26.3'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B03"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M12 52V12A40 40 0 0 1 52 52Z' fill='rgb(232,198,106)' fill-opacity='.3'/><path d='M12 44H20V52'/><path d='M24 52A12 12 0 0 0 12 40' stroke-opacity='.6'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B04"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M6 32H58M6 8V56' stroke-opacity='.45'/><path d='M6 16C18 16 20 48 32 48C44 48 46 16 58 16' stroke-width='2.2'/><path d='M32 32V48' stroke-dasharray='2 3' stroke-opacity='.7'/><circle cx='6' cy='16' r='2' fill='rgb(232,198,106)'/><circle cx='32' cy='48' r='2' fill='rgb(232,198,106)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B05"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M6 32H58' stroke-opacity='.45'/><path d='M14 6V58M50 6V58' stroke-dasharray='3 4' stroke-opacity='.6'/><path d='M16 58C22 36 28 32 32 32C36 32 42 28 48 6' stroke-width='2.2'/><circle cx='32' cy='32' r='2' fill='rgb(232,198,106)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B06"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M20 44H44L20 28Z' fill='rgb(232,198,106)' fill-opacity='.3'/><path d='M20 44H44V60H20Z'/><path d='M20 28H4V44H20'/><path d='M44 44L60 20L36 4L20 28' stroke-opacity='.85'/><path d='M20 40H24V44' stroke-opacity='.7'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B07"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='32' cy='32' r='26' fill='rgb(232,198,106)' fill-opacity='.3'/><circle cx='32' cy='32' r='18' stroke-dasharray='3 4' stroke-opacity='.7'/><path d='M32 32L50.4 13.6' /><circle cx='32' cy='32' r='2' fill='rgb(232,198,106)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B08"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='18' cy='32' r='10' fill='rgb(232,198,106)' fill-opacity='.3'/><circle cx='46' cy='32' r='10' fill='rgb(232,198,106)' fill-opacity='.3'/><path d='M12.4 12L51.6 52M12.4 52L51.6 12' stroke-width='1.8'/><circle cx='32' cy='32' r='2' fill='rgb(232,198,106)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B09"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M10 50H50V14Z' fill='rgb(232,198,106)' fill-opacity='.3' stroke-dasharray='3 3' stroke-opacity='.7'/><path d='M10 50L50 14' stroke-width='2.2'/><path d='M50 14L42.3 16.3M50 14L47.7 21.7' stroke-width='2.2'/><path d='M50 44H44V50' stroke-opacity='.6'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B10"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M12 50H54M12 50L40 14' stroke-width='2'/><path d='M54 50L48 47M54 50L48 53M40 14L38.7 20.5M40 14L33.9 16.9' stroke-width='2'/><path d='M12 50L40 14L40 50Z' fill='rgb(232,198,106)' fill-opacity='.3' stroke-opacity='.6' stroke-dasharray='3 3'/><path d='M24 50A12 12 0 0 0 19.4 40.5'/><circle cx='12' cy='50' r='2' fill='rgb(232,198,106)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B11"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M8 56H58M8 8V56' stroke-opacity='.45'/><circle cx='30' cy='34' r='16' fill='rgb(232,198,106)' fill-opacity='.3'/><path d='M30 34V56M30 34H8' stroke-dasharray='2 3' stroke-opacity='.7'/><path d='M30 34L41.3 22.7'/><circle cx='30' cy='34' r='2' fill='rgb(232,198,106)'/><circle cx='41.3' cy='22.7' r='2' fill='rgb(232,198,106)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B12"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='32' cy='32' r='20' fill='rgb(232,198,106)' fill-opacity='.3'/><path d='M6 21.6L58 42.4' stroke-width='1.8'/><circle cx='13.4' cy='24.6' r='3' fill='rgb(232,198,106)'/><circle cx='50.6' cy='39.4' r='3' fill='rgb(232,198,106)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B13"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='18' cy='32' r='12' fill='rgb(232,198,106)' fill-opacity='.3'/><circle cx='46' cy='32' r='7' fill='rgb(232,198,106)' fill-opacity='.3'/><path d='M6 17.7L58 27M6 46.3L58 37' stroke-width='1.8'/><circle cx='20.1' cy='20.2' r='1.8' fill='rgb(232,198,106)'/><circle cx='47.3' cy='25.1' r='1.8' fill='rgb(232,198,106)'/><circle cx='20.1' cy='43.8' r='1.8' fill='rgb(232,198,106)'/><circle cx='47.3' cy='38.9' r='1.8' fill='rgb(232,198,106)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B14"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='30' cy='32' r='18' fill='rgb(232,198,106)' fill-opacity='.3'/><path d='M29.7 3.5L57.9 37.3' stroke-width='1.8'/><path d='M30 32L43.8 20.4'/><path d='M40 23.6L43.2 27.4L47 24.2' stroke-opacity='.8'/><circle cx='43.8' cy='20.4' r='2.2' fill='rgb(232,198,106)'/><circle cx='30' cy='32' r='1.8' fill='rgb(232,198,106)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B15"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='32' cy='32' r='22' stroke-dasharray='3 4' stroke-opacity='.55'/><path d='M32 32L54 32A22 22 0 0 0 43.9 13.5Z' fill='rgb(232,198,106)' fill-opacity='.3'/><path d='M54 32A22 22 0 0 0 43.9 13.5' stroke-width='3'/><path d='M40 32A8 8 0 0 0 36.3 25.3' stroke-opacity='.8'/><circle cx='32' cy='32' r='2' fill='rgb(232,198,106)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="B16"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(232,198,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M6 8V58M58 8V58' stroke-opacity='.6'/><path d='M12 34L48 14M16 52L52 32' stroke-width='2'/><path d='M48 14L44.3 19.5M48 14L41.3 14.3M52 32L48.3 37.5M52 32L45.3 32.3' stroke-width='2'/></svg>") center/64% no-repeat; }
+        .card[data-kode="S01"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(155,227,184)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M14 54V26H42V54Z' fill='rgb(155,227,184)' fill-opacity='.3'/><path d='M42 26L52 16V44L42 54M14 26L24 16H52' stroke-opacity='.8'/><path d='M14 54L42 26' stroke-width='2.4'/><circle cx='14' cy='54' r='2' fill='rgb(155,227,184)'/><circle cx='42' cy='26' r='2' fill='rgb(155,227,184)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="S02"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(155,227,184)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M8 40A24 24 0 0 1 56 40Z' fill='rgb(155,227,184)' fill-opacity='.25'/><path d='M8 40L20 19.2L56 40' stroke-width='2'/><path d='M8 40H56' stroke-opacity='.6'/><circle cx='32' cy='40' r='2' fill='rgb(155,227,184)'/><circle cx='20' cy='19.2' r='2' fill='rgb(155,227,184)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="S03"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(155,227,184)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M8 46L22 18H56L42 46Z' fill='rgb(155,227,184)' fill-opacity='.3'/><path d='M8 46L56 18' stroke-dasharray='3 3' stroke-opacity='.7'/><path d='M22 18V46' stroke-width='2'/><path d='M22 40H27V46' stroke-opacity='.8'/></svg>") center/64% no-repeat; }
+        .card[data-kode="S04"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(155,227,184)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M20 8L8 54H58Z' fill='rgb(155,227,184)' fill-opacity='.25'/><path d='M20 8L30.1 54' stroke-width='2.2'/><path d='M16 22A12 12 0 0 0 24 22' stroke-opacity='.8'/><circle cx='20' cy='8' r='2' fill='rgb(155,227,184)'/><circle cx='30.1' cy='54' r='2' fill='rgb(155,227,184)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="S05"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(155,227,184)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='32' cy='32' r='22' stroke-opacity='.6'/><path d='M13 43L32 10L51 43' stroke-width='2'/><path d='M32 32L13 43M32 32L51 43' stroke-dasharray='3 3' stroke-opacity='.7'/><path d='M13 43A22 22 0 0 0 51 43' stroke-width='3'/><circle cx='32' cy='10' r='2' fill='rgb(155,227,184)'/><circle cx='32' cy='32' r='2' fill='rgb(155,227,184)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="S06"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(155,227,184)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='32' cy='32' r='24' fill='rgb(155,227,184)' fill-opacity='.22'/><path d='M32 17V47M17 32H47' stroke-width='3'/><circle cx='9' cy='32' r='2' fill='rgb(155,227,184)'/><circle cx='55' cy='32' r='2' fill='rgb(155,227,184)'/></svg>") center/64% no-repeat; }
+        .card[data-kode="S07"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(155,227,184)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M13.2 25.2A20 20 0 0 1 50.8 25.2M50.8 38.8A20 20 0 0 1 13.2 38.8' stroke-width='2'/><path d='M50.8 25.2L51.5 18.6M50.8 25.2L45.9 20.6M13.2 38.8L18.1 43.4M13.2 38.8L12.5 45.4' stroke-width='2'/><path d='M32 24V40M24 32H40' stroke-width='2.4'/></svg>") center/64% no-repeat; }
+        .card[data-kode="S08"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(155,227,184)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M34 4L26 18L37 28L25 42L33 60L39 60L31 42L43 28L32 18L40 4Z' fill='rgb(155,227,184)' fill-opacity='.3'/><path d='M20 14A20 20 0 0 0 20 50M46 14A20 20 0 0 1 46 50' stroke-dasharray='3 4' stroke-opacity='.7'/></svg>") center/64% no-repeat; }
+        .card[data-kode="D01"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(255,215,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='32' cy='32' r='27' stroke-opacity='.6'/><ellipse cx='32' cy='32' rx='27' ry='9' stroke-opacity='.45'/><path d='M32 10L51 21V43L32 54L13 43V21Z'/><path d='M32 10L51 21L32 32L13 21Z' fill='rgb(255,215,106)' fill-opacity='.3'/><path d='M32 32V54'/><circle cx='32' cy='32' r='2' fill='rgb(255,215,106)'/></svg>") center/64% no-repeat; }
+    </style>
+</head>
+<body>
+    <canvas id="fx-canvas" aria-hidden="true"></canvas>
+    <div id="turn-banner" aria-live="polite"><span></span></div>
+    <div id="audio-dock" class="wait" role="group" aria-label="Pengaturan audio">
+        <button id="btn-music" aria-pressed="true" title="Musik latar" aria-label="Musik latar"><svg class="ic" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/><path class="slash" d="M3 3l18 18"/></svg></button>
+        <button id="btn-sfx" aria-pressed="true" title="Efek suara" aria-label="Efek suara"><svg class="ic" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/><path class="slash" d="M3 3l18 18"/></svg></button>
+        <input id="vol" type="range" min="0" max="100" aria-label="Volume">
+    </div>
+
+    
+    <button id="theme-toggle" onclick="toggleTheme()" title="Ganti Mode Tampilan">🌞</button>
+
+    <div id="custom-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="modal-title">Judul</h3>
+            <p id="modal-desc">Deskripsi pesan di sini...</p>
+            <input type="text" id="modal-input" class="modal-input" autocomplete="off">
+            <div class="modal-buttons">
+                <button id="modal-btn-cancel" class="btn-cancel">Batal</button>
+                <button id="modal-btn-ok" class="btn-ok">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="log-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 550px; width: 90%; height: 80vh;">
+            <h3>Log Pertandingan</h3>
+            <div class="logs" id="logs-modal" style="flex-grow: 1; text-align: left; background: rgba(0,0,0,0.5); border-radius: 6px; border: 1px solid rgba(212, 175, 55, 0.25);">
+            </div>
+            <div class="modal-buttons" style="margin-top: 12px;">
+                <button class="btn-cancel" onclick="tutupLog()">Tutup Log</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="hand-modal" class="modal-overlay" role="region" aria-hidden="true" aria-labelledby="hand-title">
+        <div class="modal-content" style="max-width: 760px;">
+            <h3 id="hand-title">Kartu di Tangan</h3>
+            <div id="hand-cards" class="hand-card-list"></div>
+            <div id="hand-card-detail" class="hand-card-detail" hidden>
+                <h4 id="hand-card-name"></h4>
+                <p id="hand-card-type"></p>
+                <p id="hand-card-effect"></p>
+                <div class="hand-card-actions">
+                    <button class="btn-cancel" onclick="kembaliKeTangan()">Kembali</button>
+                    <button class="btn-ok" onclick="gunakanKartuTangan()">Gunakan kartu ini</button>
+                </div>
+            </div>
+            <div class="modal-buttons" style="margin-top: 12px;">
+                <button class="btn-cancel" onclick="tutupTangan()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="landing-page" class="landing-container">
+        <div class="fan" aria-hidden="true">
+            <div class="card k-spell" data-kode="S06"><h4>Addition Property</h4><p><b>SPELL</b></p><small>Spell</small></div>
+            <div class="card" data-kode="B06"><h4>Monos - Pythagoras of Trigonometry</h4><p><b>ATK: 90</b></p><small>Bidak</small></div>
+            <div class="card k-domain" data-kode="D01"><h4>Round of Euclid - Father of Geometry</h4><p><b>DOMAIN</b></p><small>Domain</small></div>
+        </div>
+        <h1 class="game-title">MATHRA-CAGES</h1>
+        <h2 class="game-subtitle">Geometri Fase E & F</h2>
+        <p class="game-desc">Duel kartu berbasis soal Geometri. Tarik kartu, mainkan strategi, dan jatuhkan nyawa lawan ke nol.</p>
+        
+        <div class="name-inputs" style="flex-direction:column; align-items:center;">
+            <label for="game-mode" style="color:#f0d58a;">Mode permainan</label>
+            <select id="game-mode" onchange="ubahModePermainan()" style="padding:10px; border-radius:8px; border:2px solid var(--gold-border); background:#20170f; color:#ffd76a; font:inherit; width:min(100%,320px);">
+                <option value="solo">Solo vs Bot</option>
+                <option value="online">Vs Player Online</option>
+            </select>
+            <input type="text" id="input-p1" placeholder="Nama kamu" maxlength="24">
+            <div id="solo-options">
+                <label for="bot-difficulty" style="color:#f0d58a;">Level bot</label>
+                <select id="bot-difficulty" style="padding:8px; border-radius:8px; border:1px solid var(--gold-border); background:#20170f; color:#ffd76a; font:inherit;">
+                    <option value="easy">Mudah</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="hard">Susah</option>
+                </select>
+                <button class="start-btn" onclick="mulaiPermainan()">Mulai Solo</button>
+            </div>
+            <div id="online-options" style="display:none; width:100%;">
+                <input type="text" id="room-code-input" placeholder="Kode room (6 karakter)" maxlength="6" autocomplete="off" style="text-transform:uppercase;">
+                <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+                    <button class="start-btn" onclick="buatRoomOnline()">Buat Room</button>
+                    <button class="start-btn" onclick="gabungRoomOnline()">Gabung Room</button>
+                </div>
+                <p id="online-status" role="status" style="color:#f0d58a; min-height:1.4em;"></p>
+                <button id="start-online-btn" class="start-btn" onclick="mulaiPertandinganOnline()" style="display:none;">Mulai Pertandingan</button>
+            </div>
+        </div>
+
+        <ul class="legend">
+            <li><i style="background:#d8c69d"></i>Bidak menyerang</li>
+            <li><i style="background:#2f7048"></i>Spell aktif satu giliran</li>
+            <li><i style="background:#dcae4c"></i>Domain mengubah aturan</li>
+        </ul>
+        <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; justify-content: center;">
+            <button onclick="bukaTentang()" style="background: rgba(20,15,10,0.8); flex: 0 0 auto; box-shadow: none; font-weight: normal; font-size: 0.85em;">ℹ️ Tentang Permainan</button>
+            <button onclick="bukaKontak()" style="background: rgba(20,15,10,0.8); flex: 0 0 auto; box-shadow: none; font-weight: normal; font-size: 0.85em;">⚙️ Pengaturan & Kontak</button>
+        </div>
+    </div>
+
+    <div id="main-game" style="display: none;">
+        <div class="header glass-panel">
+            <h1>Mathra-Cages Spectator</h1>
+        </div>
+
+        <div class="game-wrapper">
+            <div class="side-panel left-panel hidden-mobile">
+                <h3>Log Aktivitas</h3>
+                <div class="side-log-content" id="side-logs"></div>
+            </div>
+
+            <div class="center-panel">
+                <div class="sticky-hud">
+<div class="status-bar glass-panel">
+                    <span class="chip">Giliran <b id="current-player">Pemain 1</b></span>
+                    <span class="chip">Total turn <b id="turn-count">1</b></span>
+                </div>
+                </div>
+
+                <div class="board">
+                    <div class="mat">
+                        <div class="player-area p2" id="area-p2">
+                            <div class="nameplate" id="nameplate-p2">Pemain 2</div>
+                            <div id="field-p2"></div>
+                        </div>
+
+                        <div class="magic-divider hidden-desktop"></div>
+
+                        <div class="controls glass-panel">
+                            <button onclick="bukaTangan()"><span class="step">1</span>Kartu di Tangan (<b id="hand-count">0</b>)</button>
+                            <button onclick="faseSerang()"><span class="step">2</span><svg class="ic" viewBox="0 0 24 24"><path d="M4 4l12 12M20 4L8 16M4 20l4-4M20 20l-4-4"/></svg>Serang</button>
+                            <button onclick="akhiriGiliran()"><span class="step">3</span><svg class="ic" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 5 5 6 5 9s-5 4-5 9M17 3c0 5-5 6-5 9s5 4 5 9"/></svg>Akhiri</button>
+                            <span class="ctl-sep"></span>
+                            <button onclick="unduhLaporanSkor()"><svg class="ic" viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>Ekspor Laporan</button>
+                        </div>
+
+                        <div class="player-area p1 active-turn" id="area-p1">
+                            <div class="nameplate" id="nameplate-p1">Pemain 1</div>
+                            <div id="field-p1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel right-panel hidden-mobile">
+                <h3>Live Score</h3>
+                <div class="side-score-content" id="side-score">
+                </div>
+                <h3>Sisa Kartu</h3>
+                <div class="side-deck-content" id="side-deck">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+    <script src="card-questions.js"></script>
+    <script src="card-effects.js"></script>
+    <script>
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyBrPem4v6ODu7DnbFm4djtalw2Uvg8trsY",
+            authDomain: "first-web-a0c00.firebaseapp.com",
+            databaseURL: "https://first-web-a0c00-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "first-web-a0c00",
+            storageBucket: "first-web-a0c00.firebasestorage.app",
+            messagingSenderId: "1078059662460",
+            appId: "1:1078059662460:web:7adc7e71930a9cbab6ddf9",
+            measurementId: "G-1XG8FRN81P"
+        };
+        let gameMode = "local";
+        let botDifficulty = "normal";
+        let botIsActing = false;
+        let botExpectedAnswer = null;
+        let onlineGame = {
+            auth: null, database: null, roomRef: null, roomCode: null,
+            uid: null, playerNum: null, status: null, privateState: null,
+            applyingRemote: false, syncQueue: Promise.resolve(), errorShown: false,
+            listeners: [], lastDrawnTurnCount: null, privateInitialized: false,
+            privateSetupPromise: null, hostUid: null, guestUid: null,
+            latestState: null, arenaShown: false, gameOverAnnounced: false
+        };
+
+        const UI = {
+            showModal: function(type, title, desc) {
+                if (botIsActing) {
+                    if (type === 'alert') return Promise.resolve(true);
+                    if (type === 'confirm') return Promise.resolve(true);
+                    if (type === 'prompt') {
+                        if (title === 'Fase Resolusi' && botExpectedAnswer !== null) {
+                            let chance = botDifficulty === 'easy' ? 0.5 : botDifficulty === 'normal' ? 0.82 : 1;
+                            let answer = Math.random() < chance ? botExpectedAnswer : botExpectedAnswer + 1;
+                            return Promise.resolve(String(answer));
+                        }
+                        return Promise.resolve('1');
+                    }
+                }
+                return new Promise((resolve) => {
+                    let overlay = document.getElementById('custom-modal');
+                    let titleEl = document.getElementById('modal-title');
+                    let descEl = document.getElementById('modal-desc');
+                    let inputEl = document.getElementById('modal-input');
+                    let btnOk = document.getElementById('modal-btn-ok');
+                    let btnCancel = document.getElementById('modal-btn-cancel');
+
+                    titleEl.innerHTML = title;
+                    descEl.innerHTML = desc.replace(/\n/g, '<br>');
+                    inputEl.value = '';
+
+                    if(type === 'alert') {
+                        inputEl.style.display = 'none'; btnCancel.style.display = 'none'; btnOk.innerText = 'Tutup';
+                    } else if(type === 'prompt') {
+                        inputEl.style.display = 'block'; btnCancel.style.display = 'inline-block'; btnOk.innerText = 'Jawab'; btnCancel.innerText = 'Batal';
+                    } else if(type === 'confirm') {
+                        inputEl.style.display = 'none'; btnCancel.style.display = 'inline-block'; btnOk.innerText = 'Ya, Benar'; btnCancel.innerText = 'Tolak';
+                    }
+
+                    overlay.classList.add('show');
+                    if(type === 'prompt') setTimeout(() => inputEl.focus(), 100); 
+
+                    const closeModal = () => { overlay.classList.remove('show'); btnOk.onclick = null; btnCancel.onclick = null; inputEl.onkeyup = null; };
+
+                    btnOk.onclick = () => { closeModal(); if(type === 'prompt') resolve(inputEl.value.trim()); else if(type === 'confirm') resolve(true); else resolve(true); };
+                    btnCancel.onclick = () => { closeModal(); if(type === 'prompt') resolve(null); else if(type === 'confirm') resolve(false); };
+                    if(type === 'prompt') { inputEl.onkeyup = (e) => { if (e.key === 'Enter') btnOk.click(); }; }
+                });
+            },
+            alert: async (msg, title="Info") => await UI.showModal('alert', title, msg),
+            prompt: async (msg, title="Soal") => await UI.showModal('prompt', title, msg),
+            confirm: async (msg, title="Konfirmasi") => await UI.showModal('confirm', title, msg)
+        };
+
+        function bukaTentang() {
+            let info = "<div style='text-align:left; font-size:0.95em; line-height:1.6;'>" +
+                       "<b style='color:#d4af37;'>Teknis Permainan:</b><br>" +
+                       "<ul style='padding-left:18px; margin-top:5px; color:#dcd0bc;'>" +
+                       "<li><b>Deck & Tangan:</b> Setiap pemain mengocok deck 25 kartu dan mengambil 5 kartu di awal pertandingan. Tarik 1 kartu setiap kali giliranmu dimulai.</li>" +
+                       "<li><b>Pemanggilan Kartu:</b> Pilih kartu dari tangan untuk menurunkannya ke arena.</li>" +
+                       "<li><b>Deck Habis:</b> Pemain yang tidak bisa menarik kartu saat gilirannya dimulai kalah.</li>" +
+                       "<li><b>Resolusi Efek:</b> Efek kartu (ATK/Heal/Buff) hanya aktif jika kamu bisa menjawab soal geometri dengan benar.</li>" +
+                       "<li><b>Aturan Field:</b> Tiap giliran, pemain hanya boleh meletakkan maksimal 1 Bidak dan/atau 1 Spell/Domain.</li>" +
+                       "<li><b>Fase Pertarungan:</b> Serang bidak musuh. Selisih ATK akan mengurangi HP musuh. Jika arena lawan kosong, serangan langsung mengurangi HP musuh secara utuh.</li>" +
+                       "<li><b>Kondisi Menang:</b> Habisi 5000 HP lawan hingga 0!</li>" +
+                       "</ul></div>";
+            UI.alert(info, "Tentang Permainan");
+        }
+
+        function bukaKontak() {
+            let info = "<div style='text-align:left; font-size:0.95em; line-height:1.6;'>" +
+                       "<b style='color:#d4af37;'>⚙️ Pengaturan</b><br>" +
+                       "<span style='color:#dcd0bc;'>Tampilan Visual: Tema ini dapat diubah menggunakan ikon melayang di pojok kanan atas layar.</span><br>" +
+                       "<hr style='border:1px solid rgba(212, 175, 55, 0.3); margin:12px 0;'>" +
+                       "<b style='color:#d4af37;'>📞 Kontak Pengembang</b><br>" +
+                       "<span style='color:#dcd0bc;'>Dibuat untuk memfasilitasi Edukasi Geometri.</span><br><br>" +
+                       "Instagram : <a href='https://www.instagram.com/mathracages?stkn=MWtoN25mbmd5NW1mcg==' style='color:#4caf50;'>@mathracages</a><br>" +
+                       "TikTok: <a href='https://www.tiktok.com/@mathra.cages?_r=1&_t=ZS-9A7YSjTkG8b' style='color:#4caf50;'>@mathra.cages</a><br>" +
+                       "Beli Kartu : <a href='https://id.shp.ee/CvzQTVLp' style='color:#4caf50;'>mathracages</a><br>" +
+                       "</div>";
+            UI.alert(info, "Pengaturan & Kontak");
+        }
+
+        let masterDeckList = [{"id":0,"kode":"B01","nama":"Sinner - Sinus of Trigonometry","tipe":"Bidak","afiliasi":"Trigonometry","atk":80,"efekTeks":"Serangan kartu ini bertambah sebanyak 250 poin.","efekId":"B01","soalId":"B01"},{"id":1,"kode":"B02","nama":"Multigon - The Former Circle","tipe":"Bidak","afiliasi":"Circle","atk":150,"efekTeks":"Jika terdapat kartu dengan afiliasi \"Circle\" di field milikmu, serangan kartu ini meningkat menjadi 2 kali lipat.","efekId":"B02","soalId":"B02"},{"id":2,"kode":"B03","nama":"Quatro - A Quarter Segment of Circle","tipe":"Bidak","afiliasi":"Circle","atk":80,"efekTeks":"Ketika field musuh kosong, nilai serangan kartu ini menjadi 4 kali lipat serangan dasarnya. Ketika selesai menyerang, kartu ini akan hancur.","efekId":"B03","soalId":"B03"},{"id":3,"kode":"B04","nama":"Cosmos - Cosinus of Trigonometry","tipe":"Bidak","afiliasi":"Trigonometry","atk":70,"efekTeks":"Serangan kartu ini bertambah sebanyak 300 poin.","efekId":"B04","soalId":"B04"},{"id":4,"kode":"B05","nama":"Tango - Tangen of Trigonometry","tipe":"Bidak","afiliasi":"Trigonometry","atk":90,"efekTeks":"Jika kamu memiliki kartu Sinner - Sinus of Trigonometry dan Cosmos - Cosinus of Trigonometry di field milikmu, kartu ini bisa menyerang 2 kali dengan serangan yang digandakan.","efekId":"B05","soalId":"B05"},{"id":5,"kode":"B06","nama":"Monos - Pythagoras of Trigonometry","tipe":"Bidak","afiliasi":"Trigonometry","atk":90,"efekTeks":"Ketika terdapat kartu afiliasi \"Trigonometry\" (selain kartu ini) di field milikmu, kamu bisa memilih salah satu kartu milikmu dan menambahkan nilai serangan kartu tersebut ke kartu ini.","efekId":"B06","soalId":"B06"},{"id":6,"kode":"B07","nama":"Biggon - The Huge Circle","tipe":"Bidak","afiliasi":"Circle","atk":110,"efekTeks":"Kamu bisa memilih satu kartu afiliasi \"Circle\" milikmu dan meningkatkan nilai serangannya sebanyak 150 poin.","efekId":"B07","soalId":"B07"},{"id":7,"kode":"B08","nama":"Arlentin - Common Tangen of Circle","tipe":"Bidak","afiliasi":"Circle","atk":100,"efekTeks":"Kartu ini tidak dapat hancur ketika diserang.","efekId":"B08","soalId":"B08"},{"id":8,"kode":"B09","nama":"Verdict - The Magnitude of Geometry","tipe":"Bidak","afiliasi":"Vector","atk":100,"efekTeks":"Kamu bisa membuat semua kartu di field milikmu memperoleh 100 poin serangan tambahan.","efekId":"B09","soalId":"B09"},{"id":9,"kode":"B10","nama":"Cordpot - The Dot Product Vector","tipe":"Bidak","afiliasi":"Vector","atk":180,"efekTeks":"Kamu bisa membuat nilai serangan semua kartu di field milik lawanmu berkurang sebanyak 85 poin.","efekId":"B10","soalId":"B10"},{"id":10,"kode":"B11","nama":"Aquino - Finest Circle Equation","tipe":"Bidak","afiliasi":"Circle","atk":40,"efekTeks":"Kamu bisa memilih satu kartu afiliasi \"Circle\" milikmu dan menghancurkannya, kemudian memberikan serangan langsung ke lawan sesuai dengan nilai serangan kartu Circle yang dihancurkan.","efekId":"B11","soalId":"B11"},{"id":11,"kode":"B12","nama":"Dimipton - The Pair Point","tipe":"Bidak","afiliasi":null,"atk":90,"efekTeks":"Jika di field musuh hanya ada dua bidak, semua bidak milikmu mendapatkan 150 poin serangan.","efekId":"B12","soalId":"B12"},{"id":12,"kode":"B13","nama":"Arlenext - External Tangen of Circle","tipe":"Bidak","afiliasi":"Circle","atk":140,"efekTeks":"Sekali dalam permainan, semua kartu afiliasi \"Circle\" milikmu tidak dapat hancur ketika diserang. Kartu ini mendapat 50 serangan tambahan.","efekId":"B13","soalId":"B13"},{"id":13,"kode":"B14","nama":"Gennat - Tangent of Circle","tipe":"Bidak","afiliasi":"Circle","atk":150,"efekTeks":"Kartu ini mendapatkan 80 serangan tambahan untuk setiap kartu afiliasi \"Circle\" di field milikmu (termasuk kartu ini).","efekId":"B14","soalId":"B14"},{"id":14,"kode":"B15","nama":"Darius - Radian of Circle","tipe":"Bidak","afiliasi":"Circle","atk":130,"efekTeks":"Nilai serangan kartu ini akan bertambah sebanyak 5% dari nyawamu saat ini.","efekId":"B15","soalId":"B15"},{"id":15,"kode":"B16","nama":"Duoslum - A Modulus Vector","tipe":"Bidak","afiliasi":"Vector","atk":140,"efekTeks":"Jika kamu memiliki Verdict - The Magnitude of Geometry dan Cordpot - The Dot Product Vector di field milikmu, kamu bisa menghancurkan semua bidak milik lawanmu. Kamu tidak menyerang pada giliran kamu mengaktifkan kartu ini.","efekId":"B16","soalId":"B16"},{"id":16,"kode":"S01","nama":"Pythagoras Theorem","tipe":"Spell","atk":0,"efekTeks":"Proyeksi Bidang: Semua kartu afiliasi \"Trigonometry\" di field milikmu mendapat 200 ATK.","efekId":"S01","soalId":null},{"id":17,"kode":"S02","nama":"Thales Theorem","tipe":"Spell","atk":0,"efekTeks":"Prinsip Volume: Semua kartu afiliasi \"Circle\" di field milikmu mendapat 200 ATK.","efekId":"S02","soalId":null},{"id":18,"kode":"S03","nama":"Parallegoram Area Theorem","tipe":"Spell","atk":0,"efekTeks":"Menyeberang ruang: Pilih satu kartu afiliasi \"Trigonometry\" di field milikmu, kartu itu mendapat 180 ATK.","efekId":"S03","soalId":null},{"id":19,"kode":"S04","nama":"Angle Bisector Theorem","tipe":"Spell","atk":0,"efekTeks":"Ekspansi Massa: Pilih satu kartu afiliasi \"Circle\" di field milikmu, ATK kartu itu menjadi 2x lipat.","efekId":"S04","soalId":null},{"id":20,"kode":"S05","nama":"Inscribed Angle Theorem","tipe":"Spell","atk":0,"efekTeks":"Kompresi Ruang: ATK satu Bidak Lawan akan dipotong menjadi setengahnya (50%).","efekId":"S05","soalId":null},{"id":21,"kode":"S06","nama":"Addition Property","tipe":"Spell","atk":0,"efekTeks":"Memulihkan 800 HP.","efekId":"S06","soalId":null},{"id":22,"kode":"S07","nama":"Commutative Property","tipe":"Spell","atk":0,"efekTeks":"Memulihkan 1000 HP seketika.","efekId":"S07","soalId":null},{"id":23,"kode":"S08","nama":"Half Life","tipe":"Spell","atk":0,"efekTeks":"Buat nyawa lawan menjadi SETENGAH! (Syarat: HP-mu harus <= 1500).","efekId":"S08","soalId":null},{"id":24,"kode":"D01","nama":"Round of Euclid - Father of Geometry","tipe":"Domain","atk":0,"efekTeks":"Semua bidakmu tidak bisa hancur. Di setiap akhir giliranmu, pilih satu bidak untuk dihancurkan atau hancurkan kartu ini.","efekId":"D01","soalId":null}];
+
+        // ===== AFILIASI (v4) =====
+        // Sumber utama: field "afiliasi" di deck.json. Peta di bawah hanya cadangan
+        // selama deck.json belum memuat semua afiliasi; boleh dihapus setelahnya.
+        const AFILIASI_CADANGAN = {
+            B01: "Trigonometry", B04: "Trigonometry", B05: "Trigonometry", B06: "Trigonometry",
+            B02: "Circle", B03: "Circle", B07: "Circle", B08: "Circle", B11: "Circle", B13: "Circle", B14: "Circle", B15: "Circle",
+            B09: "Vector", B10: "Vector", B16: "Vector"
+        };
+        const punyaAfiliasi = (c, nama) => c.tipe === "Bidak" && c.afiliasi === nama;
+        const hitungAfiliasi = (field, nama) => field.filter(c => punyaAfiliasi(c, nama)).length;
+
+        // Batas serangan per giliran. B05 (serangDua) = 2x.
+        const maksSerang = (c, pemain) => c.serangDua ? 2 : 1;
+
+        // Pemilihan target dari daftar kartu lewat prompt. Mengembalikan kartu terpilih, atau null jika batal/kosong.
+        // Jika hanya ada satu kandidat: langsung dipilih (atau dikonfirmasi dulu bila konfirmasiTunggal = true, untuk efek yang menghancurkan).
+        async function pilihDariDaftar(daftar, judul, intro, konfirmasiTunggal = false) {
+            if (daftar.length === 0) return null;
+            if (daftar.length === 1) {
+                if (!konfirmasiTunggal) return daftar[0];
+                let ok = await UI.confirm(`${intro}\n\nTarget: ${daftar[0].nama} (ATK: ${daftar[0].atk})\nLanjutkan?`, judul);
+                return ok ? daftar[0] : null;
+            }
+            let pesan = intro + "\n\n";
+            daftar.forEach((c, i) => pesan += `${i + 1}. ${c.nama} (ATK: ${c.atk})\n`);
+            while (true) {
+                let input = await UI.prompt(pesan, judul);
+                if (input === null) return null;
+                let num = parseInt(input);
+                if (!isNaN(num) && num >= 1 && num <= daftar.length) return daftar[num - 1];
+                await UI.alert("Nomor tidak valid! Silakan masukkan nomor yang tersedia.");
+            }
+        }
+
+        // Apakah kartu ini tidak bisa hancur ketika DISERANG? (B08 permanen, B13 perisai Circle sementara)
+        function kebalHancurSerang(pemilik, c) {
+            if (c.tidakHancurSerang) return true;
+            if (punyaAfiliasi(c, "Circle") && pemilik.perisaiCircleSampai && state.turnCount <= pemilik.perisaiCircleSampai) return true;
+            return false;
+        }
+
+        // Hancurkan kartu milik pemain (hormati Domain Euclid). Mengembalikan true jika benar-benar hancur.
+        function hancurkanKartu(pemilik, c) {
+            if (pemilik.domainEuclid) { log(`${c.nama} selamat dari kehancuran karena ROUND OF EUCLID - FATHER OF GEOMETRY!`); return false; }
+            let idx = pemilik.field.indexOf(c);
+            if (idx === -1) return false;
+            pemilik.grave.push(pemilik.field.splice(idx, 1)[0]);
+            return true;
+        }
+
+        function kocokDeck(deck) {
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+            return deck;
+        }
+
+        function tarikKartu(pemain, jumlah) {
+            let jumlahDitarik = 0;
+            while (jumlahDitarik < jumlah && pemain.deck.length > 0) {
+                pemain.hand.push(pemain.deck.pop());
+                jumlahDitarik++;
+            }
+            pemain.deckCount = pemain.deck.length;
+            pemain.handCount = pemain.hand.length;
+            return jumlahDitarik;
+        }
+
+        function buatDeck() {             let d = JSON.parse(JSON.stringify(masterDeckList)); 
+            d.forEach(c => { 
+                c.hasAttacked = 0; 
+                c.slotIndex = null; 
+                c.baseAtk = c.atk; 
+                if (c.tipe === "Bidak" && !c.afiliasi) c.afiliasi = AFILIASI_CADANGAN[c.kode] || null;
+            }); 
+            return d; 
+        }
+
+
+        let state = {
+            isGameOver: false,
+            turn: 1, turnCount: 1,
+            deckLossPlayer: null,
+            p1: { nama: "Pemain 1", hp: 5000, deck: buatDeck(), hand: [], field: [], grave: [], domainEuclid: false, hasSummonedBidak: false, qAttempted: 0, qCorrect: 0 },
+            p2: { nama: "Pemain 2", hp: 5000, deck: buatDeck(), hand: [], field: [], grave: [], domainEuclid: false, hasSummonedBidak: false, qAttempted: 0, qCorrect: 0 }
+        };
+        
+        let attackerIndex = null; let targetIndex = null; let isAttackingPhase = false;
+        let placingCardType = null; let placementResolve = null;
+        let botAttackingCard = null; let botTargetCard = null;
+
+        function log(msg) { 
+            let modalLog = document.getElementById('logs-modal');
+            if(modalLog) { modalLog.innerHTML += `> ${msg}<br>`; modalLog.scrollTop = modalLog.scrollHeight; }
+            
+            let sideLog = document.getElementById('side-logs');
+            if(sideLog) { sideLog.innerHTML += `> ${msg}<br>`; sideLog.scrollTop = sideLog.scrollHeight; }
+        }
+
+        function pilihSlotKosong(idx) { if (placementResolve) placementResolve(idx); }
+
+        function buatPemain(nama) {
+            return {
+                nama, hp: 5000, deck: buatDeck(), hand: [], deckCount: 25, handCount: 0,
+                field: [], grave: [], domainEuclid: false, hasSummonedBidak: false,
+                qAttempted: 0, qCorrect: 0
+            };
+        }
+
+        function siapkanPertandingan(nama1, nama2) {
+            state = {
+                isGameOver: false, turn: 1, turnCount: 1, deckLossPlayer: null,
+                p1: buatPemain(nama1), p2: buatPemain(nama2)
+            };
+            [state.p1, state.p2].forEach(pemain => {
+                kocokDeck(pemain.deck);
+                tarikKartu(pemain, 5);
+            });
+            isAttackingPhase = false;
+            attackerIndex = null;
+            targetIndex = null;
+            placingCardType = null;
+            placementResolve = null;
+        }
+
+        function tampilkanArena() {
+            document.getElementById('nameplate-p1').innerText = state.p1.nama;
+            document.getElementById('nameplate-p2').innerText = state.p2.nama;
+            document.getElementById('landing-page').style.display = 'none';
+            document.getElementById('main-game').style.display = 'block';
+            document.getElementById('area-p1').classList.toggle('active-turn', state.turn === 1);
+            document.getElementById('area-p2').classList.toggle('active-turn', state.turn === 2);
+            updateUI();
+        }
+
+        function ubahModePermainan() {
+            const online = document.getElementById('game-mode').value === 'online';
+            document.getElementById('solo-options').style.display = online ? 'none' : 'flex';
+            document.getElementById('solo-options').style.flexDirection = 'column';
+            document.getElementById('online-options').style.display = online ? 'block' : 'none';
+        }
+
+        function mulaiPermainan() {
+            const nama = document.getElementById('input-p1').value.trim() || 'Pemain 1';
+            gameMode = 'solo';
+            botDifficulty = document.getElementById('bot-difficulty').value;
+            siapkanPertandingan(nama, 'Bot');
+            tampilkanArena();
+            log(`Pertandingan dimulai: ${state.p1.nama} vs ${state.p2.nama}.`);
+            log(`${state.p1.nama} dan ${state.p2.nama} masing-masing menarik 5 kartu awal.`);
+        }
+
+        function setOnlineStatus(message) {
+            const element = document.getElementById('online-status');
+            if (element) element.textContent = message;
+        }
+
+        async function masukFirebase() {
+            if (!window.firebase || !firebase.auth || !firebase.database) {
+                throw new Error('Firebase SDK tidak dapat dimuat. Periksa koneksi internet lalu muat ulang halaman.');
+            }
+            if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+            onlineGame.auth = firebase.auth();
+            onlineGame.database = firebase.database();
+            if (!onlineGame.auth.currentUser) await onlineGame.auth.signInAnonymously();
+            onlineGame.uid = onlineGame.auth.currentUser.uid;
+        }
+
+        function lepasListenerOnline() {
+            onlineGame.listeners.forEach(({ ref, handler }) => ref.off('value', handler));
+            onlineGame.listeners = [];
+        }
+
+        function simpanListenerOnline(ref, handler) {
+            ref.on('value', handler, tanganiKesalahanOnline);
+            onlineGame.listeners.push({ ref, handler });
+        }
+
+        function bentukStatePublik() {
+            const publik = JSON.parse(JSON.stringify(state));
+            [publik.p1, publik.p2].forEach(pemain => {
+                pemain.deckCount = pemain.deckCount ?? pemain.deck.length;
+                pemain.handCount = pemain.handCount ?? pemain.hand.length;
+                delete pemain.deck;
+                delete pemain.hand;
+            });
+            publik.playerUids = { 1: onlineGame.hostUid, 2: onlineGame.guestUid };
+            publik.turnUid = state.turn === 1 ? onlineGame.hostUid : onlineGame.guestUid;
+            publik.ui = { isAttackingPhase, attackerIndex, targetIndex, placingCardType };
+            return publik;
+        }
+
+        function terapkanStateOnline(publik) {
+            if (!publik || onlineGame.applyingRemote) return;
+            const gameWasOver = state.isGameOver;
+            onlineGame.latestState = publik;
+            if (onlineGame.lastDrawnTurnCount === null) onlineGame.lastDrawnTurnCount = publik.turnCount;
+            const own = onlineGame.privateState || { deck: [], hand: [] };
+            const berikut = JSON.parse(JSON.stringify(publik));
+            [berikut.p1, berikut.p2].forEach(pemain => {
+                pemain.deck = [];
+                pemain.hand = [];
+            });
+            const pemainSendiri = berikut[`p${onlineGame.playerNum}`];
+            pemainSendiri.deck = own.deck || [];
+            pemainSendiri.hand = own.hand || [];
+            pemainSendiri.deckCount = publik[`p${onlineGame.playerNum}`].deckCount;
+            pemainSendiri.handCount = publik[`p${onlineGame.playerNum}`].handCount;
+            state = berikut;
+            if (publik.ui) {
+                isAttackingPhase = !!publik.ui.isAttackingPhase;
+                attackerIndex = publik.ui.attackerIndex ?? null;
+                targetIndex = publik.ui.targetIndex ?? null;
+                placingCardType = publik.ui.placingCardType ?? null;
+            }
+            onlineGame.applyingRemote = true;
+            updateUI();
+            onlineGame.applyingRemote = false;
+            if (state.turn === onlineGame.playerNum && state.turnCount > onlineGame.lastDrawnTurnCount && onlineGame.status === 'started') {
+                onlineGame.lastDrawnTurnCount = state.turnCount;
+                if (tarikKartu(state[`p${onlineGame.playerNum}`], 1) === 0) {
+                    state.deckLossPlayer = state.turn;
+                    log(`${state[`p${onlineGame.playerNum}`].nama} tidak dapat menarik kartu karena deck habis.`);
+                    cekKemenangan();
+                } else {
+                    log(`${state[`p${onlineGame.playerNum}`].nama} menarik 1 kartu dari deck.`);
+                }
+                updateUI();
+            }
+            if (state.isGameOver && !gameWasOver && !onlineGame.gameOverAnnounced) {
+                onlineGame.gameOverAnnounced = true;
+                const winner = state.deckLossPlayer
+                    ? (state.deckLossPlayer === 1 ? state.p2.nama : state.p1.nama)
+                    : (state.p1.hp <= 0 ? state.p2.nama : state.p1.nama);
+                UI.alert(`Pertandingan selesai. ${winner} menang!`, 'Hasil Akhir');
+            }
+        }
+
+        function siapkanPemainOnline() {
+            if (onlineGame.playerNum !== 2 || onlineGame.status !== 'started') return Promise.resolve();
+            if (onlineGame.privateSetupPromise) return onlineGame.privateSetupPromise;
+            if (onlineGame.privateInitialized) return Promise.resolve();
+            onlineGame.privateInitialized = true;
+            onlineGame.privateSetupPromise = (async () => {
+                if (!onlineGame.latestState) {
+                    const publicSnapshot = await onlineGame.roomRef.child('state').once('value');
+                    onlineGame.latestState = publicSnapshot.val();
+                }
+                const privateRef = onlineGame.roomRef.child(`private/${onlineGame.uid}`);
+                const stored = await privateRef.once('value');
+                if (stored.exists()) {
+                    onlineGame.privateState = stored.val();
+                } else {
+                    const deck = kocokDeck(buatDeck());
+                    const hand = [];
+                    for (let i = 0; i < 5; i++) hand.push(deck.pop());
+                    onlineGame.privateState = { deck, hand };
+                    await privateRef.set(onlineGame.privateState);
+                }
+                if (onlineGame.latestState) terapkanStateOnline(onlineGame.latestState);
+            })().catch(error => {
+                onlineGame.privateInitialized = false;
+                onlineGame.privateSetupPromise = null;
+                throw error;
+            });
+            return onlineGame.privateSetupPromise;
+        }
+
+        function dengarkanRoomOnline() {
+            lepasListenerOnline();
+            const guestRef = onlineGame.roomRef.child('guestUid');
+            simpanListenerOnline(guestRef, snapshot => {
+                onlineGame.guestUid = snapshot.val();
+                if (onlineGame.playerNum === 1 && onlineGame.guestUid) {
+                    document.getElementById('start-online-btn').style.display = onlineGame.status === 'waiting' ? 'inline-block' : 'none';
+                    setOnlineStatus(`Room ${onlineGame.roomCode} siap. Pemain kedua sudah bergabung.`);
+                }
+            });
+            const statusRef = onlineGame.roomRef.child('status');
+            simpanListenerOnline(statusRef, snapshot => {
+                onlineGame.status = snapshot.val();
+                if (onlineGame.status === 'started') {
+                    document.getElementById('start-online-btn').style.display = 'none';
+                    if (onlineGame.playerNum === 2) {
+                        siapkanPemainOnline().then(() => {
+                            if (!onlineGame.arenaShown) {
+                                onlineGame.arenaShown = true;
+                                tampilkanArena();
+                                log(`${state.p1.nama} dan ${state.p2.nama} masing-masing menarik 5 kartu awal.`);
+                            }
+                        }).catch(tanganiKesalahanOnline);
+                    }
+                }
+            });
+            const stateRef = onlineGame.roomRef.child('state');
+            simpanListenerOnline(stateRef, snapshot => {
+                if (!snapshot.exists()) return;
+                onlineGame.latestState = snapshot.val();
+                if (onlineGame.playerNum === 2 && onlineGame.status === 'started' && !onlineGame.privateInitialized) {
+                    siapkanPemainOnline().catch(tanganiKesalahanOnline);
+                } else {
+                    terapkanStateOnline(onlineGame.latestState);
+                }
+            });
+        }
+
+        function tanganiKesalahanOnline(error) {
+            console.error('Kesalahan Firebase:', error);
+            setOnlineStatus(`Koneksi gagal: ${error.message || error}`);
+            if (!onlineGame.errorShown) {
+                onlineGame.errorShown = true;
+                UI.alert(`Tidak dapat melanjutkan permainan online.\n${error.message || error}`, 'Kesalahan Firebase');
+            }
+        }
+
+        async function buatRoomOnline() {
+            try {
+                await masukFirebase();
+                gameMode = 'online';
+                lepasListenerOnline();
+                const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+                let roomRef;
+                let code;
+                for (let attempt = 0; attempt < 8; attempt++) {
+                    code = Array.from(crypto.getRandomValues(new Uint8Array(6)), value => alphabet[value % alphabet.length]).join('');
+                    roomRef = onlineGame.database.ref(`rooms/${code}`);
+                    const exists = await roomRef.child('hostUid').once('value');
+                    if (!exists.exists()) break;
+                    roomRef = null;
+                }
+                if (!roomRef) throw new Error('Tidak berhasil membuat kode room. Coba lagi.');
+                const name = document.getElementById('input-p1').value.trim() || 'Pemain 1';
+                await roomRef.child('hostUid').set(onlineGame.uid);
+                await roomRef.child('hostName').set(name);
+                await roomRef.child('status').set('waiting');
+                Object.assign(onlineGame, {
+                    roomRef, roomCode: code, playerNum: 1, hostUid: onlineGame.uid,
+                    guestUid: null, status: 'waiting', privateState: null,
+                    privateInitialized: false, privateSetupPromise: null,
+                    arenaShown: false, gameOverAnnounced: false, errorShown: false, lastDrawnTurnCount: null
+                });
+                document.getElementById('room-code-input').value = code;
+                setOnlineStatus(`Room ${code} dibuat. Bagikan kode ini kepada lawan.`);
+                document.getElementById('start-online-btn').style.display = 'none';
+                dengarkanRoomOnline();
+            } catch (error) {
+                tanganiKesalahanOnline(error);
+            }
+        }
+
+        async function gabungRoomOnline() {
+            try {
+                const code = document.getElementById('room-code-input').value.trim().toUpperCase();
+                if (!/^[A-HJ-NP-Z2-9]{6}$/.test(code)) throw new Error('Masukkan kode room 6 karakter yang valid.');
+                await masukFirebase();
+                gameMode = 'online';
+                lepasListenerOnline();
+                const roomRef = onlineGame.database.ref(`rooms/${code}`);
+                const details = await Promise.all([
+                    roomRef.child('hostUid').once('value'),
+                    roomRef.child('guestUid').once('value'),
+                    roomRef.child('status').once('value')
+                ]);
+                if (!details[0].exists() || details[2].val() !== 'waiting' || details[1].exists()) {
+                    throw new Error('Room tidak tersedia atau sudah penuh.');
+                }
+                const name = document.getElementById('input-p1').value.trim() || 'Pemain 2';
+                await roomRef.child('guestUid').set(onlineGame.uid);
+                await roomRef.child('guestName').set(name);
+                Object.assign(onlineGame, {
+                    roomRef, roomCode: code, playerNum: 2, hostUid: details[0].val(),
+                    guestUid: onlineGame.uid, status: 'waiting', privateState: null,
+                    privateInitialized: false, privateSetupPromise: null,
+                    arenaShown: false, gameOverAnnounced: false, errorShown: false, lastDrawnTurnCount: null
+                });
+                setOnlineStatus(`Bergabung ke room ${code}. Menunggu host memulai pertandingan.`);
+                dengarkanRoomOnline();
+            } catch (error) {
+                tanganiKesalahanOnline(error);
+            }
+        }
+
+        async function mulaiPertandinganOnline() {
+            try {
+                if (onlineGame.playerNum !== 1 || !onlineGame.guestUid || onlineGame.status !== 'waiting') {
+                    throw new Error('Tunggu sampai pemain kedua bergabung.');
+                }
+                const nama1 = document.getElementById('input-p1').value.trim() || 'Pemain 1';
+                const nama2 = (await onlineGame.roomRef.child('guestName').once('value')).val() || 'Pemain 2';
+                gameMode = 'online';
+                siapkanPertandingan(nama1, nama2);
+                onlineGame.privateState = { deck: state.p1.deck, hand: state.p1.hand };
+                onlineGame.privateInitialized = true;
+                onlineGame.lastDrawnTurnCount = 1;
+                state.p2.deck = [];
+                state.p2.hand = [];
+                await onlineGame.roomRef.child(`private/${onlineGame.uid}`).set(onlineGame.privateState);
+                await onlineGame.roomRef.child('state').set(bentukStatePublik());
+                await onlineGame.roomRef.child('status').set('started');
+                tampilkanArena();
+                onlineGame.arenaShown = true;
+                log(`${state.p1.nama} dan ${state.p2.nama} masing-masing menarik 5 kartu awal.`);
+            } catch (error) {
+                tanganiKesalahanOnline(error);
+            }
+        }
+
+        function kirimStateOnline() {
+            if (gameMode !== 'online' || !onlineGame.roomRef || !onlineGame.uid ||
+                onlineGame.status !== 'started' || onlineGame.applyingRemote) return;
+            const own = state[`p${onlineGame.playerNum}`];
+            onlineGame.privateState = { deck: own.deck, hand: own.hand };
+            const privateRef = onlineGame.roomRef.child(`private/${onlineGame.uid}`);
+            const stateRef = onlineGame.roomRef.child('state');
+            onlineGame.syncQueue = onlineGame.syncQueue
+                .then(() => privateRef.set(onlineGame.privateState))
+                .then(() => stateRef.set(bentukStatePublik()))
+                .catch(error => {
+                    tanganiKesalahanOnline(error);
+                });
+        }
+
+        function bukaLog() { document.getElementById('log-modal').classList.add('show'); }
+        function tutupLog() { document.getElementById('log-modal').classList.remove('show'); }
+
+        async function lihatGrave(playerNum) {
+            let graveData = playerNum === 1 ? state.p1.grave : state.p2.grave;
+            let namaPemain = playerNum === 1 ? state.p1.nama : state.p2.nama;
+            if (graveData.length === 0) { await UI.alert("Kuburan masih kosong.", `Grave ${namaPemain}`); return; }
+            let isi = graveData.map(c => `
+                <div style="border-bottom:1px solid rgba(212, 175, 55, 0.3); padding:8px 0; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:bold; color:#d4af37;">${c.nama}</span>
+                    <span style="font-size:0.85em; background:#2b4a2d; color:#f4ecd8; padding:2px 6px; border-radius:4px;">${c.tipe}</span>
+                </div>
+            `).join("");
+            let templateStr = `<div style="text-align:left; max-height:220px; overflow-y:auto; padding-right:10px;">${isi}</div>`;
+            await UI.alert(templateStr, `Grave ${namaPemain} (${graveData.length} Kartu)`);
+        }
+
+        let selectedHandIndex = null;
+
+        function tutupTangan() {
+            const modal = document.getElementById('hand-modal');
+            modal.classList.remove('show');
+            modal.setAttribute('aria-hidden', 'true');
+            selectedHandIndex = null;
+        }
+
+        function kembaliKeTangan() {
+            selectedHandIndex = null;
+            document.getElementById('hand-card-detail').hidden = true;
+            document.getElementById('hand-cards').hidden = false;
+        }
+
+        function pilihKartuDiTangan(handIndex) {
+            const activePlayer = state.turn === 1 ? state.p1 : state.p2;
+            const card = activePlayer.hand[handIndex];
+            if (!card) return;
+
+            selectedHandIndex = handIndex;
+            document.getElementById('hand-card-name').textContent = card.nama;
+            document.getElementById('hand-card-type').textContent = card.tipe === "Bidak"
+                ? `Bidak · ATK ${card.atk}`
+                : card.tipe;
+            document.getElementById('hand-card-effect').textContent = card.efekTeks || "Tidak ada efek khusus.";
+            document.getElementById('hand-cards').hidden = true;
+            document.getElementById('hand-card-detail').hidden = false;
+        }
+
+        function gunakanKartuTangan() {
+            if (selectedHandIndex === null) return;
+            mainkanKartu(selectedHandIndex);
+        }
+
+        async function bukaTangan() {
+            if(state.isGameOver) { await UI.alert("Pertandingan telah selesai!"); return; }
+            if (gameMode === 'online' && state.turn !== onlineGame.playerNum) { await UI.alert("Kartu tangan hanya dapat dilihat saat giliranmu."); return; }
+            if (gameMode === 'solo' && state.turn === 2) return;
+            if(isAttackingPhase) { await UI.alert("Selesaikan fase penyerangan terlebih dahulu."); return; }
+            const activePlayer = state.turn === 1 ? state.p1 : state.p2;
+            if(activePlayer.hand.length === 0) { await UI.alert("Tidak ada kartu di tangan."); return; }
+
+            kembaliKeTangan();
+            document.getElementById('hand-title').textContent = `Kartu di Tangan - ${activePlayer.nama}`;
+            const handCards = document.getElementById('hand-cards');
+            handCards.replaceChildren(...activePlayer.hand.map((card, index) => {
+                const button = document.createElement('button');
+                button.className = 'hand-card-name';
+                button.type = 'button';
+                button.textContent = card.nama;
+                button.setAttribute('aria-label', `Lihat efek ${card.nama}`);
+                button.onclick = () => pilihKartuDiTangan(index);
+                return button;
+            }));
+            const modal = document.getElementById('hand-modal');
+            modal.setAttribute('aria-hidden', 'false');
+            modal.classList.add('show');
+        }
+
+        async function mainkanKartu(handIndex) {
+            if(state.isGameOver) { await UI.alert("Pertandingan telah selesai!"); return; }
+            if (gameMode === 'online' && state.turn !== onlineGame.playerNum) { await UI.alert("Bukan giliranmu."); return; }
+            if(isAttackingPhase) { await UI.alert("Selesaikan atau matikan fase penyerangan terlebih dahulu dengan klik tombol Serang/Akhiri!"); return; }
+            let activePlayer = state.turn === 1 ? state.p1 : state.p2;
+            let opponent = state.turn === 1 ? state.p2 : state.p1;
+            
+            let card = activePlayer.hand[handIndex];
+            if (!card) {
+                tutupTangan();
+                await UI.alert("Kartu tersebut tidak tersedia di tangan.");
+                return;
+            }
+            const isSpellOrDomain = card.tipe === "Spell" || card.tipe === "Domain";
+            tutupTangan();
+
+            if (card.tipe === "Bidak") {
+                if (activePlayer.hasSummonedBidak) { await UI.alert("Anda sudah memanggil Bidak pada giliran ini! (Maks 1 Bidak per giliran)", "Peringatan Slot"); return; }
+                if (activePlayer.field.filter(c => c.tipe === "Bidak").length >= 5) { await UI.alert("Slot Bidak Anda sudah penuh (Maksimal 5)!", "Peringatan Slot"); return; }
+            } else if (card.tipe === "Spell") {
+                if (activePlayer.field.filter(c => c.tipe === "Spell").length >= 3) { await UI.alert("Slot Spell Anda sudah penuh (Maksimal 3)!", "Peringatan Slot"); return; }
+            } else if (card.tipe === "Domain") {
+                if (activePlayer.field.filter(c => c.tipe === "Domain").length >= 1) { await UI.alert("Anda sudah memiliki Domain aktif di lapangan!", "Peringatan Slot"); return; }
+            }
+
+            const { soalTeks, jawabanKunci } = MathraCardQuestions.buatSoalAktivasi(card);
+
+           let isCorrect = false;
+
+            // Bypass soal khusus Spell dan Domain
+            if (isSpellOrDomain) {
+                isCorrect = true;
+                await UI.alert(`Efek kartu ${card.tipe} langsung diaktifkan!`, "Resolusi Sukses");
+            } else {
+                // Munculkan soal hanya untuk Bidak
+                botExpectedAnswer = jawabanKunci;
+                let ans = await UI.prompt(`<b>Uji Kelayakan Efek:</b>\n${soalTeks}\n\nMasukkan Jawaban (Hanya Angka):`, `Fase Resolusi`);
+                botExpectedAnswer = null;
+                activePlayer.qAttempted++; 
+                isCorrect = (ans !== null && parseFloat(ans) === jawabanKunci);
+            }
+
+            if(isCorrect) {
+                if (!isSpellOrDomain) {
+                    activePlayer.qCorrect++;
+                    await UI.alert("Jawaban BENAR! Efek kartu diaktifkan.", "Resolusi Sukses");
+                }
+                log(`${activePlayer.nama} mengaktifkan efek ${card.nama}.`);
+                
+                await MathraCardEffects.aktifkan(card, activePlayer, opponent, { state, UI, log, hitungAfiliasi, punyaAfiliasi, pilihDariDaftar, hancurkanKartu });
+            } else {
+                await UI.alert(`Jawaban SALAH! Kunci Jawaban: ${jawabanKunci}.\nEfek dibatalkan.`, "Resolusi Gagal");
+                log(`${activePlayer.nama} salah menjawab. Efek ${card.nama} batal.`);
+            }
+
+            if (card.tipe === "Bidak") {
+                let occupied = activePlayer.field.filter(c => c.tipe === "Bidak").map(c => c.slotIndex);
+                let available = [0, 1, 2, 3, 4].filter(s => !occupied.includes(s));
+                if (available.length === 1) {
+                    card.slotIndex = available[0];
+                } else if (botIsActing) {
+                    card.slotIndex = available[0];
+                } else if (available.length > 1) {
+                    placingCardType = "Bidak";
+                    log(`⚡ Klik slot Bidak yang bersinar untuk meletakkan ${card.nama}.`);
+                    updateUI();
+                    card.slotIndex = await new Promise(resolve => placementResolve = resolve);
+                    placingCardType = null; placementResolve = null;
+                }
+            } else if (card.tipe === "Spell") {
+                let occupied = activePlayer.field.filter(c => c.tipe === "Spell").map(c => c.slotIndex);
+                let available = [0, 1, 2].filter(s => !occupied.includes(s));
+                if (available.length === 1) {
+                    card.slotIndex = available[0];
+                } else if (botIsActing) {
+                    card.slotIndex = available[0];
+                } else if (available.length > 1) {
+                    placingCardType = "Spell";
+                    log(`⚡ Klik slot Spell yang bersinar untuk meletakkan ${card.nama}.`);
+                    updateUI();
+                    card.slotIndex = await new Promise(resolve => placementResolve = resolve);
+                    placingCardType = null; placementResolve = null;
+                }
+            }
+
+            card.hasAttacked = 0;
+            activePlayer.field.push(card);
+            activePlayer.hand.splice(handIndex, 1);
+            activePlayer.handCount = activePlayer.hand.length;
+            
+            if (card.tipe === "Bidak") {
+                activePlayer.hasSummonedBidak = true;
+                log(`${card.nama} masuk ke Field [Slot ${card.slotIndex + 1}] dengan ATK ${card.atk}.`);
+                
+            } else {
+                log(`${card.nama} diletakkan di slot ${card.tipe}.`);
+            }
+            if (!state.isGameOver) await cekKemenangan();
+            updateUI();
+        }
+
+        function nilaiKartuBot(card, pemain, lawan) {
+            if (botDifficulty === 'easy') return Math.random();
+            let score = card.tipe === 'Bidak' ? card.atk : card.tipe === 'Domain' ? 350 : 180;
+            if (card.kode === 'B09' && pemain.field.some(c => c.tipe === 'Bidak')) score += 250;
+            if (card.kode === 'B10' && lawan.field.some(c => c.tipe === 'Bidak')) score += 220;
+            if (card.kode === 'B16' && pemain.field.some(c => c.kode === 'B09') && pemain.field.some(c => c.kode === 'B10')) score += 600;
+            if (card.kode === 'D01' && pemain.field.some(c => c.tipe === 'Bidak')) score += 180;
+            if (botDifficulty === 'hard') {
+                if (card.tipe === 'Bidak' && card.atk > 0) score += 100;
+                if (pemain.hp < 2000 && card.kode === 'S06') score += 250;
+                if (lawan.field.filter(c => c.tipe === 'Bidak').length >= 2 && card.kode === 'S05') score += 300;
+            }
+            return score;
+        }
+
+        async function jalankanGiliranBot() {
+            if (gameMode !== 'solo' || state.turn !== 2 || state.isGameOver || botIsActing) return;
+            botIsActing = true;
+            try {
+                await new Promise(resolve => setTimeout(resolve, 450));
+                const bot = state.p2;
+                const lawan = state.p1;
+                for (const tipe of ['Bidak', 'non-Bidak']) {
+                    if (tipe === 'Bidak' && bot.hasSummonedBidak) continue;
+                    const kandidat = bot.hand
+                        .map((card, index) => ({ card, index }))
+                        .filter(({ card }) => tipe === 'Bidak'
+                            ? card.tipe === 'Bidak' && bot.field.filter(c => c.tipe === 'Bidak').length < 5
+                            : card.tipe !== 'Bidak' &&
+                                (card.tipe !== 'Spell' || bot.field.filter(c => c.tipe === 'Spell').length < 3) &&
+                                (card.tipe !== 'Domain' || !bot.field.some(c => c.tipe === 'Domain')));
+                    if (!kandidat.length || state.isGameOver) continue;
+                    kandidat.sort((a, b) => nilaiKartuBot(b.card, bot, lawan) - nilaiKartuBot(a.card, bot, lawan));
+                    const pilihan = botDifficulty === 'easy'
+                        ? kandidat[Math.floor(Math.random() * kandidat.length)]
+                        : kandidat[0];
+                    await mainkanKartu(pilihan.index);
+                }
+
+                if (!state.isGameOver && state.turnCount > 1 && bot.field.some(c => c.tipe === 'Bidak' && c.hasAttacked < maksSerang(c, bot)) &&
+                    bot.dilarangSerangPadaGiliran !== state.turnCount) {
+                    await faseSerang();
+                    let attempts = 0;
+                    while (isAttackingPhase && !state.isGameOver && attempts++ < 10) {
+                        const ready = bot.field.findIndex(c => c.tipe === 'Bidak' && c.hasAttacked < maksSerang(c, bot));
+                        if (ready < 0) break;
+                        attackerIndex = ready;
+                        botAttackingCard = bot.field[ready];
+                        botTargetCard = null;
+                        log(`Bot memilih ${botAttackingCard.nama} sebagai penyerang.`);
+                        updateUI();
+                        await new Promise(resolve => setTimeout(resolve, 850));
+                        const blockers = lawan.field
+                            .map((card, index) => ({ card, index }))
+                            .filter(item => item.card.tipe === 'Bidak');
+                        if (!blockers.length) {
+                            log(`${botAttackingCard.nama} bersiap melakukan serangan langsung.`);
+                            updateUI();
+                            await new Promise(resolve => setTimeout(resolve, 650));
+                            await serangLangsung();
+                        } else {
+                            blockers.sort((a, b) => a.card.atk - b.card.atk);
+                            const target = botDifficulty === 'easy'
+                                ? blockers[Math.floor(Math.random() * blockers.length)]
+                                : blockers[0];
+                            botTargetCard = target.card;
+                            log(`Target serangan bot: ${target.card.nama}.`);
+                            updateUI();
+                            await new Promise(resolve => setTimeout(resolve, 650));
+                            await pilihKartu(1, target.index);
+                        }
+                        botAttackingCard = null;
+                        botTargetCard = null;
+                        updateUI();
+                    }
+                    isAttackingPhase = false;
+                    attackerIndex = null;
+                    targetIndex = null;
+                    botAttackingCard = null;
+                    botTargetCard = null;
+                    updateUI();
+                }
+                if (!state.isGameOver) await akhiriGiliran();
+            } catch (error) {
+                console.error('Giliran bot gagal:', error);
+                await UI.alert('Bot tidak dapat menyelesaikan gilirannya. Coba mulai pertandingan baru.', 'Kesalahan Bot');
+            } finally {
+                botIsActing = false;
+            }
+        }
+
+        async function faseSerang() {
+            if(state.isGameOver) return;
+            if (gameMode === 'online' && state.turn !== onlineGame.playerNum) { await UI.alert("Bukan giliranmu."); return; }
+            if (isAttackingPhase) {
+                isAttackingPhase = false;
+                attackerIndex = null; targetIndex = null;
+                log("Fase Penyerangan dihentikan sementara.");
+                updateUI();
+                return;
+            }
+
+            if (state.turnCount === 1) { await UI.alert("Pemain giliran pertama tidak diizinkan menyerang!"); return; }
+            let activePlayer = state.turn === 1 ? state.p1 : state.p2;
+            if (activePlayer.dilarangSerangPadaGiliran === state.turnCount) { await UI.alert("Duoslum telah diaktifkan: kamu tidak dapat menyerang pada giliran ini."); return; }
+            let readyCards = activePlayer.field.filter(c => c.tipe === "Bidak" && c.hasAttacked === 0);
+            let mixgonReady = activePlayer.field.filter(c => c.tipe === "Bidak" && maksSerang(c, activePlayer) > 1 && c.hasAttacked < maksSerang(c, activePlayer));
+            
+            if (readyCards.length === 0 && mixgonReady.length === 0) { await UI.alert("Semua Bidak sudah menyerang, atau field kosong."); return; }
+            
+            isAttackingPhase = true; attackerIndex = null; targetIndex = null;
+            log("Fase Penyerangan: Pilih Bidak penyerang, lalu klik target.");
+            updateUI();
+        }
+
+        async function pilihKartu(pemain, originalIndex) {
+            if (placingCardType !== null || state.isGameOver) return;
+            if (gameMode === 'solo' && state.turn === 2 && !botIsActing) return;
+            if (gameMode === 'online' && isAttackingPhase && state.turn !== onlineGame.playerNum) return;
+
+            let activePlayer = state.turn === 1 ? state.p1 : state.p2;
+            let clickedCard = (pemain === 1 ? state.p1 : state.p2).field[originalIndex];
+
+            if (!isAttackingPhase) {
+                let atkDesc = clickedCard.tipe === "Bidak" ? `<br><b>ATK Saat Ini:</b> ${clickedCard.atk} <span style="font-size:0.85em; color:gray;">(Dasar: ${clickedCard.baseAtk})</span>` : ``;
+                let statusPasif = "";
+                if(clickedCard.tidakHancurSerang) statusPasif += " [TAHAN SERANGAN]";
+                if(punyaAfiliasi(clickedCard, "Circle") && (pemain === 1 ? state.p1 : state.p2).perisaiCircleSampai >= state.turnCount) statusPasif += " [PERISAI CIRCLE]";
+                
+                let info = `
+                    <div style="text-align:left; font-size:0.95em;">
+                        <b style="color:#d4af37;">Tipe Kartu:</b> ${clickedCard.tipe}${clickedCard.afiliasi ? ` &middot; <b style="color:#d4af37;">Afiliasi:</b> ${clickedCard.afiliasi}` : ''} ${atkDesc}
+                        <div style="color:#4caf50; font-size:0.8em; margin-top:5px;">${statusPasif}</div>
+                        <hr style="border:1px solid rgba(212, 175, 55, 0.3); margin:10px 0;">
+                        <b style="color:#d4af37;">Deskripsi Efek:</b><br>
+                        <i>"${clickedCard.efekTeks}"</i>
+                    </div>
+                `;
+                await UI.alert(info, `Info: ${clickedCard.nama}`);
+                return;
+            }
+
+            if (pemain === state.turn) {
+                if(clickedCard.tipe !== "Bidak") { await UI.alert("Hanya Bidak yang bisa menyerang!"); return; }
+                
+                let maxAttacks = maksSerang(clickedCard, activePlayer);
+                if(clickedCard.hasAttacked >= maxAttacks) { await UI.alert("Bidak ini sudah menyerang maksimal!"); return; }
+                
+                if (attackerIndex === originalIndex) {
+                    attackerIndex = null;
+                    log(`Batal memilih ${clickedCard.nama}. Silakan pilih Bidak lain.`);
+                } else {
+                    attackerIndex = originalIndex; log(`Penyerang: ${clickedCard.nama}. Pilih target.`);
+                }
+            } else {
+                if (attackerIndex === null) { await UI.alert("Pilih penyerang Anda terlebih dahulu!"); return; }
+                if (clickedCard.tipe !== "Bidak") { await UI.alert("Anda hanya bisa menyerang Bidak musuh!"); return; }
+
+                targetIndex = originalIndex; await resolusiSerangan();
+            }
+            updateUI();
+        }
+
+        async function serangLangsung() {
+            if (placingCardType !== null || state.isGameOver) return;
+            if (gameMode === 'online' && state.turn !== onlineGame.playerNum) { await UI.alert("Bukan giliranmu."); return; }
+            if (!isAttackingPhase || attackerIndex === null) return;
+            
+            let activePlayer = state.turn === 1 ? state.p1 : state.p2; 
+            let opponent = state.turn === 1 ? state.p2 : state.p1;
+            
+            if (opponent.field.some(c => c.tipe === "Bidak")) { await UI.alert("Lawan memiliki Bidak! Direct Attack Batal."); return; }
+            
+            let attacker = activePlayer.field[attackerIndex]; 
+            let isConfirmed = await UI.confirm(`[${opponent.nama}]\nIzinkan ${activePlayer.nama} melakukan Direct Attack dengan ${attacker.nama}?`, "Konfirmasi Lawan");
+            if(!isConfirmed) return;
+
+            let dmgLangsung = attacker.atk;
+            if (attacker.kode === "B03" && attacker.efekAktif) { dmgLangsung = attacker.baseAtk * 4; log(`${attacker.nama}: field lawan kosong, serangan menjadi 4x serangan dasar (${dmgLangsung}).`); }
+            opponent.hp -= dmgLangsung; attacker.hasAttacked += 1;
+            log(`DIRECT ATTACK! Lawan terkena ${dmgLangsung} damage.`);
+            if (attacker.kode === "B03" && attacker.efekAktif) { if (hancurkanKartu(activePlayer, attacker)) log(`${attacker.nama} hancur setelah menyerang.`); }
+            
+            attackerIndex = null; targetIndex = null;
+            await cekKemenangan(); updateUI();
+        }
+
+        async function resolusiSerangan() {
+            let activePlayer = state.turn === 1 ? state.p1 : state.p2; 
+            let opponent = state.turn === 1 ? state.p2 : state.p1;
+            let attacker = activePlayer.field[attackerIndex]; let target = opponent.field[targetIndex];
+
+            let isConfirmed = await UI.confirm(`[${opponent.nama}]\nBenarkan bahwa <b>${attacker.nama}</b> menyerang <b>${target.nama}</b> di lapangan fisik Anda?`, "Konfirmasi Meja");
+            if(!isConfirmed) { attackerIndex = null; targetIndex = null; updateUI(); return; }
+
+            let damage = Math.abs(attacker.atk - target.atk);
+
+            attacker.hasAttacked += 1;
+
+            if (attacker.atk > target.atk) {
+                opponent.hp -= damage;
+                log(`Bentrokan: ${attacker.nama} HANCURKAN ${target.nama}. ${opponent.nama} -${damage} HP.`);
+                
+                if(!opponent.domainEuclid) {
+                    if (kebalHancurSerang(opponent, target)) {
+                        log(`Bidak ${target.nama} tidak dapat hancur ketika diserang!`);
+                    } else {
+                        let deadCard = opponent.field.splice(targetIndex, 1)[0];
+                        opponent.grave.push(deadCard);
+                    }
+                } else log(`Bidak ${target.nama} selamat dari kehancuran karena ROUND OF EUCLID - FATHER OF GEOMETRY!`);
+                
+            } else if (attacker.atk < target.atk) {
+                activePlayer.hp -= damage;
+                log(`Serangan Balik! ${attacker.nama} hancur. ${activePlayer.nama} -${damage} HP.`);
+                
+                if(!activePlayer.domainEuclid) {
+                    let deadCard = activePlayer.field.splice(attackerIndex, 1)[0];
+                    activePlayer.grave.push(deadCard);
+                } else log(`Bidak ${attacker.nama} selamat berkat ROUND OF EUCLID - FATHER OF GEOMETRY!`);
+                
+            } else {
+                log(`Kekuatan Seimbang! Keduanya Hancur (kecuali kebal serangan).`);
+                
+                if(!activePlayer.domainEuclid) {
+                    activePlayer.grave.push(activePlayer.field.splice(attackerIndex, 1)[0]);
+                }
+                
+                if(!opponent.domainEuclid) {
+                    if (kebalHancurSerang(opponent, target)) log(`Bidak ${target.nama} tidak dapat hancur ketika diserang!`);
+                    else opponent.grave.push(opponent.field.splice(targetIndex, 1)[0]); 
+                }
+            }
+
+            if (attacker.kode === "B03" && attacker.efekAktif && activePlayer.field.includes(attacker)) {
+                if (hancurkanKartu(activePlayer, attacker)) log(`${attacker.nama} hancur setelah menyerang.`);
+            }
+
+            attackerIndex = null; targetIndex = null;
+            await cekKemenangan(); updateUI();
+        }
+
+        function updateScorePanel() {
+            let skorP1 = state.p1.qAttempted > 0 ? ((state.p1.qCorrect / state.p1.qAttempted) * 100).toFixed(1) : 0;
+            let skorP2 = state.p2.qAttempted > 0 ? ((state.p2.qCorrect / state.p2.qAttempted) * 100).toFixed(1) : 0;
+            
+            let sideScore = document.getElementById('side-score');
+            if(sideScore) {
+                sideScore.innerHTML = `
+                    <div style="margin-bottom:8px;">
+                        <b style="color:#4caf50;">${state.p1.nama}</b><br>
+                        Jawab: ${state.p1.qAttempted} | Benar: ${state.p1.qCorrect}<br>
+                        <b style="color:#d4af37; font-size:1.1em;">Skor: ${skorP1}</b>
+                    </div>
+                    <hr style="border:1px solid rgba(212, 175, 55, 0.3); margin:8px 0;">
+                    <div>
+                        <b style="color:#f44336;">${state.p2.nama}</b><br>
+                        Jawab: ${state.p2.qAttempted} | Benar: ${state.p2.qCorrect}<br>
+                        <b style="color:#d4af37; font-size:1.1em;">Skor: ${skorP2}</b>
+                    </div>
+                `;
+            }
+
+            let sideDeck = document.getElementById('side-deck');
+            if(sideDeck) {
+                sideDeck.innerHTML = `
+                    <div style="margin-bottom:12px;">
+                        <b style="color:#4caf50;">Deck ${state.p1.nama} (${state.p1.deckCount ?? state.p1.deck.length}):</b><br>
+                        <div style="margin-top:6px;">Kartu di tangan: ${state.p1.handCount ?? state.p1.hand.length}</div>
+                    </div>
+                    <div>
+                        <b style="color:#f44336;">Deck ${state.p2.nama} (${state.p2.deckCount ?? state.p2.deck.length}):</b><br>
+                        <div style="margin-top:6px;">Kartu di tangan: ${state.p2.handCount ?? state.p2.hand.length}</div>
+                    </div>
+                `;
+            }
+        }
+
+        async function tampilkanLaporanSkor() {
+            let skorP1 = state.p1.qAttempted > 0 ? ((state.p1.qCorrect / state.p1.qAttempted) * 100).toFixed(1) : 0;
+            let skorP2 = state.p2.qAttempted > 0 ? ((state.p2.qCorrect / state.p2.qAttempted) * 100).toFixed(1) : 0;
+            let info = `
+                <div style="text-align:left; font-size:1.05em; line-height: 1.6;">
+                    <b style="color:#4caf50;">${state.p1.nama}</b>\nMenjawab: ${state.p1.qAttempted} soal\nBenar: ${state.p1.qCorrect} soal\n<b style="color:#d4af37;">Skor Akademik: ${skorP1}</b>\n\n<hr style="border:1px solid rgba(212, 175, 55, 0.3); margin:10px 0;">\n<b style="color:#f44336;">${state.p2.nama}</b>\nMenjawab: ${state.p2.qAttempted} soal\nBenar: ${state.p2.qCorrect} soal\n<b style="color:#d4af37;">Skor Akademik: ${skorP2}</b>
+                </div>
+            `;
+            await UI.alert(info, `📊 Laporan Skor Pemain`);
+        }
+
+        async function unduhLaporanSkor() {
+            if (!state.isGameOver) {
+                await UI.alert("Fitur Ekspor Laporan CSV hanya terbuka setelah pertandingan berakhir (salah satu pemain kehilangan seluruh HP).", "Akses Ditolak");
+                return;
+            }
+
+            let skorP1 = state.p1.qAttempted > 0 ? ((state.p1.qCorrect / state.p1.qAttempted) * 100).toFixed(1) : 0;
+            let skorP2 = state.p2.qAttempted > 0 ? ((state.p2.qCorrect / state.p2.qAttempted) * 100).toFixed(1) : 0;
+            let tanggal = new Date().toLocaleString('id-ID');
+            
+            let isiLaporan = "Tanggal,Pemain,Sisa HP,Total Menjawab,Jawaban Benar,Skor Akademik\n";
+            isiLaporan += `"${tanggal}",${state.p1.nama},${state.p1.hp},${state.p1.qAttempted},${state.p1.qCorrect},${skorP1}\n`;
+            isiLaporan += `"${tanggal}",${state.p2.nama},${state.p2.hp},${state.p2.qAttempted},${state.p2.qCorrect},${skorP2}\n`;
+            
+            let fileName = "Laporan_Skor_MathraCages.csv"; 
+            let mimeType = "text/csv;charset=utf-8";
+
+            let blob = new Blob([isiLaporan], { type: mimeType });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement("a");
+            a.href = url; a.download = fileName;
+            document.body.appendChild(a); a.click();
+            document.body.removeChild(a); URL.revokeObjectURL(url);
+            log(`Laporan skor berhasil diekspor sebagai ${fileName}.`);
+        }
+
+        async function cekKemenangan() {
+            if (!state.isGameOver && (state.p1.hp <= 0 || state.p2.hp <= 0 || state.deckLossPlayer !== null)) {
+                state.isGameOver = true;
+                let pemenang = state.deckLossPlayer
+                    ? (state.deckLossPlayer === 1 ? state.p2.nama : state.p1.nama)
+                    : (state.p1.hp <= 0 ? state.p2.nama : state.p1.nama);
+                log(`================================`);
+                log(`PERTANDINGAN SELESAI. ${pemenang} MENANG!`);
+                
+                await UI.alert(`PERTANDINGAN SELESAI:\n${pemenang} MENANG!`, "Hasil Akhir");
+                await tampilkanLaporanSkor();
+                
+                let mauUnduh = await UI.confirm("Apakah Anda ingin mengekspor laporan skor akademik ini ke dalam format CSV sekarang?", "Ekspor Laporan");
+                if (mauUnduh) await unduhLaporanSkor();
+            }
+        }
+
+        async function akhiriGiliran() {
+            if(state.isGameOver) return;
+            if (gameMode === 'online' && state.turn !== onlineGame.playerNum) { await UI.alert("Bukan giliranmu."); return; }
+            isAttackingPhase = false;
+            let activePlayer = state.turn === 1 ? state.p1 : state.p2;
+            
+            if (activePlayer.domainEuclid) {
+                let bidaks = activePlayer.field.filter(c => c.tipe === "Bidak");
+                if (bidaks.length > 0) {
+                    let isConfirmed = await UI.confirm(`[MAINTENANCE DOMAIN]\nDomain Round of Euclid - Father of Geometry membutuhkan energi!\n\nKorbankan 1 Bidak untuk mempertahankannya?\n(Jika 'Tolak', Domain ini akan hancur)`, "Biaya Domain");
+                    if (isConfirmed) {
+                        let listText = "Ketik nomor Bidak yang ingin dikorbankan:\n\n";
+                        bidaks.forEach((b, i) => { listText += `${i + 1}. ${b.nama} (ATK: ${b.atk})\n`; });
+                        let pilihanValid = false;
+                        while (!pilihanValid) {
+                            let input = await UI.prompt(listText, "Pilih Tumbal Domain");
+                            if (input === null) {
+                                activePlayer.domainEuclid = false;
+                                let domainIdx = activePlayer.field.findIndex(c => c.tipe === "Domain");
+                                if (domainIdx > -1) activePlayer.grave.push(activePlayer.field.splice(domainIdx, 1)[0]);
+                                log(`Pilihan tumbal dibatalkan. Domain Round of Euclid - Father of Geometry hancur.`);
+                                pilihanValid = true;
+                            } else {
+                                let num = parseInt(input);
+                                if (!isNaN(num) && num >= 1 && num <= bidaks.length) {
+                                    let tumbalCard = bidaks[num - 1];
+                                    let tumbalIndex = activePlayer.field.indexOf(tumbalCard);
+                                    let tumbal = activePlayer.field.splice(tumbalIndex, 1)[0];
+                                    activePlayer.grave.push(tumbal);
+                                    log(`Domain Round of Euclid - Father of Geometry bertahan dengan menyerap ${tumbal.nama}.`);
+                                    pilihanValid = true;
+                                } else {
+                                    await UI.alert("Input tidak valid! Silakan masukkan nomor Bidak yang tersedia.");
+                                }
+                            }
+                        }
+                    } else {
+                        activePlayer.domainEuclid = false;
+                        let domainIdx = activePlayer.field.findIndex(c => c.tipe === "Domain");
+                        if (domainIdx > -1) activePlayer.grave.push(activePlayer.field.splice(domainIdx, 1)[0]);
+                        log(`Domain Round of Euclid - Father of Geometry hancur karena menolak memberikan tumbal.`);
+                    }
+                } else {
+                    await UI.alert("Tidak ada Bidak yang tersisa untuk dikorbankan.\n\nDomain Round of Euclid - Father of Geometry Hancur!", "Maintenance Gagal");
+                    activePlayer.domainEuclid = false;
+                    let domainIdx = activePlayer.field.findIndex(c => c.tipe === "Domain");
+                    if (domainIdx > -1) activePlayer.grave.push(activePlayer.field.splice(domainIdx, 1)[0]);
+                    log(`Domain Round of Euclid - Father of Geometry hancur karena kelaparan (Tidak ada Bidak di field).`);
+                }
+            }
+
+            activePlayer.hasSummonedBidak = false;
+            activePlayer.field.forEach(c => c.hasAttacked = 0);
+
+            state.p1.grave.push(...state.p1.field.filter(c => c.tipe === "Spell"));
+            state.p1.field = state.p1.field.filter(c => c.tipe !== "Spell");
+            state.p2.grave.push(...state.p2.field.filter(c => c.tipe === "Spell"));
+            state.p2.field = state.p2.field.filter(c => c.tipe !== "Spell");
+
+            state.turn = state.turn === 1 ? 2 : 1; state.turnCount++;
+            let pemainSelanjutnya = state.turn === 1 ? state.p1 : state.p2;
+            let namaSelanjutnya = pemainSelanjutnya.nama;
+            document.getElementById('area-p1').classList.toggle('active-turn');
+            document.getElementById('area-p2').classList.toggle('active-turn');
+            log(`Giliran Berakhir. Semua Spell lenyap ke Grave. Sekarang Giliran ${namaSelanjutnya}.`);
+            if (gameMode === 'online' && state.turn !== onlineGame.playerNum) {
+                updateUI();
+                return;
+            }
+            if (tarikKartu(pemainSelanjutnya, 1) === 0) {
+                state.deckLossPlayer = state.turn;
+                log(`${namaSelanjutnya} tidak dapat menarik kartu karena deck habis.`);
+                await cekKemenangan();
+                updateUI();
+                return;
+            } else {
+                log(`${namaSelanjutnya} menarik 1 kartu dari deck.`);
+            }
+            updateUI();
+            if (gameMode === 'solo' && state.turn === 2) setTimeout(jalankanGiliranBot, 500);
+        }
+
+        function updateUI() {
+            document.getElementById('current-player').innerText = state.turn === 1 ? state.p1.nama : state.p2.nama;
+            document.getElementById('turn-count').innerText = state.turnCount;
+            document.getElementById('area-p1').classList.toggle('active-turn', state.turn === 1);
+            document.getElementById('area-p2').classList.toggle('active-turn', state.turn === 2);
+            const activeHand = state.turn === 1 ? state.p1 : state.p2;
+            document.getElementById('hand-count').innerText = activeHand.handCount ?? activeHand.hand.length;
+            
+            updateScorePanel(); 
+
+            const remoteTurn = gameMode === 'online' && state.turn !== onlineGame.playerNum;
+            const botTurn = gameMode === 'solo' && state.turn === 2;
+            if (placingCardType !== null || remoteTurn || botTurn) {
+                document.querySelector('.controls').style.pointerEvents = 'none';
+                document.querySelector('.controls').style.opacity = '0.5';
+            } else {
+                document.querySelector('.controls').style.pointerEvents = 'auto';
+                document.querySelector('.controls').style.opacity = '1';
+            }
+
+            const renderFieldLayout = (fieldData, elementId, playerNum) => {
+                let activePlayer = state.turn === 1 ? state.p1 : state.p2;
+                let hp = playerNum === 1 ? state.p1.hp : state.p2.hp;
+                let hpNow = Math.max(0, Math.min(100, hp / 5000 * 100)), hpCls = hpNow <= 25 ? 'low' : hpNow <= 50 ? 'mid' : '';
+                let hpFrom = (window.__hpPct && window.__hpPct[playerNum] != null) ? window.__hpPct[playerNum] : hpNow;
+                let player = playerNum === 1 ? state.p1 : state.p2;
+                let deckCount = player.deckCount ?? player.deck.length;
+                let graveCount = playerNum === 1 ? state.p1.grave.length : state.p2.grave.length;
+
+                let bidakElements = ['', '', '', '', ''];
+                let spellElements = ['', '', ''];
+                let domainElement = '';
+
+                fieldData.forEach((card, idx) => {
+                    let maxAttacks = maksSerang(card, activePlayer);
+                    let isSelected = (isAttackingPhase && playerNum === state.turn && attackerIndex === idx) ? "selected" : "";
+                    let isUsed = (playerNum === state.turn && card.tipe === "Bidak" && card.hasAttacked >= maxAttacks) ? "used" : "";
+                    
+                    let atkText = card.tipe === "Bidak" 
+                        ? `ATK: ${card.atk}<br><span style="font-size:0.75em; font-weight:600; opacity:0.8;">Dasar: ${card.baseAtk}</span>` 
+                        : (card.tipe === "Spell" ? "SPELL" : "DOMAIN");
+
+                    let cardHtml = `
+                            <div class="card ${isSelected} ${isUsed} ${card === botAttackingCard ? 'bot-attacking' : ''} ${card === botTargetCard ? 'bot-target' : ''}" data-kode="${card.kode}" onclick="pilihKartu(${playerNum}, ${idx})">
+                            <h4>${card.nama}</h4><p><b>${atkText}</b></p><small>${card.tipe}</small>
+                        </div>
+                    `;
+
+                    if(card.tipe === "Bidak" && card.slotIndex !== null) bidakElements[card.slotIndex] = cardHtml;
+                    else if (card.tipe === "Spell" && card.slotIndex !== null) spellElements[card.slotIndex] = cardHtml;
+                    else if (card.tipe === "Domain") domainElement = cardHtml;
+                });
+
+                let hasEnemyBidak = fieldData.some(c => c.tipe === "Bidak");
+                if (isAttackingPhase && playerNum !== state.turn && !hasEnemyBidak && placingCardType === null && !state.isGameOver) {
+                    bidakElements[2] = `<div class="card" onclick="serangLangsung()" style="background:linear-gradient(135deg, #a83232, #6e1c1c); color:white; border:none; cursor:pointer;"><h4>Serang Langsung!</h4></div>`;
+                }
+
+                let bSlot = (i) => {
+                    if (bidakElements[i]) return bidakElements[i];
+                    if (placingCardType === "Bidak" && playerNum === state.turn) {
+                        return `<div style="width:100%; height:100%; cursor:pointer; background:rgba(212,175,55,0.25); border-radius:6px; animation: auraPulse 1s infinite; display:flex; justify-content:center; align-items:center; border: 2px dashed #d4af37;" onclick="pilihSlotKosong(${i})"><span style="color:#f4ecd8; font-weight:bold; font-size:0.9em; text-shadow:0 0 5px black;">PILIH</span></div>`;
+                    }
+                    return `<span style="color:rgba(255,255,255,0.15); font-weight:bold; font-size:1.5em;">${i+1}</span>`;
+                };
+
+                let sSlot = (i) => {
+                    if (spellElements[i]) return spellElements[i];
+                    if (placingCardType === "Spell" && playerNum === state.turn) {
+                        return `<div style="width:100%; height:100%; cursor:pointer; background:rgba(212,175,55,0.25); border-radius:6px; animation: auraPulse 1s infinite; display:flex; justify-content:center; align-items:center; border: 2px dashed #d4af37;" onclick="pilihSlotKosong(${i})"><span style="color:#f4ecd8; font-weight:bold; font-size:0.9em; text-shadow:0 0 5px black;">PILIH</span></div>`;
+                    }
+                    return `<span style="color:rgba(255,255,255,0.15); font-weight:bold; font-size:1.5em;">${i+1}</span>`;
+                };
+
+                let html = '';
+                if (playerNum === 2) {
+                    html = `
+                        <div class="playmat-grid">
+                            <div class="slot slot-brown"><span style="color:white; font-weight:bold;">Deck<br>${deckCount}</span></div>
+                            <div class="slot"></div>
+                            <div class="slot slot-green">${sSlot(0)}</div>
+                            <div class="slot slot-green">${sSlot(1)}</div>
+                            <div class="slot slot-green">${sSlot(2)}</div>
+                            <div class="slot"></div>
+                            <div class="slot slot-red${state.turn === playerNum ? ' on' : ''}"><div class="hp-orb"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="hp-ring-track" cx="50" cy="50" r="46" pathLength="100"/><circle class="hp-ring-fg ${hpCls}" cx="50" cy="50" r="46" pathLength="100" style="stroke-dashoffset:${100 - hpFrom}"/></svg><span style="color:white; font-weight:bold;"><small>HP</small><b>${Math.max(0, hp)}</b></span></div></div>
+                            
+                            <div class="slot slot-black" onclick="lihatGrave(2)" style="cursor:pointer;" title="Klik untuk lihat Grave"><span style="color:white; font-weight:bold;">Grave<br>${graveCount}</span></div>
+                            <div class="slot slot-white">${bSlot(0)}</div>
+                            <div class="slot slot-white">${bSlot(1)}</div>
+                            <div class="slot slot-white">${bSlot(2)}</div>
+                            <div class="slot slot-white">${bSlot(3)}</div>
+                            <div class="slot slot-white">${bSlot(4)}</div>
+                            <div class="slot slot-yellow">${domainElement || '<span style="color:rgba(255,255,255,0.15); font-weight:bold; font-size:1.2em;">D</span>'}</div>
+                        </div>
+                    `;
+                } else {
+                    /* PEMBARUAN: Posisi Slot HP (red) dan Nameplate sekarang diatur Kiri Bawah grid P1 */
+                    html = `
+                        <div class="playmat-grid">
+                            <div class="slot slot-yellow">${domainElement || '<span style="color:rgba(255,255,255,0.15); font-weight:bold; font-size:1.2em;">D</span>'}</div>
+                            <div class="slot slot-white">${bSlot(0)}</div>
+                            <div class="slot slot-white">${bSlot(1)}</div>
+                            <div class="slot slot-white">${bSlot(2)}</div>
+                            <div class="slot slot-white">${bSlot(3)}</div>
+                            <div class="slot slot-white">${bSlot(4)}</div>
+                            <div class="slot slot-black" onclick="lihatGrave(1)" style="cursor:pointer;" title="Klik untuk lihat Grave"><span style="color:white; font-weight:bold;">Grave<br>${graveCount}</span></div>
+                            
+                            <div class="slot slot-red${state.turn === playerNum ? ' on' : ''}"><div class="hp-orb"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="hp-ring-track" cx="50" cy="50" r="46" pathLength="100"/><circle class="hp-ring-fg ${hpCls}" cx="50" cy="50" r="46" pathLength="100" style="stroke-dashoffset:${100 - hpFrom}"/></svg><span style="color:white; font-weight:bold;"><small>HP</small><b>${Math.max(0, hp)}</b></span></div></div>
+                            <div class="slot"></div>
+                            <div class="slot slot-green">${sSlot(0)}</div>
+                            <div class="slot slot-green">${sSlot(1)}</div>
+                            <div class="slot slot-green">${sSlot(2)}</div>
+                            <div class="slot"></div>
+                            <div class="slot slot-brown"><span style="color:white; font-weight:bold;">Deck<br>${deckCount}</span></div>
+                        </div>
+                    `;
+                }
+                document.getElementById(elementId).innerHTML = html;
+                
+                let np = document.getElementById(`nameplate-p${playerNum}`);
+                if(np) np.innerText = playerNum === 1 ? state.p1.nama : state.p2.nama;
+            };
+
+            renderFieldLayout(state.p1.field, 'field-p1', 1);
+            renderFieldLayout(state.p2.field, 'field-p2', 2);
+            kirimStateOnline();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const btn = document.getElementById('theme-toggle');
+            if(document.body.classList.contains('light-mode')) {
+                btn.innerHTML = '🌙'; 
+                localStorage.setItem('mathracages_theme', 'light');
+            } else {
+                btn.innerHTML = '🌞'; 
+                localStorage.setItem('mathracages_theme', 'dark');
+            }
+        }
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            if(localStorage.getItem('mathracages_theme') === 'light') {
+                document.body.classList.add('light-mode');
+                document.getElementById('theme-toggle').innerHTML = '🌙';
+            }
+        });
+// ===== TAMBAHAN FITUR NEW GAME (KEMBALI KE HALAMAN AWAL) =====
+        
+        // Simpan referensi fungsi cekKemenangan yang asli
+        const originalCekKemenangan = cekKemenangan;
+        
+        // Timpa fungsi cekKemenangan untuk memunculkan opsi ke Beranda
+        cekKemenangan = async function() {
+            // Jalankan seluruh proses akhir permainan yang asli (Pengumuman pemenang, Laporan, dll)
+            await originalCekKemenangan();
+            
+            // Setelah proses asli selesai, berikan opsi kembali ke menu utama
+            if (state.isGameOver) {
+                let kembaliKeMenu = await UI.confirm("Apakah Anda ingin kembali ke Halaman Awal untuk memulai pertandingan baru?", "Main Lagi");
+                
+                if (kembaliKeMenu) {
+                    if (gameMode === 'online') {
+                        lepasListenerOnline();
+                        onlineGame.roomRef = null;
+                        onlineGame.roomCode = null;
+                        onlineGame.playerNum = null;
+                        onlineGame.status = null;
+                        onlineGame.privateState = null;
+                        onlineGame.latestState = null;
+                        onlineGame.privateInitialized = false;
+                        onlineGame.lastDrawnTurnCount = null;
+                        gameMode = 'local';
+                    }
+                    // 1. Reset seluruh data state ke awal (tanpa menghilangkan nama yang sudah diketik)
+                    state = {
+                        isGameOver: false,
+                        turn: 1, turnCount: 1,
+                        deckLossPlayer: null,
+                        p1: { nama: state.p1.nama, hp: 5000, deck: buatDeck(), hand: [], deckCount: 25, handCount: 0, field: [], grave: [], domainEuclid: false, hasSummonedBidak: false, qAttempted: 0, qCorrect: 0 },
+                        p2: { nama: state.p2.nama, hp: 5000, deck: buatDeck(), hand: [], deckCount: 25, handCount: 0, field: [], grave: [], domainEuclid: false, hasSummonedBidak: false, qAttempted: 0, qCorrect: 0 }
+                    };
+                    
+                    // 2. Reset status aksi permainan
+                    isAttackingPhase = false;
+                    attackerIndex = null;
+                    targetIndex = null;
+                    placingCardType = null;
+                    placementResolve = null;
+
+                    // 3. Bersihkan riwayat log pada UI
+                    if(document.getElementById('logs-modal')) document.getElementById('logs-modal').innerHTML = "";
+                    if(document.getElementById('side-logs')) document.getElementById('side-logs').innerHTML = "";
+
+                    // 4. Kembalikan efek visual giliran (aura kuning) ke Pemain 1
+                    document.getElementById('area-p1').classList.add('active-turn');
+                    document.getElementById('area-p2').classList.remove('active-turn');
+
+                    // 5. ARAHKAN KE HALAMAN AWAL: Sembunyikan arena, munculkan Landing Page
+                    document.getElementById('main-game').style.display = 'none';
+                    document.getElementById('landing-page').style.display = 'flex'; // menggunakan flex agar tata letaknya tidak rusak
+                }
+            }
+        };
+        // ==============================================================
+    
+        // ======================================================================
+        // EKSTENSI v3: AUDIO + EFEK VISUAL
+        // Seluruh musik & efek suara DIHASILKAN LANGSUNG oleh kode (Web Audio API),
+        // tanpa file audio/sampel pihak ketiga, sehingga bebas royalti.
+        // ======================================================================
+        const SND = (() => {
+            let ctx, master, mus, sfx, nb, run = false, timer = null, nextT = 0, bi = 0, mood = 'lobby', unlocked = false;
+            const on = { m: true, s: true }; let vol = 0.6;
+            try { const s = JSON.parse(localStorage.getItem('mc_audio') || '{}'); if ('m' in s) on.m = s.m; if ('s' in s) on.s = s.s; if ('v' in s) vol = s.v; } catch (e) {}
+            const save = () => { try { localStorage.setItem('mc_audio', JSON.stringify({ m: on.m, s: on.s, v: vol })); } catch (e) {} };
+            const f = n => 440 * Math.pow(2, (n - 69) / 12);
+
+            function init() {
+                if (ctx) return; const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+                ctx = new AC(); master = ctx.createGain(); master.gain.value = vol;
+                const comp = ctx.createDynamicsCompressor(); master.connect(comp); comp.connect(ctx.destination);
+                mus = ctx.createGain(); mus.gain.value = on.m ? 0.8 : 0; sfx = ctx.createGain(); sfx.gain.value = on.s ? 1 : 0;
+                const len = ctx.sampleRate * 2.2, ir = ctx.createBuffer(2, len, ctx.sampleRate);
+                for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
+                const verb = ctx.createConvolver(); verb.buffer = ir; const vg = ctx.createGain(); vg.gain.value = 0.35; verb.connect(vg); vg.connect(master);
+                [mus, sfx].forEach(g => { g.connect(master); g.connect(verb); });
+                nb = ctx.createBuffer(1, ctx.sampleRate * 1.5, ctx.sampleRate);
+                const nd = nb.getChannelData(0); for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+            }
+            function tone(dest, o) {
+                const t0 = (o.at ?? ctx.currentTime) + (o.t || 0), d = o.d || 0.4, a = o.a || 0.01;
+                const os = ctx.createOscillator(), g = ctx.createGain();
+                os.type = o.type || 'sine'; os.frequency.setValueAtTime(f(o.n), t0); os.detune.value = o.det || 0;
+                if (o.to) os.frequency.exponentialRampToValueAtTime(f(o.to), t0 + d);
+                g.gain.setValueAtTime(0.0001, t0); g.gain.linearRampToValueAtTime(o.v || 0.2, t0 + a); g.gain.exponentialRampToValueAtTime(0.0001, t0 + d);
+                let out = g; os.connect(g);
+                if (o.fl) { const bf = ctx.createBiquadFilter(); bf.type = 'lowpass'; bf.frequency.value = o.fl; g.connect(bf); out = bf; }
+                out.connect(dest); os.start(t0); os.stop(t0 + d + 0.05);
+            }
+            function noise(dest, o) {
+                const t0 = (o.at ?? ctx.currentTime) + (o.t || 0), d = o.d || 0.2;
+                const s = ctx.createBufferSource(); s.buffer = nb; const bf = ctx.createBiquadFilter(); bf.type = o.type || 'bandpass';
+                bf.frequency.setValueAtTime(o.fr || 1000, t0); if (o.to) bf.frequency.exponentialRampToValueAtTime(o.to, t0 + d); bf.Q.value = o.q || 1;
+                const g = ctx.createGain(); g.gain.setValueAtTime(o.v || 0.2, t0); g.gain.exponentialRampToValueAtTime(0.0001, t0 + d);
+                s.connect(bf); bf.connect(g); g.connect(dest); s.start(t0); s.stop(t0 + d + 0.05);
+            }
+            const S = o => tone(sfx, o), N = o => noise(sfx, o);
+            const FX = {
+                click: () => S({ n: 84, d: .07, type: 'triangle', v: .12 }),
+                tick: () => S({ n: 91, d: .05, v: .07 }),
+                ok: () => { S({ n: 79, d: .1, type: 'triangle', v: .14 }); S({ n: 84, t: .07, d: .16, type: 'triangle', v: .14 }); },
+                cancel: () => S({ n: 67, d: .14, type: 'triangle', v: .14, to: 62 }),
+                open: () => { S({ n: 72, d: .25, v: .08 }); S({ n: 79, t: .06, d: .3, v: .07 }); },
+                summon: () => { N({ d: .4, v: .12, fr: 300, to: 3000, q: 2 }); S({ n: 60, d: .45, type: 'triangle', v: .16 }); [72, 76, 79, 88].forEach((n, i) => S({ n, t: .08 + i * .06, d: .6, v: .07 })); },
+                spell: () => { for (let i = 0; i < 6; i++) S({ n: 84 + i * 3, t: i * .05, d: .5, v: .06 }); N({ d: .5, v: .05, fr: 6000, type: 'highpass' }); },
+                good: () => [72, 76, 79, 84].forEach((n, i) => S({ n, t: i * .08, d: .5, type: 'triangle', v: .14 })),
+                bad: () => { S({ n: 55, d: .5, type: 'sawtooth', v: .12, fl: 500, to: 50 }); S({ n: 52, t: .14, d: .55, type: 'sawtooth', v: .12, fl: 450 }); },
+                hit: () => { N({ d: .25, v: .35, fr: 1800, to: 200, type: 'lowpass' }); S({ n: 45, to: 28, d: .35, v: .4 }); S({ n: 76, d: .12, type: 'square', v: .05, fl: 2000 }); },
+                big: () => { FX.hit(); S({ n: 40, to: 24, t: .12, d: .5, v: .4 }); N({ t: .1, d: .9, v: .2, fr: 5000, type: 'highpass' }); },
+                clash: () => { N({ d: .3, v: .25, fr: 3000, q: 4 }); S({ n: 76, d: .4, type: 'square', v: .06, fl: 3000 }); S({ n: 83, d: .4, type: 'square', v: .05, fl: 3000 }); S({ n: 48, to: 32, d: .3, v: .3 }); },
+                domain: () => { [38, 45, 50].forEach(n => S({ n, d: 3, a: 1.2, type: 'sawtooth', v: .1, fl: 400 })); for (let i = 0; i < 5; i++) S({ n: 86 + i * 2, t: 1 + i * .15, d: 1.2, v: .05 }); },
+                turn: () => { S({ n: 50, d: 2.2, v: .22 }); S({ n: 62, d: 1.6, v: .1 }); S({ n: 74.2, d: 1.2, v: .06 }); N({ d: .15, v: .08, fr: 900 }); },
+                start: () => { FX.turn(); [62, 69, 74].forEach((n, i) => S({ n, t: .25 + i * .15, d: .9, type: 'triangle', v: .1 })); },
+                win: () => { [67, 72, 76, 79].forEach((n, i) => S({ n, t: i * .14, d: .5, type: 'triangle', v: .16 })); [72, 76, 79, 84].forEach(n => S({ n, t: .6, d: 2.2, type: 'triangle', v: .1 })); S({ n: 48, t: .6, d: 2.4, v: .2 }); }
+            };
+            const CH = [{ r: 38, n: [62, 65, 69] }, { r: 34, n: [58, 62, 65] }, { r: 43, n: [58, 62, 67] }, { r: 33, n: [57, 61, 64] }];
+            const SC = [62, 64, 65, 67, 69, 70, 72, 73, 74];
+            function bar() {
+                if (!run || !ctx) return;
+                const B = mood === 'battle' ? 3.8 : 6.4, c = CH[bi++ % 4], t0 = Math.max(nextT, ctx.currentTime + 0.05);
+                c.n.forEach(n => [-6, 6].forEach(det => tone(mus, { n, at: t0, d: B * 1.1, a: B * .35, type: 'sawtooth', v: .022, det, fl: 650 })));
+                tone(mus, { n: c.r, at: t0, d: B * 1.05, a: .4, v: .16 }); tone(mus, { n: c.r + 12, at: t0, d: B, a: .4, v: .05, type: 'triangle' });
+                const pool = [...c.n.map(n => n + 12), ...c.n.map(n => n + 12), ...SC.map(n => n + 12)];
+                for (let i = 0; i < 8; i++) if (Math.random() < (mood === 'battle' ? .75 : .55))
+                    tone(mus, { n: pool[Math.floor(Math.random() * pool.length)] + (Math.random() < .25 ? 12 : 0), at: t0, t: i * B / 8, d: 1.4, type: 'triangle', v: .06, a: .005 });
+                if (mood === 'battle') for (let i = 0; i < 4; i++) { tone(mus, { n: 45, to: 30, at: t0, t: i * B / 4, d: .3, v: .16 }); noise(mus, { at: t0, t: i * B / 4 + B / 8, d: .05, v: .03, fr: 7000, type: 'highpass' }); }
+                nextT = t0 + B; timer = setTimeout(bar, Math.max(50, (nextT - ctx.currentTime - 1.2) * 1000));
+            }
+            function applyMusic() {
+                if (!ctx) return;
+                mus.gain.setTargetAtTime(on.m ? 0.8 : 0, ctx.currentTime, 0.15);
+                if (on.m && unlocked && !run) { run = true; nextT = ctx.currentTime; bar(); }
+                if (!on.m && run) { run = false; clearTimeout(timer); }
+            }
+            document.addEventListener('visibilitychange', () => { if (!ctx) return; document.hidden ? ctx.suspend() : ctx.resume(); });
+            return {
+                unlock() { init(); if (!ctx) return; if (ctx.state === 'suspended') ctx.resume(); if (!unlocked) { unlocked = true; document.getElementById('audio-dock').classList.remove('wait'); applyMusic(); } },
+                play(n) { if (ctx && on.s && FX[n]) try { FX[n](); } catch (e) {} },
+                mood(m) { mood = m; },
+                toggle(k) { on[k] = !on[k]; if (ctx) { sfx.gain.value = on.s ? 1 : 0; applyMusic(); } save(); return on[k]; },
+                vol(v) { vol = v; if (master) master.gain.setTargetAtTime(v, ctx.currentTime, 0.05); save(); },
+                st: () => ({ m: on.m, s: on.s, v: vol })
+            };
+        })();
+
+        (() => {
+            // ---------- Dock audio ----------
+            const mb = document.getElementById('btn-music'), sb = document.getElementById('btn-sfx'), vl = document.getElementById('vol');
+            const sync = () => { const s = SND.st(); mb.setAttribute('aria-pressed', s.m); sb.setAttribute('aria-pressed', s.s); vl.value = s.v * 100; };
+            mb.onclick = () => { SND.unlock(); SND.toggle('m'); sync(); };
+            sb.onclick = () => { SND.unlock(); if (SND.toggle('s')) SND.play('click'); sync(); };
+            vl.oninput = () => SND.vol(vl.value / 100); sync();
+            ['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => SND.unlock(), { passive: true }));
+
+            // ---------- Suara klik global ----------
+            document.addEventListener('click', e => {
+                const b = e.target.closest('button, .card[onclick], .slot-black'); if (!b || b.closest('#audio-dock')) return;
+                SND.play(b.classList.contains('btn-cancel') ? 'cancel' : b.classList.contains('btn-ok') ? 'ok' : b.classList.contains('card') ? 'tick' : 'click');
+            }, true);
+
+            // ---------- Modal: suara benar/salah ----------
+            const _sm = UI.showModal;
+            UI.showModal = function (type, title, desc) { SND.play(/Sukses/.test(title) ? 'good' : /Gagal|Ditolak/.test(title) ? 'bad' : 'open'); return _sm.call(UI, type, title, desc); };
+
+            // ---------- Banner ----------
+            const banner = t => { const b = document.getElementById('turn-banner'); b.firstElementChild.textContent = t; b.classList.remove('go'); void b.offsetWidth; b.classList.add('go'); };
+
+            // ---------- Hook log -> suara & efek ----------
+            const _log = log;
+            log = function (m) {
+                _log(m); m = String(m);
+                if (/DIRECT ATTACK/i.test(m)) SND.play('big');
+                else if (/HANCURKAN|Serangan Balik/.test(m)) SND.play('hit');
+                else if (/Seimbang/.test(m)) SND.play('clash');
+                else if (/DIAKTIFKAN/.test(m)) SND.play('domain');
+                else if (/Giliran Berakhir/.test(m)) { SND.play('turn'); const g = m.match(/Sekarang Giliran (.+)\.$/); if (g) banner('Giliran ' + g[1]); }
+                else if (/PERTANDINGAN SELESAI/.test(m)) { SND.play('win'); SND.mood('lobby'); window.confetti(); const g = m.match(/SELESAI\. (.+) MENANG/); if (g) banner(g[1] + ' menang!'); }
+            };
+
+            // ---------- Bar HP, angka melayang, animasi panggil kartu ----------
+            const prev = { init: false, h: [0, 5000, 5000], names: { 1: [], 2: [] } };
+            const _uu = updateUI;
+            updateUI = function () { _uu(); try { duel(); } catch (e) { console.error(e); } };
+            function duel() {
+                [state.p1, state.p2].forEach((p, i) => {
+                    const n = i + 1, pct = Math.max(0, Math.min(100, p.hp / 5000 * 100));
+                    const orb = document.querySelector('#field-p' + n + ' .hp-orb'), fg = orb && orb.querySelector('.hp-ring-fg');
+                    if (fg) {
+                        fg.setAttribute('class', 'hp-ring-fg ' + (pct <= 25 ? 'low' : pct <= 50 ? 'mid' : ''));
+                        void fg.getBoundingClientRect();
+                        requestAnimationFrame(() => { fg.style.strokeDashoffset = 100 - pct; });
+                    }
+                    window.__hpPct = window.__hpPct || {}; window.__hpPct[n] = pct;
+                    const dl = p.hp - prev.h[n];
+                    if (prev.init && dl) {
+                        const s = document.createElement('span'); s.className = 'float-num ' + (dl < 0 ? 'dmg' : 'heal'); s.textContent = (dl > 0 ? '+' : '') + dl;
+                        const host = orb ? orb.parentNode : document.body; host.appendChild(s); setTimeout(() => s.remove(), 1300);
+                        if (dl < 0) { const bd = document.querySelector('.board'); bd.classList.remove('shake'); void bd.offsetWidth; bd.classList.add('shake'); navigator.vibrate && navigator.vibrate(Math.min(200, -dl / 5)); }
+                    }
+                    prev.h[n] = p.hp;
+                    const names = p.field.map(c => c.nama), old = prev.names[n].slice();
+                    if (prev.init) names.forEach(nm => {
+                        const k = old.indexOf(nm); if (k > -1) { old.splice(k, 1); return; }
+                        const card = p.field.find(c => c.nama === nm); if (!card || card.tipe === 'Domain') return;
+                        SND.play(card.tipe === 'Spell' ? 'spell' : 'summon');
+                        const el = [...document.querySelectorAll('#field-p' + n + ' .card')].find(e => e.querySelector('h4') && e.querySelector('h4').textContent === nm);
+                        if (el) el.classList.add('summon');
+                    });
+                    prev.names[n] = names;
+                });
+                prev.init = true;
+            }
+
+            // ---------- Mulai & kembali ke menu ----------
+            const _mp = mulaiPermainan;
+            mulaiPermainan = function () { prev.init = false; window.__hpPct = { 1: 100, 2: 100 }; _mp(); SND.unlock(); SND.play('start'); SND.mood('battle'); banner(state.p1.nama + ' vs ' + state.p2.nama); };
+            const _ck = cekKemenangan;
+            cekKemenangan = async function () {
+                await _ck();
+                if (!state.isGameOver && document.getElementById('landing-page').style.display === 'flex') { prev.init = false; SND.mood('lobby'); }
+            };
+
+            // ---------- Partikel ember & konfeti ----------
+            const c = document.getElementById('fx-canvas'), x = c.getContext('2d'), rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let W, H; const ps = [];
+            const rs = () => { W = c.width = innerWidth; H = c.height = innerHeight; }; rs(); addEventListener('resize', rs);
+            const ember = () => ({ k: 0, x: Math.random() * W, y: H + Math.random() * 40, r: Math.random() * 1.8 + .6, vy: -(Math.random() * .4 + .15), vx: (Math.random() - .5) * .2, p: Math.random() * 6, a: Math.random() * .5 + .2 });
+            window.confetti = () => { if (rm) return; for (let i = 0; i < 110; i++) ps.push({ k: 1, x: W / 2 + (Math.random() - .5) * W * .5, y: H * .35, vx: (Math.random() - .5) * 9, vy: -Math.random() * 9 - 3, w: Math.random() * 7 + 4, h: Math.random() * 4 + 3, rot: Math.random() * 6, vr: (Math.random() - .5) * .3, col: ['#ffd76a', '#f0d58a', '#b8860b', '#9be3b8', '#fff1c8'][i % 5], life: 1 }); };
+            if (!rm) {
+                for (let i = 0; i < 42; i++) { const e = ember(); e.y = Math.random() * H; ps.push(e); }
+                (function tick() {
+                    x.clearRect(0, 0, W, H); const light = document.body.classList.contains('light-mode');
+                    for (let i = ps.length - 1; i >= 0; i--) {
+                        const p = ps[i];
+                        if (p.k === 0) { p.p += .02; p.x += p.vx + Math.sin(p.p) * .25; p.y += p.vy; if (p.y < -10) Object.assign(p, ember()); x.globalAlpha = p.a * (light ? .5 : 1); x.fillStyle = light ? '#b8862b' : '#ffd76a'; x.beginPath(); x.arc(p.x, p.y, p.r, 0, 7); x.fill(); }
+                        else { p.vy += .22; p.x += p.vx; p.y += p.vy; p.vx *= .99; p.rot += p.vr; p.life -= .007; if (p.life <= 0 || p.y > H + 20) { ps.splice(i, 1); continue; } x.save(); x.globalAlpha = Math.min(1, p.life * 1.5); x.translate(p.x, p.y); x.rotate(p.rot); x.fillStyle = p.col; x.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); x.restore(); }
+                    }
+                    requestAnimationFrame(tick);
+                })();
+            }
+        })();
+    </script>
+
+</body>
+</html>

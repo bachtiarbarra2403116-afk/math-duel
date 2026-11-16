@@ -1,0 +1,39 @@
+{
+  "rules": {
+    "rooms": {
+      "$roomId": {
+        "hostUid": {
+          ".read": "auth != null",
+          ".write": "auth != null && !data.exists() && newData.val() === auth.uid"
+        },
+        "hostName": {
+          ".read": "auth != null",
+          ".write": "auth != null && auth.uid === data.parent().child('hostUid').val()"
+        },
+        "guestUid": {
+          ".read": "auth != null",
+          ".write": "auth != null && !data.exists() && newData.val() === auth.uid && auth.uid !== data.parent().child('hostUid').val()"
+        },
+        "guestName": {
+          ".read": "auth != null",
+          ".write": "auth != null && auth.uid === data.parent().child('guestUid').val()"
+        },
+        "status": {
+          ".read": "auth != null",
+          ".write": "auth != null && (auth.uid === data.parent().child('hostUid').val() || auth.uid === data.parent().child('guestUid').val())",
+          ".validate": "newData.val() === 'waiting' || newData.val() === 'started'"
+        },
+        "state": {
+          ".read": "auth != null && (auth.uid === data.parent().child('hostUid').val() || auth.uid === data.parent().child('guestUid').val())",
+          ".write": "auth != null && ((!data.exists() && auth.uid === data.parent().child('hostUid').val()) || data.child('turnUid').val() === auth.uid)"
+        },
+        "private": {
+          "$uid": {
+            ".read": "auth != null && auth.uid === $uid && (auth.uid === data.parent().parent().child('hostUid').val() || auth.uid === data.parent().parent().child('guestUid').val())",
+            ".write": "auth != null && auth.uid === $uid && (auth.uid === data.parent().parent().child('hostUid').val() || auth.uid === data.parent().parent().child('guestUid').val())"
+          }
+        }
+      }
+    }
+  }
+}

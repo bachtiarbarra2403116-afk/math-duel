@@ -1,0 +1,268 @@
+[
+  {
+    "id": 0,
+    "kode": "B01",
+    "nama": "Sinner - Sinus of Trigonometry",
+    "tipe": "Bidak",
+    "afiliasi": "Trigonometry",
+    "atk": 80,
+    "efekTeks": "Serangan kartu ini bertambah sebanyak 250 poin.",
+    "efekId": "B01",
+    "soalId": "B01"
+  },
+  {
+    "id": 1,
+    "kode": "B02",
+    "nama": "Multigon - The Former Circle",
+    "tipe": "Bidak",
+    "afiliasi": "Circle",
+    "atk": 150,
+    "efekTeks": "Jika terdapat kartu dengan afiliasi \"Circle\" di field milikmu, serangan kartu ini meningkat menjadi 2 kali lipat.",
+    "efekId": "B02",
+    "soalId": "B02"
+  },
+  {
+    "id": 2,
+    "kode": "B03",
+    "nama": "Quatro - A Quarter Segment of Circle",
+    "tipe": "Bidak",
+    "afiliasi": "Circle",
+    "atk": 80,
+    "efekTeks": "Ketika field musuh kosong, nilai serangan kartu ini menjadi 4 kali lipat serangan dasarnya. Ketika selesai menyerang, kartu ini akan hancur.",
+    "efekId": "B03",
+    "soalId": "B03"
+  },
+  {
+    "id": 3,
+    "kode": "B04",
+    "nama": "Cosmos - Cosinus of Trigonometry",
+    "tipe": "Bidak",
+    "afiliasi": "Trigonometry",
+    "atk": 70,
+    "efekTeks": "Serangan kartu ini bertambah sebanyak 300 poin.",
+    "efekId": "B04",
+    "soalId": "B04"
+  },
+  {
+    "id": 4,
+    "kode": "B05",
+    "nama": "Tango - Tangen of Trigonometry",
+    "tipe": "Bidak",
+    "afiliasi": "Trigonometry",
+    "atk": 90,
+    "efekTeks": "Jika kamu memiliki kartu Sinner - Sinus of Trigonometry dan Cosmos - Cosinus of Trigonometry di field milikmu, kartu ini bisa menyerang 2 kali dengan serangan yang digandakan.",
+    "efekId": "B05",
+    "soalId": "B05"
+  },
+  {
+    "id": 5,
+    "kode": "B06",
+    "nama": "Monos - Pythagoras of Trigonometry",
+    "tipe": "Bidak",
+    "afiliasi": "Trigonometry",
+    "atk": 90,
+    "efekTeks": "Ketika terdapat kartu afiliasi \"Trigonometry\" (selain kartu ini) di field milikmu, kamu bisa memilih salah satu kartu milikmu dan menambahkan nilai serangan kartu tersebut ke kartu ini.",
+    "efekId": "B06",
+    "soalId": "B06"
+  },
+  {
+    "id": 6,
+    "kode": "B07",
+    "nama": "Biggon - The Huge Circle",
+    "tipe": "Bidak",
+    "afiliasi": "Circle",
+    "atk": 110,
+    "efekTeks": "Kamu bisa memilih satu kartu afiliasi \"Circle\" milikmu dan meningkatkan nilai serangannya sebanyak 150 poin.",
+    "efekId": "B07",
+    "soalId": "B07"
+  },
+  {
+    "id": 7,
+    "kode": "B08",
+    "nama": "Arlentin - Common Tangen of Circle",
+    "tipe": "Bidak",
+    "afiliasi": "Circle",
+    "atk": 100,
+    "efekTeks": "Kartu ini tidak dapat hancur ketika diserang.",
+    "efekId": "B08",
+    "soalId": "B08"
+  },
+  {
+    "id": 8,
+    "kode": "B09",
+    "nama": "Verdict - The Magnitude of Geometry",
+    "tipe": "Bidak",
+    "afiliasi": "Vector",
+    "atk": 100,
+    "efekTeks": "Kamu bisa membuat semua kartu di field milikmu memperoleh 100 poin serangan tambahan.",
+    "efekId": "B09",
+    "soalId": "B09"
+  },
+  {
+    "id": 9,
+    "kode": "B10",
+    "nama": "Cordpot - The Dot Product Vector",
+    "tipe": "Bidak",
+    "afiliasi": "Vector",
+    "atk": 180,
+    "efekTeks": "Kamu bisa membuat nilai serangan semua kartu di field milik lawanmu berkurang sebanyak 85 poin.",
+    "efekId": "B10",
+    "soalId": "B10"
+  },
+  {
+    "id": 10,
+    "kode": "B11",
+    "nama": "Aquino - Finest Circle Equation",
+    "tipe": "Bidak",
+    "afiliasi": "Circle",
+    "atk": 40,
+    "efekTeks": "Kamu bisa memilih satu kartu afiliasi \"Circle\" milikmu dan menghancurkannya, kemudian memberikan serangan langsung ke lawan sesuai dengan nilai serangan kartu Circle yang dihancurkan.",
+    "efekId": "B11",
+    "soalId": "B11"
+  },
+  {
+    "id": 11,
+    "kode": "B12",
+    "nama": "Dimipton - The Pair Point",
+    "tipe": "Bidak",
+    "afiliasi": null,
+    "atk": 90,
+    "efekTeks": "Jika di field musuh hanya ada dua bidak, semua bidak milikmu mendapatkan 150 poin serangan.",
+    "efekId": "B12",
+    "soalId": "B12"
+  },
+  {
+    "id": 12,
+    "kode": "B13",
+    "nama": "Arlenext - External Tangen of Circle",
+    "tipe": "Bidak",
+    "afiliasi": "Circle",
+    "atk": 140,
+    "efekTeks": "Sekali dalam permainan, semua kartu afiliasi \"Circle\" milikmu tidak dapat hancur ketika diserang. Kartu ini mendapat 50 serangan tambahan.",
+    "efekId": "B13",
+    "soalId": "B13"
+  },
+  {
+    "id": 13,
+    "kode": "B14",
+    "nama": "Gennat - Tangent of Circle",
+    "tipe": "Bidak",
+    "afiliasi": "Circle",
+    "atk": 150,
+    "efekTeks": "Kartu ini mendapatkan 80 serangan tambahan untuk setiap kartu afiliasi \"Circle\" di field milikmu (termasuk kartu ini).",
+    "efekId": "B14",
+    "soalId": "B14"
+  },
+  {
+    "id": 14,
+    "kode": "B15",
+    "nama": "Darius - Radian of Circle",
+    "tipe": "Bidak",
+    "afiliasi": "Circle",
+    "atk": 130,
+    "efekTeks": "Nilai serangan kartu ini akan bertambah sebanyak 5% dari nyawamu saat ini.",
+    "efekId": "B15",
+    "soalId": "B15"
+  },
+  {
+    "id": 15,
+    "kode": "B16",
+    "nama": "Duoslum - A Modulus Vector",
+    "tipe": "Bidak",
+    "afiliasi": "Vector",
+    "atk": 140,
+    "efekTeks": "Jika kamu memiliki Verdict - The Magnitude of Geometry dan Cordpot - The Dot Product Vector di field milikmu, kamu bisa menghancurkan semua bidak milik lawanmu. Kamu tidak menyerang pada giliran kamu mengaktifkan kartu ini.",
+    "efekId": "B16",
+    "soalId": "B16"
+  },
+  {
+    "id": 16,
+    "kode": "S01",
+    "nama": "Pythagoras Theorem",
+    "tipe": "Spell",
+    "atk": 0,
+    "efekTeks": "Proyeksi Bidang: Semua kartu afiliasi \"Trigonometry\" di field milikmu mendapat 200 ATK.",
+    "efekId": "S01",
+    "soalId": null
+  },
+  {
+    "id": 17,
+    "kode": "S02",
+    "nama": "Thales Theorem",
+    "tipe": "Spell",
+    "atk": 0,
+    "efekTeks": "Prinsip Volume: Semua kartu afiliasi \"Circle\" di field milikmu mendapat 200 ATK.",
+    "efekId": "S02",
+    "soalId": null
+  },
+  {
+    "id": 18,
+    "kode": "S03",
+    "nama": "Parallegoram Area Theorem",
+    "tipe": "Spell",
+    "atk": 0,
+    "efekTeks": "Menyeberang ruang: Pilih satu kartu afiliasi \"Trigonometry\" di field milikmu, kartu itu mendapat 180 ATK.",
+    "efekId": "S03",
+    "soalId": null
+  },
+  {
+    "id": 19,
+    "kode": "S04",
+    "nama": "Angle Bisector Theorem",
+    "tipe": "Spell",
+    "atk": 0,
+    "efekTeks": "Ekspansi Massa: Pilih satu kartu afiliasi \"Circle\" di field milikmu, ATK kartu itu menjadi 2x lipat.",
+    "efekId": "S04",
+    "soalId": null
+  },
+  {
+    "id": 20,
+    "kode": "S05",
+    "nama": "Inscribed Angle Theorem",
+    "tipe": "Spell",
+    "atk": 0,
+    "efekTeks": "Kompresi Ruang: ATK satu Bidak Lawan akan dipotong menjadi setengahnya (50%).",
+    "efekId": "S05",
+    "soalId": null
+  },
+  {
+    "id": 21,
+    "kode": "S06",
+    "nama": "Addition Property",
+    "tipe": "Spell",
+    "atk": 0,
+    "efekTeks": "Memulihkan 800 HP.",
+    "efekId": "S06",
+    "soalId": null
+  },
+  {
+    "id": 22,
+    "kode": "S07",
+    "nama": "Commutative Property",
+    "tipe": "Spell",
+    "atk": 0,
+    "efekTeks": "Memulihkan 1000 HP seketika.",
+    "efekId": "S07",
+    "soalId": null
+  },
+  {
+    "id": 23,
+    "kode": "S08",
+    "nama": "Half Life",
+    "tipe": "Spell",
+    "atk": 0,
+    "efekTeks": "Buat nyawa lawan menjadi SETENGAH! (Syarat: HP-mu harus <= 1500).",
+    "efekId": "S08",
+    "soalId": null
+  },
+  {
+    "id": 24,
+    "kode": "D01",
+    "nama": "Round of Euclid - Father of Geometry",
+    "tipe": "Domain",
+    "atk": 0,
+    "efekTeks": "Semua bidakmu tidak bisa hancur. Di setiap akhir giliranmu, pilih satu bidak untuk dihancurkan atau hancurkan kartu ini.",
+    "efekId": "D01",
+    "soalId": null
+  }
+]
