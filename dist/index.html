@@ -1135,14 +1135,13 @@
             if (state.turn === onlineGame.playerNum && state.turnCount > onlineGame.lastDrawnTurnCount &&
                 onlineGame.status === 'started' && (gameMode !== 'online' || onlineGame.privateInitialized)) {
                 onlineGame.lastDrawnTurnCount = state.turnCount;
+                const expectedDeckCount = state[`p${onlineGame.playerNum}`].deckCount ?? 0;
                 if (tarikKartu(state[`p${onlineGame.playerNum}`], 1) === 0) {
-                    state.deckLossPlayer = state.turn;
-                    log(`${state[`p${onlineGame.playerNum}`].nama} tidak dapat menarik kartu karena deck habis.`);
-                    cekKemenangan();
+                    pulihkanTarikanOnline(state.turnCount, expectedDeckCount).catch(tanganiKesalahanOnline);
                 } else {
                     log(`${state[`p${onlineGame.playerNum}`].nama} menarik 1 kartu dari deck.`);
+                    updateUI();
                 }
-                updateUI();
             }
             if (state.isGameOver && !gameWasOver && !onlineGame.gameOverAnnounced) {
                 onlineGame.gameOverAnnounced = true;
@@ -1151,6 +1150,34 @@
                     : (state.p1.hp <= 0 ? state.p2.nama : state.p1.nama);
                 UI.alert(`Pertandingan selesai. ${winner} menang!`, 'Hasil Akhir');
             }
+        }
+
+        async function pulihkanTarikanOnline(turnCount, expectedDeckCount) {
+            const playerNum = onlineGame.playerNum;
+            const player = state[`p${playerNum}`];
+            const privateSnapshot = await onlineGame.roomRef
+                .child(`private/${onlineGame.uid}`)
+                .once('value');
+            const privateState = privateSnapshot.val();
+            if (!privateState || !Array.isArray(privateState.deck) || !Array.isArray(privateState.hand)) {
+                throw new Error('Data deck privat tidak valid. Muat ulang halaman dan coba bergabung ke room baru.');
+            }
+            if (state.turn !== playerNum || state.turnCount !== turnCount || state.isGameOver) return;
+
+            onlineGame.privateState = privateState;
+            player.deck = privateState.deck;
+            player.hand = privateState.hand;
+            if (tarikKartu(player, 1) === 0) {
+                if (expectedDeckCount > 0) {
+                    throw new Error('Deck privat belum tersinkron dengan state pertandingan. Periksa koneksi Firebase lalu muat ulang halaman.');
+                }
+                state.deckLossPlayer = playerNum;
+                log(`${player.nama} tidak dapat menarik kartu karena deck habis.`);
+                await cekKemenangan();
+            } else {
+                log(`${player.nama} menarik 1 kartu dari deck.`);
+            }
+            updateUI();
         }
 
         function siapkanPemainOnline() {
