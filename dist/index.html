@@ -1109,6 +1109,9 @@
                 onlineGame.privateState.lastDrawnTurnCount = onlineGame.lastDrawnTurnCount;
             }
             const berikut = JSON.parse(JSON.stringify(publik));
+            berikut.deckLossPlayer = berikut.deckLossPlayer === 1 || berikut.deckLossPlayer === 2
+                ? berikut.deckLossPlayer
+                : null;
             [berikut.p1, berikut.p2].forEach(pemain => {
                 pemain.field = Array.isArray(pemain.field) ? pemain.field : [];
                 pemain.grave = Array.isArray(pemain.grave) ? pemain.grave : [];
@@ -1884,7 +1887,8 @@
         }
 
         async function cekKemenangan() {
-            if (!state.isGameOver && (state.p1.hp <= 0 || state.p2.hp <= 0 || state.deckLossPlayer !== null)) {
+            const pemainDeckHabis = state.deckLossPlayer === 1 || state.deckLossPlayer === 2;
+            if (!state.isGameOver && (state.p1.hp <= 0 || state.p2.hp <= 0 || pemainDeckHabis)) {
                 state.isGameOver = true;
                 let pemenang = state.deckLossPlayer
                     ? (state.deckLossPlayer === 1 ? state.p2.nama : state.p1.nama)
