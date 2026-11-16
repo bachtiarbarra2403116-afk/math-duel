@@ -1066,8 +1066,8 @@
         function bentukStatePublik() {
             const publik = JSON.parse(JSON.stringify(state));
             [publik.p1, publik.p2].forEach(pemain => {
-                pemain.deckCount = pemain.deckCount ?? pemain.deck.length;
-                pemain.handCount = pemain.handCount ?? pemain.hand.length;
+                pemain.deckCount = pemain.deckCount ?? pemain.deck?.length ?? 0;
+                pemain.handCount = pemain.handCount ?? pemain.hand?.length ?? 0;
                 delete pemain.deck;
                 delete pemain.hand;
             });
@@ -1085,12 +1085,16 @@
             const own = onlineGame.privateState || { deck: [], hand: [] };
             const berikut = JSON.parse(JSON.stringify(publik));
             [berikut.p1, berikut.p2].forEach(pemain => {
+                pemain.field = Array.isArray(pemain.field) ? pemain.field : [];
+                pemain.grave = Array.isArray(pemain.grave) ? pemain.grave : [];
                 pemain.deck = [];
                 pemain.hand = [];
+                pemain.deckCount = pemain.deckCount ?? 0;
+                pemain.handCount = pemain.handCount ?? 0;
             });
             const pemainSendiri = berikut[`p${onlineGame.playerNum}`];
-            pemainSendiri.deck = own.deck || [];
-            pemainSendiri.hand = own.hand || [];
+            pemainSendiri.deck = Array.isArray(own.deck) ? own.deck : [];
+            pemainSendiri.hand = Array.isArray(own.hand) ? own.hand : [];
             pemainSendiri.deckCount = publik[`p${onlineGame.playerNum}`].deckCount;
             pemainSendiri.handCount = publik[`p${onlineGame.playerNum}`].handCount;
             state = berikut;
@@ -1752,12 +1756,12 @@
             if(sideDeck) {
                 sideDeck.innerHTML = `
                     <div style="margin-bottom:12px;">
-                        <b style="color:#4caf50;">Deck ${state.p1.nama} (${state.p1.deckCount ?? state.p1.deck.length}):</b><br>
-                        <div style="margin-top:6px;">Kartu di tangan: ${state.p1.handCount ?? state.p1.hand.length}</div>
+                        <b style="color:#4caf50;">Deck ${state.p1.nama} (${state.p1.deckCount ?? state.p1.deck?.length ?? 0}):</b><br>
+                        <div style="margin-top:6px;">Kartu di tangan: ${state.p1.handCount ?? state.p1.hand?.length ?? 0}</div>
                     </div>
                     <div>
-                        <b style="color:#f44336;">Deck ${state.p2.nama} (${state.p2.deckCount ?? state.p2.deck.length}):</b><br>
-                        <div style="margin-top:6px;">Kartu di tangan: ${state.p2.handCount ?? state.p2.hand.length}</div>
+                        <b style="color:#f44336;">Deck ${state.p2.nama} (${state.p2.deckCount ?? state.p2.deck?.length ?? 0}):</b><br>
+                        <div style="margin-top:6px;">Kartu di tangan: ${state.p2.handCount ?? state.p2.hand?.length ?? 0}</div>
                     </div>
                 `;
             }
@@ -1905,7 +1909,7 @@
             document.getElementById('area-p1').classList.toggle('active-turn', state.turn === 1);
             document.getElementById('area-p2').classList.toggle('active-turn', state.turn === 2);
             const activeHand = state.turn === 1 ? state.p1 : state.p2;
-            document.getElementById('hand-count').innerText = activeHand.handCount ?? activeHand.hand.length;
+            document.getElementById('hand-count').innerText = activeHand.handCount ?? activeHand.hand?.length ?? 0;
             
             updateScorePanel(); 
 
@@ -1920,13 +1924,14 @@
             }
 
             const renderFieldLayout = (fieldData, elementId, playerNum) => {
+                fieldData = Array.isArray(fieldData) ? fieldData : [];
                 let activePlayer = state.turn === 1 ? state.p1 : state.p2;
                 let hp = playerNum === 1 ? state.p1.hp : state.p2.hp;
                 let hpNow = Math.max(0, Math.min(100, hp / 5000 * 100)), hpCls = hpNow <= 25 ? 'low' : hpNow <= 50 ? 'mid' : '';
                 let hpFrom = (window.__hpPct && window.__hpPct[playerNum] != null) ? window.__hpPct[playerNum] : hpNow;
                 let player = playerNum === 1 ? state.p1 : state.p2;
-                let deckCount = player.deckCount ?? player.deck.length;
-                let graveCount = playerNum === 1 ? state.p1.grave.length : state.p2.grave.length;
+                let deckCount = player.deckCount ?? player.deck?.length ?? 0;
+                let graveCount = player.grave?.length ?? 0;
 
                 let bidakElements = ['', '', '', '', ''];
                 let spellElements = ['', '', ''];
