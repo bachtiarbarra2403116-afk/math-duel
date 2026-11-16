@@ -616,6 +616,91 @@
         .card[data-kode="S07"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(155,227,184)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M13.2 25.2A20 20 0 0 1 50.8 25.2M50.8 38.8A20 20 0 0 1 13.2 38.8' stroke-width='2'/><path d='M50.8 25.2L51.5 18.6M50.8 25.2L45.9 20.6M13.2 38.8L18.1 43.4M13.2 38.8L12.5 45.4' stroke-width='2'/><path d='M32 24V40M24 32H40' stroke-width='2.4'/></svg>") center/64% no-repeat; }
         .card[data-kode="S08"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(155,227,184)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M34 4L26 18L37 28L25 42L33 60L39 60L31 42L43 28L32 18L40 4Z' fill='rgb(155,227,184)' fill-opacity='.3'/><path d='M20 14A20 20 0 0 0 20 50M46 14A20 20 0 0 1 46 50' stroke-dasharray='3 4' stroke-opacity='.7'/></svg>") center/64% no-repeat; }
         .card[data-kode="D01"] { --art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='rgb(255,215,106)' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='32' cy='32' r='27' stroke-opacity='.6'/><ellipse cx='32' cy='32' rx='27' ry='9' stroke-opacity='.45'/><path d='M32 10L51 21V43L32 54L13 43V21Z'/><path d='M32 10L51 21L32 32L13 21Z' fill='rgb(255,215,106)' fill-opacity='.3'/><path d='M32 32V54'/><circle cx='32' cy='32' r='2' fill='rgb(255,215,106)'/></svg>") center/64% no-repeat; }
+
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 8px 6px 116px;
+                background-attachment: scroll;
+                background: linear-gradient(160deg, #34271d, #17120e 70%);
+            }
+            body.light-mode { background: linear-gradient(160deg, #fcf1d6, #efd9a6 70%); }
+            #main-game { padding-top: 62px; }
+            .game-wrapper { gap: 8px; }
+            .center-panel { width: 100%; }
+            .sticky-hud { top: 62px; }
+            .sticky-hud .glass-panel { backdrop-filter: none; }
+            .status-bar { gap: 6px; }
+            .chip { padding: 3px 9px; font-size: .82em; }
+            .board {
+                overflow: hidden;
+                margin-bottom: 8px;
+                border-radius: 8px;
+                box-shadow: 0 3px 8px rgba(0,0,0,.4);
+            }
+            .mat {
+                min-width: 0;
+                padding: 6px;
+                background: radial-gradient(ellipse at center, #21412f, #0d1b13 88%);
+            }
+            body.light-mode .mat {
+                background: radial-gradient(ellipse at center, #47ad78, #1f7549 88%);
+            }
+            .player-area { margin-top: 6px; padding: 22px 0 3px; }
+            .playmat-grid {
+                grid-template-rows: repeat(2, clamp(68px, 20vw, 104px));
+                gap: 3px;
+            }
+            .slot { font-size: .72em; }
+            .slot-white, .slot-green, .slot-yellow { padding: 1px; }
+            .slot-white, .slot-green, .slot-yellow, .slot-brown, .slot-black, .slot-red { box-shadow: inset 0 1px 3px rgba(0,0,0,.35); }
+            .nameplate {
+                top: 2px !important;
+                left: 6px !important;
+                right: auto !important;
+                transform: none !important;
+                gap: 4px;
+                padding: 2px 7px;
+                font-size: .65em;
+                letter-spacing: 0;
+            }
+            #nameplate-p2 { left: auto !important; right: 6px !important; }
+            .active-turn { animation: none; }
+            .active-turn .nameplate::after { content: "aktif"; }
+            .slot-red .hp-orb { width: 90%; }
+            .slot-brown span, .slot-black span { font-size: calc(16 * var(--u)); }
+            .slot-brown span { padding: 2px 4px; }
+            .controls {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 6px;
+                overflow: visible;
+                padding: 8px;
+                background: rgba(20,15,10,.98) !important;
+                box-shadow: 0 -3px 8px rgba(0,0,0,.45) !important;
+            }
+            body.light-mode .controls {
+                background: rgba(255,246,222,.99) !important;
+                box-shadow: 0 -3px 8px rgba(90,55,10,.2) !important;
+            }
+            .controls button {
+                min-width: 0;
+                min-height: 40px;
+                padding: 6px 5px;
+                font-size: .82em;
+                white-space: normal;
+                line-height: 1.15;
+            }
+            .controls .ctl-sep { display: none; }
+            .controls .step { min-width: 1.35em; margin-right: 2px; padding: 0 3px; }
+            #hand-modal { padding: 8px 8px 112px; }
+            #hand-modal .modal-content { height: 170px; max-height: 170px; }
+            #hand-modal .hand-card-list, #hand-modal .hand-card-detail { height: 90px; flex-basis: 90px; }
+            .glass-panel, .modal-content { backdrop-filter: none; }
+            .card, button, .player-area, .slot { transition: none; }
+            .hp-ring-fg { transition: none; filter: none; }
+            .hp-ring-fg.low { animation: none; }
+            #fx-canvas { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -2372,7 +2457,7 @@
             };
 
             // ---------- Partikel ember & konfeti ----------
-            const c = document.getElementById('fx-canvas'), x = c.getContext('2d'), rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const c = document.getElementById('fx-canvas'), x = c.getContext('2d'), rm = matchMedia('(prefers-reduced-motion: reduce), (max-width: 768px)').matches;
             let W, H; const ps = [];
             const rs = () => { W = c.width = innerWidth; H = c.height = innerHeight; }; rs(); addEventListener('resize', rs);
             const ember = () => ({ k: 0, x: Math.random() * W, y: H + Math.random() * 40, r: Math.random() * 1.8 + .6, vy: -(Math.random() * .4 + .15), vx: (Math.random() - .5) * .2, p: Math.random() * 6, a: Math.random() * .5 + .2 });
